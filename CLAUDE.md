@@ -14,22 +14,22 @@ Read this file first. It describes what exists, how it is built, what is deliber
 
 Files in this package:
 - `look-good-app.html` – the app. Opens directly by double-click (AI chat shows "not connected" until a server is set).
-- `server/` – tiny Node server (no dependencies, Node 18+): `server.js`, `package.json`, `index.html` (same app, but `AI_URL="/api/chat"`). It serves the app and forwards chat requests to the Anthropic API so the key stays secret.
+- `server/` – tiny Node server (no dependencies, Node 18+): `server.js`, `package.json`, `index.html` (exact copy of the app). It serves the app and forwards chat requests to the Anthropic API so the key stays secret.
 - `README.txt` – deploy steps for the owner (Render + GitHub).
 - `CLAUDE.md` – this file.
 
-Keep `server/index.html` in sync with `look-good-app.html`; the only difference is the line `var AI_URL=""` vs `var AI_URL="/api/chat"`.
+Keep `server/index.html` an exact copy of `look-good-app.html` (`cp look-good-app.html server/index.html`). `AI_URL` is chosen automatically: `/api/chat` when the page is served over http(s), empty when opened as a file.
 
 ## 3. What is DONE and approved by the owner (do not change unless asked)
 1. **Start animation** and logo (LOOK GOOD wordmark, the two "OO" are pink eyes).
-2. **Welcome screen**: "Create account" / "Log in". Sign up or log in with Apple, Google or phone number (prototype only, no real auth).
+2. **Welcome screen + sign-in** (reworked Nov 2026): "Create account" / "Log in". Methods: Apple, Google (system-style confirmation sheet), email + password (password rules checklist, email verification code, "forgot password" via code), phone number with country picker + 6-digit SMS code (resend timer, code boxes, wrong-code shake). Prototype: the account lives only on this device (`prof.acc` = {t,id,pw-hash}); codes are shown as an in-app iOS-style notification banner (tap fills the code). Logging in with unknown details shows "No account found → create one". **Stays logged in** (`prof.session`): after the splash the app goes straight to Home; "Log out" clears the session.
 3. **Onboarding** (2 steps): first name, last name, date of birth (age is calculated, minimum 13 years), gender (Male / Female / Other / Prefer not to say), then "Let's go".
 4. **City + real weather** on Home: choose a city (online city search, offline fallback list), weather from Open-Meteo (current, next 4 hours, today/tomorrow/day after), a friendly daily message based on the weather (rain, snow, heat, cold, wind, sun, generic compliments), city photo background.
 5. **Bottom tabs**: Home, Wardrobe, Friends, AI.
 6. **Profile / settings** (opens from the round avatar top right): profile photo, edit profile (name, username), account (login details, email add/change, change password, forgot-password flow with 6-digit code – all prototype, no server), who sees the profile, notifications, privacy ("AI may use my location"), appearance light/dark, **language**, log out, delete account. Chat history entry (empty list for now).
 7. **8 languages**, whole app translates instantly: Deutsch, English, Français, Español, Português, العربية (right-to-left layout), हिन्दी, 中文. See section 5.
-8. **AI chat page** (tab "AI"): greeting "Hi, ich bin dein Stylish KI. Wie kann ich dir helfen heute?" (translated), message bubbles, send photo, dictation (microphone) and voice conversation (wave button), AI profile picture at the top that can be tapped to switch between **Mo** (boy) / **Sarah** (girl) and the characters **Panda, Fuchs (fox), Hase (rabbit)**. Voice: Sarah = female voice, Mo = male voice (picked from the device's speech voices).
-9. **AI personality** (system prompt in `sys()`): one of the smartest assistants; expert in fashion/outfits/weather but able to talk about anything; **very short answers (2–3 sentences)**; asks ONE concrete follow-up question when the request is vague; **mirrors the user's way of writing** (replies in the user's language, adapts to casual/slang like "wallah", "hey bro" only after observing a few messages, never mocking); remembers what the user says; judges photos concretely; replies may be read aloud so no emoji spam.
+8. **AI chat page** (tab "AI"): greeting "Hi, ich bin Mo/Sarah. Wie kann ich dir helfen?" (translated), message bubbles, **typing + photo from gallery + take photo (camera) only. No microphone, no voice conversation (removed on purpose by the owner).** The avatar at the top can be tapped to switch the picture (Mo, Sarah, Panda, Fuchs, Hase); the AI's **name is always Mo or Sarah** (`prof.ai`).
+9. **AI personality** (system prompt in `sys()`): name is only Mo or Sarah, never ChatGPT/Claude/Gemini or any model/company (honest that it is the app's AI stylist if sincerely asked). Texts like a friend on WhatsApp: **1–2 short sentences, max 3**, no lists/markdown. **Mirrors the person from the first message** (language, slang like "bro", "digga", "wallah", "girly", tone, age; polite with formal/older users). For outfits: first asks ONE short question about the person's day, then a concrete outfit that fits the day and the **weather** (`LW` = now, feels-like, wind, today min/max + rain chance, tomorrow; only if location is allowed). Knows name, age, gender, local time.
 
 ## 4. What is deliberately NOT built (placeholder only)
 - **Wardrobe tab ("Garderobe")**: currently only an empty placeholder screen ("Your clothes will land here soon."). An earlier attempt was thrown away on purpose. **Do not build any wardrobe, avatar, try-on or dressing-room feature until the owner describes it again.** When he does, ask him questions first and show him a visual reference before building.
@@ -43,15 +43,13 @@ Keep `server/index.html` in sync with `look-good-app.html`; the only difference 
 - **RTL**: CSS has `[dir=rtl]` rules; use logical properties where possible. Test Arabic after UI changes.
 - **State**: `prof` (profile object, saved with `saveProf()` under `localStorage` key `lg_prof`), `cities` (key `lg_cities`), helper `ls(key,value)`. `prof.ai` = "Mo" or "Sarah" (voice and persona), `prof.skin` = displayed character (Mo/Sarah/Panda/Fuchs/Hase), `prof.lang`, `prof.theme`, `prof.loc` (AI may use location).
 - **AI chat**: `AI_URL` is the server endpoint (POST, Anthropic Messages format, body `{model,max_tokens,system,messages}`; response `{content:[{type:"text",text}]}`). History is in `H`; photos are sent as base64 JPEG (max 1024 px). The server ignores the model sent by the client and uses its own `AI_MODEL` env variable (default `claude-opus-5-5`; the owner can switch to `claude-sonnet-5-5` to save cost). The current weather string `LW` is added to the system prompt only if the user allowed location use.
-- **Voice**: `SpeechRecognition`/`webkitSpeechRecognition` (works in Chrome, Edge, Safari) for dictation and conversation loop; `speechSynthesis` for the AI voice. Not supported everywhere – the app shows a message instead of failing.
 - **Server**: per-visitor rate limit 30 messages/minute, max request 8 MB. `GET /api/health` returns `{ok:true,chat:<key set?>}`.
 - Weather and city search call Open-Meteo / photo sources from the browser; they do not work inside sandboxed previews, only in a normal browser.
 
 ## 6. Known limitations / honest status
 - Tested with a headless Chromium on a phone-sized viewport (login, tabs, language switch incl. Arabic, chat greeting). **Not yet tested on real iPhone/Android devices**, and the live AI answers were never tested with a real API key (no network in the build environment). First thing to verify with the owner: deploy, add `ANTHROPIC_API_KEY`, send a message.
-- Voice conversation and dictation depend on the browser; female/male voice choice depends on the voices installed on the device.
 - City names from the built-in list stay German (e.g. "Kopenhagen").
-- Login, password change and codes are fake prototype screens.
+- Login, password change and codes are prototype screens (realistic flow, but no real SMS/email and no server account).
 
 ## 7. Deploy (summary, details in README.txt)
 1. API key at console.anthropic.com (add credit). 2. Upload `server/` files to a GitHub repo. 3. Render.com → Web Service → start command `npm start` → environment variable `ANTHROPIC_API_KEY`. 4. Open the Render link on the phone (not the local HTML file) so the AI works.

@@ -173,6 +173,38 @@ h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spaci
 .cpre img{height:56px;border-radius:10px}
 [dir=rtl] .pen{right:auto;left:-4px}[dir=rtl] .set{text-align:right}[dir=rtl] .back svg{transform:scaleX(-1)}
 [dir=rtl] .sw::after{left:auto;right:3px}[dir=rtl] .sw[aria-checked="true"]::after{transform:translateX(-22px)}
+
+/* Anmeldung: Schritte, Code, SMS-Banner */
+.astep{display:flex;flex-direction:column;gap:14px;flex:1}
+#login .fl input,.pwrow{min-height:52px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);font-size:1rem}
+#login .fl input{padding:0 16px}
+.pwrow{display:flex;align-items:center;padding:0 6px 0 16px}
+.pwrow:focus-within{outline:3px solid var(--focus);outline-offset:2px}
+.pwrow input{flex:1;min-width:0;border:0!important;background:none!important;outline:0;padding:0!important;min-height:48px}
+.eye{width:40px;height:40px;border:0;background:none;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--muted)}
+.eye svg,.st{width:20px;height:20px;fill:none!important;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.btn.apple{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.btn.apple svg{fill:currentColor;stroke:none}
+.phone select{border:0;background:none;font-weight:600;color:var(--ink);font-size:1rem;min-height:48px;cursor:pointer;max-width:7.5em}
+.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:.82rem;color:var(--muted)}
+.rules li::before{content:"○ ";font-weight:800}
+.rules li.ok{color:var(--ink)}.rules li.ok::before{content:"✓ ";color:#1E9E5A}
+.otp{display:flex;gap:8px;justify-content:space-between;direction:ltr}
+.otp input{width:100%;max-width:52px;aspect-ratio:.85;text-align:center;font-size:1.5rem;font-weight:800;border-radius:14px;border:1.5px solid var(--line);background:var(--card);padding:0}
+.otp input:focus{border-color:var(--accent);outline:0}
+.otp.bad{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.terms{text-align:center}
+.sms{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));transform:translate(-50%,-160%);width:calc(100% - 20px);max-width:420px;z-index:30;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:20px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.18);transition:transform .4s cubic-bezier(.2,.9,.3,1.1);cursor:pointer}
+.sms.show{transform:translate(-50%,0)}
+.smsh{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--muted)}
+.smsh b{flex:1;text-transform:uppercase;letter-spacing:.06em}
+.smsi{width:22px;height:22px;border-radius:6px;background:#34C759;color:#fff;display:grid;place-items:center;font-size:.8rem}
+.sms p{margin:6px 0 0;line-height:1.35}
+.sysbox{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:8px 0}
+.sysbox .lg{width:64px;height:64px;border-radius:16px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:800;font-size:1.3rem}
+.spin{width:22px;height:22px;border-radius:50%;border:3px solid currentColor;border-right-color:transparent;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -185,21 +217,52 @@ h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spaci
 <main id="login" class="screen hidden">
   <div class="wrap">
     <div class="ohead"><button class="back" id="aback" type="button" aria-label="Zurück"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button></div>
-    <h2 id="hTitle">Konto erstellen</h2>
-    <p class="sub" id="hSub"></p>
-    <button class="btn" type="button" data-go="Apple">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c0-2.2 1.8-3.3 1.9-3.4-1-1.5-2.6-1.7-3.2-1.7-1.4-.1-2.6.8-3.3.8-.7 0-1.7-.8-2.8-.7-1.4 0-2.8.8-3.5 2.1-1.5 2.6-.4 6.4 1.1 8.5.7 1 1.6 2.2 2.7 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 1.9-1 2.6-2.1.8-1.2 1.2-2.3 1.2-2.4 0 0-2.3-.9-2.3-3.2zM14.2 6.1c.6-.7 1-1.7.9-2.7-.9 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.6 1 .1 1.9-.5 2.5-1.2z"/></svg>
-      <span id="tApple">Mit Apple fortfahren</span>
-    </button>
-    <button class="btn" type="button" data-go="Google"><span class="g" aria-hidden="true">G</span><span id="tGoogle">Mit Google fortfahren</span></button>
-    <div class="or">oder mit Telefonnummer</div>
-    <label class="phone"><span>+49</span><input id="tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="Telefonnummer" aria-label="Telefonnummer"></label>
-    <p class="err" id="err" role="alert"></p>
-    <p class="fine">Prototyp: Die Anmeldung ist noch nicht mit einem Server verbunden.</p>
-    <p class="fine" style="text-align:center"><span id="swText"></span> <button class="link" id="swMode" type="button"></button></p>
-    <button class="btn primary" id="pgo" type="button" style="margin-top:auto">Weiter</button>
+    <div class="astep" id="am">
+      <h2 id="hTitle">Konto erstellen</h2>
+      <p class="sub" id="hSub"></p>
+      <button class="btn apple" type="button" data-go="Apple">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c0-2.2 1.8-3.3 1.9-3.4-1-1.5-2.6-1.7-3.2-1.7-1.4-.1-2.6.8-3.3.8-.7 0-1.7-.8-2.8-.7-1.4 0-2.8.8-3.5 2.1-1.5 2.6-.4 6.4 1.1 8.5.7 1 1.6 2.2 2.7 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 1.9-1 2.6-2.1.8-1.2 1.2-2.3 1.2-2.4 0 0-2.3-.9-2.3-3.2zM14.2 6.1c.6-.7 1-1.7.9-2.7-.9 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.6 1 .1 1.9-.5 2.5-1.2z"/></svg>
+        <span id="tApple">Mit Apple fortfahren</span>
+      </button>
+      <button class="btn" type="button" data-go="Google"><span class="g" aria-hidden="true">G</span><span id="tGoogle">Mit Google fortfahren</span></button>
+      <button class="btn" type="button" id="tMail"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span>Mit E-Mail fortfahren</span></button>
+      <div class="or">oder mit Telefonnummer</div>
+      <label class="phone"><select id="cc" aria-label="Land"></select><input id="tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="Telefonnummer" aria-label="Telefonnummer"></label>
+      <p class="err" id="err" role="alert"></p>
+      <button class="btn primary" id="pgo" type="button">Code per SMS senden</button>
+      <p class="fine" style="text-align:center"><span id="swText"></span> <button class="link" id="swMode" type="button"></button></p>
+      <p class="fine terms" style="margin-top:auto">Mit dem Fortfahren stimmst du unseren Nutzungsbedingungen und der Datenschutzerklärung zu.</p>
+    </div>
+    <div class="astep hidden" id="ae">
+      <h2 id="eTitle"></h2>
+      <p class="sub" id="eSub"></p>
+      <label class="fl"><small>E-Mail-Adresse</small><input id="email" type="email" inputmode="email" autocomplete="email" placeholder="du@beispiel.de"></label>
+      <label class="fl"><small>Passwort</small><span class="pwrow"><input id="pw" type="password" autocomplete="current-password"><button class="eye" id="pweye" type="button" aria-label="Passwort anzeigen"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span></label>
+      <ul class="rules" id="rules"></ul>
+      <button class="link" id="eForgot" type="button" style="align-self:flex-end">Passwort vergessen?</button>
+      <p class="err" id="eerr" role="alert"></p>
+      <button class="btn primary" id="ego" type="button">Weiter</button>
+    </div>
+    <div class="astep hidden" id="ac">
+      <h2>Code eingeben</h2>
+      <p class="sub" id="cSub"></p>
+      <div class="otp" id="otp"></div>
+      <p class="err" id="cerr" role="alert"></p>
+      <button class="link" id="cRe" type="button" style="align-self:flex-start"></button>
+      <button class="btn primary" id="cgo" type="button">Bestätigen</button>
+    </div>
+    <div class="astep hidden" id="ap">
+      <h2>Neues Passwort</h2>
+      <p class="sub">Wähle ein sicheres Passwort für dein Konto.</p>
+      <label class="fl"><small>Neues Passwort</small><input id="npw" type="password" autocomplete="new-password"></label>
+      <ul class="rules" id="nrules"></ul>
+      <p class="err" id="perr" role="alert"></p>
+      <button class="btn primary" id="pset" type="button">Passwort speichern</button>
+    </div>
   </div>
 </main>
+<div id="sms" class="sms" role="status" aria-live="polite"><div class="smsh"><span class="smsi">✉</span><b id="smsApp"></b><small>jetzt</small></div><p id="smsTxt"></p></div>
+<div id="osheet" class="sheet hidden"><div class="panel" id="opanel"></div></div>
 
 <section id="welcome" class="screen hidden" aria-label="Willkommen">
   <div class="wrap" style="padding:28px 22px">
@@ -260,12 +323,11 @@ h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spaci
       <div class="cpre hidden" id="cpre"><img id="cimg" alt=""><button class="ib" id="cx" type="button" aria-label="Abbrechen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
       <div class="cbar">
         <button class="ib" id="cph" type="button" aria-label="Foto senden"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></button>
+        <button class="ib" id="ccam" type="button" aria-label="Foto aufnehmen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
         <input id="cin" type="text" placeholder="Schreib eine Nachricht …" autocomplete="off" aria-label="Schreib eine Nachricht …">
-        <button class="ib" id="cmic" type="button" aria-label="Diktieren"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
-        <button class="ib" id="cvc" type="button" aria-label="Gespräch"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4"/></svg></button>
         <button class="ib on" id="csend" type="button" aria-label="Senden"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
       </div>
-      <input id="cfile" type="file" accept="image/*" hidden>
+      <input id="cfile" type="file" accept="image/*" hidden><input id="ccamf" type="file" accept="image/*" capture="environment" hidden>
     </section>
   </div>
   <nav class="tabs" role="tablist" aria-label="Hauptmenü">
@@ -484,7 +546,48 @@ var D={
 "Figur wählen":"Choose character|Choisir un personnage|Elegir personaje|Escolher personagem|اختر الشخصية|किरदार चुनें|选择形象",
 "Panda":"Panda|Panda|Panda|Panda|باندا|पांडा|熊猫",
 "Fuchs":"Fox|Renard|Zorro|Raposa|ثعلب|लोमड़ी|狐狸",
-"Hase":"Rabbit|Lapin|Conejo|Coelho|أرنب|खरगोश|兔子"
+"Hase":"Rabbit|Lapin|Conejo|Coelho|أرنب|खरगोश|兔子",
+"Mit E-Mail fortfahren":"Continue with email|Continuer avec l'e-mail|Continuar con correo|Continuar com e-mail|المتابعة بالبريد الإلكتروني|ईमेल से जारी रखें|使用邮箱继续",
+"Land":"Country|Pays|País|País|الدولة|देश|国家/地区",
+"Code per SMS senden":"Send code by SMS|Envoyer le code par SMS|Enviar código por SMS|Enviar código por SMS|إرسال الرمز عبر SMS|SMS से कोड भेजें|通过短信发送验证码",
+"Mit dem Fortfahren stimmst du unseren Nutzungsbedingungen und der Datenschutzerklärung zu.":"By continuing, you agree to our Terms of Use and Privacy Policy.|En continuant, tu acceptes nos conditions d'utilisation et notre politique de confidentialité.|Al continuar, aceptas nuestros Términos de uso y la Política de privacidad.|Ao continuar, aceitas os nossos Termos de Utilização e a Política de Privacidade.|بالمتابعة، أنت توافق على شروط الاستخدام وسياسة الخصوصية.|जारी रखकर आप हमारी उपयोग की शर्तों और गोपनीयता नीति से सहमत होते हैं।|继续即表示你同意我们的使用条款和隐私政策。",
+"Passwort":"Password|Mot de passe|Contraseña|Palavra-passe|كلمة المرور|पासवर्ड|密码",
+"Passwort anzeigen":"Show password|Afficher le mot de passe|Mostrar contraseña|Mostrar palavra-passe|إظهار كلمة المرور|पासवर्ड दिखाएँ|显示密码",
+"Bestätigen":"Confirm|Confirmer|Confirmar|Confirmar|تأكيد|पुष्टि करें|确认",
+"Wähle ein sicheres Passwort für dein Konto.":"Choose a secure password for your account.|Choisis un mot de passe sûr pour ton compte.|Elige una contraseña segura para tu cuenta.|Escolhe uma palavra-passe segura para a tua conta.|اختر كلمة مرور آمنة لحسابك.|अपने खाते के लिए एक सुरक्षित पासवर्ड चुनें।|为你的账号设置一个安全的密码。",
+"Passwort speichern":"Save password|Enregistrer le mot de passe|Guardar contraseña|Guardar palavra-passe|حفظ كلمة المرور|पासवर्ड सहेजें|保存密码",
+"jetzt":"now|maintenant|ahora|agora|الآن|अभी|现在",
+"Mit E-Mail registrieren":"Sign up with email|S'inscrire avec l'e-mail|Registrarse con correo|Registar com e-mail|التسجيل بالبريد الإلكتروني|ईमेल से साइन अप करें|使用邮箱注册",
+"Mit E-Mail anmelden":"Log in with email|Se connecter avec l'e-mail|Iniciar sesión con correo|Entrar com e-mail|تسجيل الدخول بالبريد الإلكتروني|ईमेल से लॉग इन करें|使用邮箱登录",
+"Erstelle dein Konto mit E-Mail und Passwort.":"Create your account with email and password.|Crée ton compte avec ton e-mail et un mot de passe.|Crea tu cuenta con correo y contraseña.|Cria a tua conta com e-mail e palavra-passe.|أنشئ حسابك بالبريد الإلكتروني وكلمة المرور.|ईमेल और पासवर्ड से अपना खाता बनाएँ।|用邮箱和密码创建账号。",
+"Gib deine E-Mail und dein Passwort ein.":"Enter your email and password.|Saisis ton e-mail et ton mot de passe.|Introduce tu correo y tu contraseña.|Introduz o teu e-mail e a tua palavra-passe.|أدخل بريدك الإلكتروني وكلمة المرور.|अपना ईमेल और पासवर्ड दर्ज करें।|输入你的邮箱和密码。",
+"Mindestens 8 Zeichen":"At least 8 characters|Au moins 8 caractères|Al menos 8 caracteres|Pelo menos 8 caracteres|8 أحرف على الأقل|कम से कम 8 अक्षर|至少8个字符",
+"Groß- und Kleinbuchstaben":"Upper and lower case|Majuscules et minuscules|Mayúsculas y minúsculas|Maiúsculas e minúsculas|أحرف كبيرة وصغيرة|बड़े और छोटे अक्षर|大写和小写字母",
+"Eine Zahl":"A number|Un chiffre|Un número|Um número|رقم واحد|एक अंक|一个数字",
+"Ein Sonderzeichen":"A special character|Un caractère spécial|Un carácter especial|Um carácter especial|رمز خاص|एक विशेष चिह्न|一个特殊字符",
+"Wir haben dir einen 6-stelligen Code an # geschickt.":"We sent a 6-digit code to #.|Nous avons envoyé un code à 6 chiffres à #.|Hemos enviado un código de 6 dígitos a #.|Enviámos um código de 6 dígitos para #.|أرسلنا رمزًا من 6 أرقام إلى #.|हमने # पर 6 अंकों का कोड भेजा है।|我们已向 # 发送了6位验证码。",
+"Code erneut senden":"Resend code|Renvoyer le code|Reenviar código|Reenviar código|إعادة إرسال الرمز|कोड फिर से भेजें|重新发送验证码",
+"Code erneut senden in #":"Resend code in #|Renvoyer le code dans #|Reenviar código en #|Reenviar código em #|إعادة إرسال الرمز خلال #|# में कोड फिर से भेजें|# 后重新发送",
+"Neuer Code ist unterwegs.":"A new code is on its way.|Un nouveau code est en route.|Un código nuevo está en camino.|Um novo código está a caminho.|رمز جديد في الطريق.|नया कोड भेजा जा रहा है।|新的验证码正在发送。",
+"Nachrichten":"Messages|Messages|Mensajes|Mensagens|الرسائل|संदेश|信息",
+"Mail":"Mail|Mail|Correo|Mail|البريد|मेल|邮件",
+"# ist dein LOOK GOOD Code. Teile ihn mit niemandem.":"# is your LOOK GOOD code. Don't share it with anyone.|# est ton code LOOK GOOD. Ne le partage avec personne.|# es tu código de LOOK GOOD. No lo compartas con nadie.|# é o teu código LOOK GOOD. Não o partilhes com ninguém.|# هو رمز LOOK GOOD الخاص بك. لا تشاركه مع أحد.|# आपका LOOK GOOD कोड है। इसे किसी के साथ साझा न करें।|# 是你的 LOOK GOOD 验证码，请勿告诉任何人。",
+"Der Code ist falsch. Versuch es noch mal.":"That code is wrong. Try again.|Le code est incorrect. Réessaie.|El código no es correcto. Inténtalo de nuevo.|O código está errado. Tenta outra vez.|الرمز غير صحيح. حاول مرة أخرى.|कोड गलत है। फिर से कोशिश करें।|验证码错误，请重试。",
+"Wird geprüft …":"Checking …|Vérification …|Comprobando …|A verificar …|جارٍ التحقق …|जाँच हो रही है …|正在验证 …",
+"Kein Konto gefunden":"No account found|Aucun compte trouvé|No se encontró ninguna cuenta|Nenhuma conta encontrada|لم يتم العثور على حساب|कोई खाता नहीं मिला|未找到账号",
+"Mit diesen Daten gibt es noch kein Konto. Möchtest du eins erstellen?":"There's no account with these details yet. Do you want to create one?|Il n'existe pas encore de compte avec ces données. Veux-tu en créer un ?|Todavía no hay ninguna cuenta con estos datos. ¿Quieres crear una?|Ainda não existe uma conta com estes dados. Queres criar uma?|لا يوجد حساب بهذه البيانات بعد. هل تريد إنشاء حساب؟|इन विवरणों से अभी कोई खाता नहीं है। क्या आप एक बनाना चाहते हैं?|还没有使用这些信息的账号。要创建一个吗？",
+"E-Mail oder Passwort ist falsch.":"Email or password is wrong.|E-mail ou mot de passe incorrect.|El correo o la contraseña no son correctos.|E-mail ou palavra-passe incorretos.|البريد الإلكتروني أو كلمة المرور غير صحيحة.|ईमेल या पासवर्ड गलत है।|邮箱或密码错误。",
+"Gib dein Passwort ein.":"Enter your password.|Saisis ton mot de passe.|Introduce tu contraseña.|Introduz a tua palavra-passe.|أدخل كلمة المرور.|अपना पासवर्ड दर्ज करें।|请输入密码。",
+"Diese E-Mail ist schon registriert. Melde dich an.":"This email is already registered. Please log in.|Cet e-mail est déjà enregistré. Connecte-toi.|Este correo ya está registrado. Inicia sesión.|Este e-mail já está registado. Inicia sessão.|هذا البريد مسجّل بالفعل. سجّل الدخول.|यह ईमेल पहले से पंजीकृत है। कृपया लॉग इन करें।|该邮箱已注册，请登录。",
+"„Look Good“ möchte deine Apple-ID zum Anmelden verwenden.":"\"Look Good\" wants to use your Apple ID to sign in.|« Look Good » souhaite utiliser ton identifiant Apple pour se connecter.|\"Look Good\" quiere usar tu ID de Apple para iniciar sesión.|\"Look Good\" quer usar o teu ID Apple para iniciar sessão.|يريد \"Look Good\" استخدام Apple ID لتسجيل الدخول.|\"Look Good\" साइन इन के लिए आपकी Apple ID का उपयोग करना चाहता है।|\"Look Good\"想使用你的 Apple ID 登录。",
+"Google teilt deinen Namen, deine E-Mail-Adresse und dein Profilbild mit Look Good.":"Google will share your name, email address and profile picture with Look Good.|Google partagera ton nom, ton adresse e-mail et ta photo de profil avec Look Good.|Google compartirá tu nombre, tu correo y tu foto de perfil con Look Good.|A Google vai partilhar o teu nome, e-mail e foto de perfil com o Look Good.|ستشارك Google اسمك وبريدك الإلكتروني وصورة ملفك مع Look Good.|Google आपका नाम, ईमेल पता और प्रोफ़ाइल फ़ोटो Look Good के साथ साझा करेगा।|Google 会与 Look Good 共享你的姓名、邮箱地址和头像。",
+"Fortfahren":"Continue|Continuer|Continuar|Continuar|متابعة|जारी रखें|继续",
+"Du hast schon ein Konto. Willkommen zurück!":"You already have an account. Welcome back!|Tu as déjà un compte. Content de te revoir !|Ya tienes una cuenta. ¡Bienvenido de nuevo!|Já tens uma conta. Bem-vindo de volta!|لديك حساب بالفعل. مرحبًا بعودتك!|आपका खाता पहले से है। फिर से स्वागत है!|你已经有账号了，欢迎回来！",
+"Gib eine gültige Telefonnummer ein.":"Enter a valid phone number.|Saisis un numéro de téléphone valide.|Introduce un número de teléfono válido.|Introduz um número de telefone válido.|أدخل رقم هاتف صحيحًا.|एक मान्य फ़ोन नंबर दर्ज करें।|请输入有效的手机号。",
+"Passwort gespeichert":"Password saved|Mot de passe enregistré|Contraseña guardada|Palavra-passe guardada|تم حفظ كلمة المرور|पासवर्ड सहेजा गया|密码已保存",
+"Hi, ich bin #. Wie kann ich dir helfen?":"Hi, I'm #. How can I help you?|Salut, moi c'est #. Comment je peux t'aider ?|Hola, soy #. ¿Cómo te puedo ayudar?|Olá, eu sou #. Como te posso ajudar?|مرحبًا، أنا #. كيف أقدر أساعدك؟|हाय, मैं # हूँ। मैं आपकी कैसे मदद करूँ?|嗨，我是 #。我能帮你什么？",
+"Foto aufnehmen":"Take photo|Prendre une photo|Hacer foto|Tirar foto|التقاط صورة|फ़ोटो लें|拍照",
+"Ich bin gerade nicht verbunden. Öffne die App über deinen Link, dann kann ich dir antworten.":"I'm not connected right now. Open the app through your link and I can answer you.|Je ne suis pas connecté pour l'instant. Ouvre l'app via ton lien et je pourrai te répondre.|Ahora mismo no estoy conectado. Abre la app desde tu enlace y te responderé.|Agora não estou ligado. Abre a app pelo teu link e eu respondo-te.|أنا غير متصل الآن. افتح التطبيق عبر رابطك وسأرد عليك.|मैं अभी कनेक्ट नहीं हूँ। ऐप को अपने लिंक से खोलें, फिर मैं जवाब दे पाऊँगा।|我现在没有连接。请通过你的链接打开应用，我就能回复你了。"
 };
 for(var k in D)D[k]=D[k].split("|");
 
@@ -498,20 +601,111 @@ var logo=$("logo"),n=0;
 ["LOOK","GOOD"].forEach(function(w){var r=el("span","row");r.setAttribute("aria-hidden","true");
   w.split("").forEach(function(c){var s=el("span","ch"+(c==="O"?" o":""),c);s.style.setProperty("--i",n++);r.appendChild(s)});logo.appendChild(r)});
 var splash=$("splash"),login=$("login"),app=$("app"),welcome=$("welcome"),done=false;
-function finish(){if(done)return;done=true;welcome.classList.remove("hidden");splash.classList.add("out");setTimeout(function(){splash.classList.add("hidden")},550)}
+function finish(){if(done)return;done=true;if(prof.session&&prof.done)goHome();else welcome.classList.remove("hidden");splash.classList.add("out");setTimeout(function(){splash.classList.add("hidden")},550)}
 setTimeout(finish,matchMedia("(prefers-reduced-motion: reduce)").matches?900:2900);
 $("skip").onclick=finish;
 
-/* Anmeldung */
-function enter(){login.classList.add("hidden");if(mode==="login"&&prof.done)goHome();else startOnb()}
+/* Anmeldung: Apple, Google, E-Mail (mit Passwort) oder Telefonnummer (mit SMS-Code).
+   Prototyp: Konten liegen nur auf diesem Gerät, Codes werden in der App als Nachricht eingeblendet. */
 function goHome(){["welcome","login","onb"].forEach(function(i){$(i).classList.add("hidden")});app.classList.remove("hidden");showTab("home");render()}
-document.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){prof.login=b.dataset.go;prof.phone="";saveProf();enter()}});
+var CC=[["🇩🇪","+49"],["🇦🇹","+43"],["🇨🇭","+41"],["🇳🇱","+31"],["🇧🇪","+32"],["🇱🇺","+352"],["🇫🇷","+33"],["🇪🇸","+34"],["🇮🇹","+39"],["🇵🇹","+351"],["🇬🇧","+44"],["🇮🇪","+353"],["🇺🇸","+1"],["🇹🇷","+90"],["🇵🇱","+48"],["🇸🇪","+46"],["🇩🇰","+45"],["🇳🇴","+47"],["🇫🇮","+358"],["🇬🇷","+30"],["🇦🇪","+971"],["🇸🇦","+966"],["🇶🇦","+974"],["🇪🇬","+20"],["🇲🇦","+212"],["🇹🇳","+216"],["🇩🇿","+213"],["🇸🇴","+252"],["🇪🇹","+251"],["🇰🇪","+254"],["🇳🇬","+234"],["🇬🇭","+233"],["🇮🇳","+91"],["🇵🇰","+92"],["🇨🇳","+86"],["🇧🇷","+55"]];
+CC.forEach(function(c){var o=document.createElement("option");o.value=c[1];o.textContent=c[0]+" "+c[1];$("cc").appendChild(o)});
+var astep="am";
+function showA(id){astep=id;["am","ae","ac","ap"].forEach(function(x){$(x).classList.toggle("hidden",x!==id)});$("login").scrollTop=0}
+function pwh(x){return"h"+hash("lg|"+x)}
+function known(a){var x=prof.acc;return!!(x&&x.t===a.t&&x.id===a.id)}
+function auth(a,label,apply){
+  if(!known(a)){prof=Object.assign({},DEF,{lang:prof.lang,theme:prof.theme});prof.acc=a}
+  else if(a.pw)prof.acc.pw=a.pw;
+  if(apply)apply();prof.login=label;prof.session=true;saveProf();paintProf();
+  clearInterval(cTimer);login.classList.add("hidden");
+  if(prof.done){goHome();say(mode==="signup"?"Du hast schon ein Konto. Willkommen zurück!":"Willkommen zurück")}else startOnb()}
+function osheet(build){var P=$("opanel");P.textContent="";build(P);
+  var c=el("button","link","Abbrechen");c.type="button";c.onclick=closeO;P.appendChild(c);$("osheet").classList.remove("hidden")}
+function closeO(){$("osheet").classList.add("hidden")}
+$("osheet").addEventListener("click",function(e){if(e.target===this)closeO()});
+function noAcc(go){osheet(function(P){P.appendChild(el("h3","","Kein Konto gefunden"));P.appendChild(el("p","fine","Mit diesen Daten gibt es noch kein Konto. Möchtest du eins erstellen?"));
+  var b=el("button","btn primary","Konto erstellen");b.type="button";b.onclick=function(){closeO();var ast=astep;showAuth("signup");if(ast==="ae")openMail();go()};P.appendChild(b)})}
+/* Apple / Google: Systemfenster wie auf dem Handy */
+function provider(p){
+  var a={t:p.toLowerCase(),id:p.toLowerCase()};
+  if(mode==="login"&&!known(a))return noAcc(function(){provider(p)});
+  osheet(function(P){var box=el("div","sysbox"),lg=el("div","lg");
+    if(p==="Apple"){lg.innerHTML=document.querySelector(".btn.apple svg").outerHTML;lg.style.background="#000";lg.style.color="#fff";lg.firstChild.style.cssText="width:34px;height:34px;fill:#fff;stroke:none"}
+    else{lg.innerHTML='<span class="g" style="font-size:2.2rem">G</span>';lg.style.background="#fff";lg.style.border="1.5px solid var(--line)"}
+    box.appendChild(lg);box.appendChild(el("h3","",p==="Apple"?"Mit Apple anmelden":"Mit Google anmelden"));
+    box.appendChild(el("p","fine",p==="Apple"?"„Look Good“ möchte deine Apple-ID zum Anmelden verwenden.":"Google teilt deinen Namen, deine E-Mail-Adresse und dein Profilbild mit Look Good."));P.appendChild(box);
+    var b=el("button","btn primary"+(p==="Apple"?" apple":""),"Fortfahren");b.type="button";
+    b.onclick=function(){b.disabled=true;b.textContent="";b.appendChild(el("span","spin"));setTimeout(function(){closeO();auth(a,p)},900)};P.appendChild(b)})}
+document.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){provider(b.dataset.go)}});
+/* Telefonnummer + SMS-Code */
 function submitPhone(){
-  var d=$("tel").value.replace(/\D/g,"");
-  if(d.length<6){$("err").textContent=tr("Gib deine Telefonnummer ein.");return false}
-  $("err").textContent="";prof.login="Telefonnummer";prof.phone=d;saveProf();enter();return true}
+  var d=$("tel").value.replace(/\D/g,"").replace(/^0+/,""),cc=$("cc").value;
+  if(d.length<6||d.length>14){$("err").textContent=tr("Gib eine gültige Telefonnummer ein.");return false}
+  $("err").textContent="";var a={t:"phone",id:cc+d};
+  if(mode==="login"&&!known(a)){noAcc(submitPhone);return false}
+  sendCode({sms:true,to:cc+" "+d,ok:function(){auth(a,"Telefonnummer",function(){prof.phone=d;prof.cc=cc})}});return true}
 $("pgo").onclick=submitPhone;
 $("tel").addEventListener("keydown",function(e){if(e.key==="Enter")submitPhone()});
+/* E-Mail + Passwort */
+var RU=[["Mindestens 8 Zeichen",function(p){return p.length>=8}],["Groß- und Kleinbuchstaben",function(p){return/[a-z]/.test(p)&&/[A-Z]/.test(p)}],["Eine Zahl",function(p){return/\d/.test(p)}],["Ein Sonderzeichen",function(p){return/[^\w\s]/.test(p)}]];
+function rules(inp,ul){var v=$(inp).value,U=$(ul);U.textContent="";RU.forEach(function(r){var li=el("li",r[1](v)?"ok":"",r[0]);U.appendChild(li)})}
+$("pw").addEventListener("input",function(){rules("pw","rules")});$("npw").addEventListener("input",function(){rules("npw","nrules")});
+$("pweye").onclick=function(){var i=$("pw");i.type=i.type==="password"?"text":"password"};
+$("tMail").onclick=openMail;
+function openMail(){var s=mode==="signup";
+  $("eTitle").textContent=ts(s,"Mit E-Mail registrieren","Mit E-Mail anmelden");
+  $("eSub").textContent=ts(s,"Erstelle dein Konto mit E-Mail und Passwort.","Gib deine E-Mail und dein Passwort ein.");
+  $("pw").autocomplete=s?"new-password":"current-password";$("rules").classList.toggle("hidden",!s);$("eForgot").classList.toggle("hidden",s);
+  $("ego").textContent=tr(s?"Weiter":"Anmelden");rules("pw","rules");$("eerr").textContent="";showA("ae");setTimeout(function(){$("email").focus()},50)}
+function mailIn(){return $("email").value.trim().toLowerCase()}
+function submitMail(){
+  var m=mailIn(),pw=$("pw").value,E=$("eerr"),a={t:"email",id:m,pw:pwh(pw)};
+  if(!mailOk(m)){E.textContent=tr("Gib eine gültige E-Mail-Adresse ein.");return}
+  if(mode==="signup"){
+    if(known(a)){E.textContent=tr("Diese E-Mail ist schon registriert. Melde dich an.");return}
+    if(!pwStrong(pw)){E.textContent=tr(PWMSG);return}
+    E.textContent="";sendCode({sms:false,to:m,ok:function(){auth(a,"E-Mail",function(){prof.email=m})}});return}
+  if(!pw){E.textContent=tr("Gib dein Passwort ein.");return}
+  if(!known(a)){E.textContent="";noAcc(submitMail);return}
+  if(prof.acc.pw!==a.pw){E.textContent=tr("E-Mail oder Passwort ist falsch.");return}
+  E.textContent="";auth(a,"E-Mail")}
+$("ego").onclick=submitMail;
+["email","pw"].forEach(function(i){$(i).addEventListener("keydown",function(e){if(e.key==="Enter")submitMail()})});
+$("eForgot").onclick=function(){var m=mailIn(),a={t:"email",id:m};
+  if(!mailOk(m)){$("eerr").textContent=tr("Gib eine gültige E-Mail-Adresse ein.");return}
+  if(!known(a)){noAcc(openMail);return}
+  sendCode({sms:false,to:m,ok:function(){$("npw").value="";rules("npw","nrules");$("perr").textContent="";showA("ap")}})};
+function setPw(){var v=$("npw").value;if(!pwStrong(v)){$("perr").textContent=tr(PWMSG);return}
+  var m=mailIn();auth({t:"email",id:m,pw:pwh(v)},"E-Mail",function(){prof.email=m});say("Passwort gespeichert")}
+$("pset").onclick=setPw;$("npw").addEventListener("keydown",function(e){if(e.key==="Enter")setPw()});
+/* 6-stelliger Code */
+var code="",cTimer,cLeft=0,cCtx=null,smsT;
+function boxes(){return Array.prototype.slice.call($("otp").children)}
+function buildOtp(){var O=$("otp");O.textContent="";
+  for(var i=0;i<6;i++){var x=document.createElement("input");x.inputMode="numeric";x.maxLength=6;x.setAttribute("aria-label",tr("Code eingeben")+" "+(i+1));if(!i)x.autocomplete="one-time-code";O.appendChild(x)}
+  boxes().forEach(function(x,i){
+    x.addEventListener("input",function(){var d=x.value.replace(/\D/g,"");
+      if(d.length>1){fillCode(d);return}x.value=d;if(d&&i<5)boxes()[i+1].focus();if(boxes().every(function(b){return b.value}))verify()});
+    x.addEventListener("keydown",function(e){if(e.key==="Backspace"&&!x.value&&i>0)boxes()[i-1].focus();if(e.key==="Enter")verify()})})}
+function fillCode(d){var B=boxes();d=d.replace(/\D/g,"").slice(0,6);B.forEach(function(b,i){b.value=d[i]||""});B[Math.min(d.length,5)].focus();if(d.length===6)verify()}
+function sendCode(ctx){cCtx=ctx;code=String(Math.floor(100000+Math.random()*900000));
+  $("cSub").textContent=tr("Wir haben dir einen 6-stelligen Code an # geschickt.").replace("#","\u2066"+ctx.to+"\u2069");
+  buildOtp();$("cerr").textContent="";$("cgo").disabled=false;$("cgo").textContent=tr("Bestätigen");showA("ac");setTimeout(function(){boxes()[0].focus()},50);
+  setTimeout(function(){notify(ctx.sms?"Nachrichten":"Mail",tr("# ist dein LOOK GOOD Code. Teile ihn mit niemandem.").replace("#",code))},1400);
+  cLeft=30;paintRe();clearInterval(cTimer);cTimer=setInterval(function(){cLeft--;paintRe();if(cLeft<=0)clearInterval(cTimer)},1000)}
+function paintRe(){var b=$("cRe");b.disabled=cLeft>0;b.style.opacity=cLeft>0?.55:1;
+  b.textContent=cLeft>0?tr("Code erneut senden in #").replace("#","0:"+String(cLeft).padStart(2,"0")):tr("Code erneut senden")}
+$("cRe").onclick=function(){if(cLeft>0||!cCtx)return;sendCode(cCtx);say("Neuer Code ist unterwegs.")};
+function verify(){var v=boxes().map(function(b){return b.value}).join(""),g=$("cgo");
+  if(v.length<6){$("cerr").textContent=tr("Der Code hat 6 Ziffern.");return}
+  if(v!==code){$("cerr").textContent=tr("Der Code ist falsch. Versuch es noch mal.");var O=$("otp");O.classList.remove("bad");void O.offsetWidth;O.classList.add("bad");boxes().forEach(function(b){b.value=""});boxes()[0].focus();return}
+  $("cerr").textContent="";g.disabled=true;g.textContent="";g.appendChild(el("span","spin"));g.appendChild(document.createTextNode(tr("Wird geprüft …")));
+  hideSms();setTimeout(function(){cCtx.ok()},700)}
+$("cgo").onclick=verify;
+function notify(app,txt){$("smsApp").textContent=tr(app);$("smsTxt").textContent=txt;$("sms").classList.add("show");clearTimeout(smsT);smsT=setTimeout(hideSms,7000)}
+function hideSms(){$("sms").classList.remove("show")}
+$("sms").onclick=function(){if(astep==="ac"&&code)fillCode(code);hideSms()};
 
 /* Sheet */
 var sheet=$("sheet"),panel=$("panel");
@@ -523,6 +717,7 @@ function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)|
 var DEF={name:"",last:"",user:"",photo:"",email:"",ai:"Mo",loc:true,theme:"",login:"",phone:"",birth:"",gender:"",vis:"Alle",nW:true,nF:true,lang:"Deutsch",done:false};
 var prof=Object.assign({},DEF,ls("lg_prof")||{});
 function saveProf(){ls("lg_prof",prof)}
+if(prof.done&&!prof.acc&&prof.login){prof.acc=prof.login==="Telefonnummer"?{t:"phone",id:"+49"+prof.phone}:{t:String(prof.login).toLowerCase(),id:String(prof.login).toLowerCase()};if(prof.phone&&!prof.cc)prof.cc="+49";saveProf()}
 if(prof.theme)document.documentElement.setAttribute("data-theme",prof.theme);
 function info(title,text){panel.textContent="";panel.appendChild(el("h3","",title));if(text)panel.appendChild(el("p","fine",text));var c=el("button","link","Schließen");c.type="button";c.onclick=closeSheet;panel.appendChild(c);sheet.classList.remove("hidden")}
 function menu(title,text,items){
@@ -566,7 +761,7 @@ function editProfile(){
     prof.name=v.name;prof.last=v.last;prof.user=v.user.replace(/^@/,"").replace(/[^\w.]/g,"");prof.birth=v.birth;prof.gender=v.gender;
     saveProf();paintProf();say("Profil gespeichert");return""})}
 function loginSheet(){
-  menu("Login-Daten",(prof.login?tr("Angemeldet mit")+" "+tr(prof.login)+(prof.phone?" (+49 "+prof.phone+"). ":". "):"")+(prof.email?tr("E-Mail:")+" "+prof.email+".":tr("Noch keine E-Mail hinterlegt.")),[
+  menu("Login-Daten",(prof.login?tr("Angemeldet mit")+" "+tr(prof.login)+(prof.phone?" ("+(prof.cc||"+49")+" "+prof.phone+"). ":". "):"")+(prof.email?tr("E-Mail:")+" "+prof.email+".":tr("Noch keine E-Mail hinterlegt.")),[
     {t:prof.email?"E-Mail ändern":"E-Mail hinzufügen",fn:emailSheet},{t:"Passwort ändern",fn:pwSheet},{t:"Passwort vergessen?",fn:forgotSheet}])}
 function emailSheet(){form("E-Mail",[{id:"e",label:"E-Mail-Adresse",type:"email",val:prof.email,ph:"du@beispiel.de",ac:"email"}],"Speichern",function(v){
   if(!mailOk(v.e))return"Gib eine gültige E-Mail-Adresse ein.";prof.email=v.e;saveProf();paintProf();say("E-Mail gespeichert");return""})}
@@ -615,7 +810,7 @@ function paintProf(){
   [$("avatar"),$("big")].forEach(function(x){x.style.backgroundImage=prof.photo?"url("+prof.photo+")":""});
   $("avatar").textContent=prof.photo?"":ini;$("bigtxt").textContent=prof.photo?"":ini;
   $("pname").textContent=prof.name||tr("Dein Name");$("puser").textContent=prof.user?"@"+prof.user:"@"+tr("benutzername");
-  $("pinfo").textContent=prof.phone?"+49 "+prof.phone:(prof.email||(prof.login?tr("Angemeldet mit")+" "+tr(prof.login):""));
+  $("pinfo").textContent=prof.phone?(prof.cc||"+49")+" "+prof.phone:(prof.email||(prof.login?tr("Angemeldet mit")+" "+tr(prof.login):""));
   chatHead();renderSets()}
 $("avatar").onclick=function(){paintProf();$("profile").classList.remove("hidden");$("profile").scrollTop=0};
 $("pback").onclick=function(){$("profile").classList.add("hidden")};
@@ -623,7 +818,7 @@ $("pen").onclick=function(){$("pfile").click()};
 $("pfile").onchange=function(e){var f=e.target.files[0];e.target.value="";if(!f)return;
   var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,300/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);prof.photo=c.toDataURL("image/jpeg",.85);saveProf();paintProf()};im.src=r.result};r.readAsDataURL(f)};
 $("pedit").onclick=editProfile;
-$("pout").onclick=function(){$("profile").classList.add("hidden");app.classList.add("hidden");welcome.classList.remove("hidden");$("tel").value=""};
+$("pout").onclick=function(){prof.session=false;saveProf();$("profile").classList.add("hidden");app.classList.add("hidden");welcome.classList.remove("hidden");$("tel").value=""};
 $("pdel").onclick=function(){menu("Konto löschen?","Dein Profil und deine Einstellungen werden von diesem Gerät gelöscht. Das kann nicht rückgängig gemacht werden.",[{t:"Endgültig löschen",fn:function(){try{localStorage.removeItem("lg_prof");localStorage.removeItem("lg_cities")}catch(e){}location.reload()}}])};
 paintProf();
 
@@ -649,11 +844,11 @@ function showAuth(m){mode=m;var s=m==="signup";
   $("hSub").textContent=ts(s,"Wähle, wie du dich registrieren möchtest.","Melde dich mit deinem Konto an.");
   $("tApple").textContent=ts(s,"Mit Apple registrieren","Mit Apple anmelden");
   $("tGoogle").textContent=ts(s,"Mit Google registrieren","Mit Google anmelden");
-  $("swText").textContent=ts(s,"Schon ein Konto?","Noch kein Konto?");$("swMode").textContent=ts(s,"Anmelden","Registrieren");$("err").textContent=""}
+  $("swText").textContent=ts(s,"Schon ein Konto?","Noch kein Konto?");$("swMode").textContent=ts(s,"Anmelden","Registrieren");$("err").textContent="";$("pgo").textContent=tr("Code per SMS senden");$("cc").value=prof.cc||$("cc").value;showA("am")}
 $("wSign").onclick=function(){showAuth("signup")};
 $("wLogin").onclick=function(){showAuth("login")};
 $("swMode").onclick=function(){showAuth(mode==="signup"?"login":"signup")};
-$("aback").onclick=function(){login.classList.add("hidden");welcome.classList.remove("hidden")};
+$("aback").onclick=function(){if(astep==="am"){login.classList.add("hidden");welcome.classList.remove("hidden")}else{clearInterval(cTimer);hideSms();showA(astep==="ac"&&cCtx&&!cCtx.sms?"ae":"am")}};
 var onb=$("onb");
 function startOnb(){onb.classList.remove("hidden");showStep(0)}
 function showStep(i){step=i;
@@ -670,7 +865,7 @@ function valid(i){
   if(!ob.gender)return oerr("Bitte wähle eine Option.");prof.birth=b;prof.gender=ob.gender;return true}
 function nextStep(){if(!valid(step))return;saveProf();if(step<1)showStep(1);else{prof.done=true;saveProf();paintProf();goHome()}}
 $("onext").onclick=nextStep;
-$("oback").onclick=function(){if(step>0)showStep(step-1);else{onb.classList.add("hidden");login.classList.remove("hidden")}};
+$("oback").onclick=function(){if(step>0)showStep(step-1);else{onb.classList.add("hidden");showAuth(mode)}};
 onb.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT")nextStep()});
 
 /* Kurze Hinweise unter dem Wetter */
@@ -740,7 +935,7 @@ function paint(c,d,err){
     $("wnote").textContent=err?tr("Diese Vorschau darf keine Wetterdaten abrufen. Öffne die Datei-Version im Browser, dann lädt das echte Wetter."):"";
     tipsRender("Schön, dass du da bist 😉",care());return}
   var w=wmo(cur.weather_code,day);
-  $("cTemp").textContent=Math.round(cur.temperature_2m)+"°";LW=c.n+": "+Math.round(cur.temperature_2m)+"°C, "+w.t;$("cCond").textContent=tr(w.t);
+  $("cTemp").textContent=Math.round(cur.temperature_2m)+"°";LW=c.n+": now "+Math.round(cur.temperature_2m)+"°C (feels like "+Math.round(cur.apparent_temperature)+"°C), "+w.t+", wind "+Math.round(cur.wind_speed_10m)+" km/h; today "+Math.round(d.daily.temperature_2m_min[0])+" to "+Math.round(d.daily.temperature_2m_max[0])+"°C, rain chance "+(d.daily.precipitation_probability_max[0]||0)+"%; tomorrow "+Math.round(d.daily.temperature_2m_min[1])+" to "+Math.round(d.daily.temperature_2m_max[1])+"°C, "+wmo(d.daily.weather_code[1],true).t;$("cCond").textContent=tr(w.t);
   [["wind",tr("Wind")+" "+Math.round(cur.wind_speed_10m)+" km/h"],["drop",tr("Feuchte")+" "+Math.round(cur.relative_humidity_2m)+" %"],["temp",tr("Gefühlt")+" "+Math.round(cur.apparent_temperature)+"°"]].forEach(function(x){var s=el("span","pill");s.innerHTML=ico(x[0]);s.appendChild(document.createTextNode(x[1]));P.appendChild(s)});
   var i0=d.hourly.time.indexOf(cur.time.slice(0,13)+":00");if(i0<0)i0=0;var pr=0;
   for(var j=0;j<5;j++){var t=d.hourly.time[i0+j];if(!t)break;
@@ -813,7 +1008,7 @@ function citySheet(){
   sheet.classList.remove("hidden");setTimeout(function(){inp.focus()},50)}
 $("pick").onclick=citySheet;
 /* ===== Sprachen anwenden ===== */
-var SKIP={hTitle:1,hSub:1,tApple:1,tGoogle:1,swText:1,swMode:1,avatar:1,bigtxt:1,pname:1,puser:1,pinfo:1,onext:1,toast:1,cName:1,cTemp:1,cCond:1,cReg:1,wnote:1};
+var SKIP={eTitle:1,eSub:1,cSub:1,cRe:1,cgo:1,ego:1,pgo:1,smsApp:1,smsTxt:1,hTitle:1,hSub:1,tApple:1,tGoogle:1,swText:1,swMode:1,avatar:1,bigtxt:1,pname:1,puser:1,pinfo:1,onext:1,toast:1,cName:1,cTemp:1,cCond:1,cReg:1,wnote:1};
 var ST=[];
 (function(){
   var skipSel="#logo,.logo,.brand,#sets,#tips,#hours,#days,#cities,#cPills,#panel,#v-wardrobe,#v-friends";
@@ -832,34 +1027,33 @@ function applyLang(){
 /* ===== KI-Chat =====
    AI_URL: Adresse deines eigenen Servers (POST, Anthropic-Messages-Format).
    Den API-Schlüssel nie in diese Datei schreiben, er gehört auf den Server. */
-var AI_URL="",AI_MODEL="claude-sonnet-4-6";
-var GREET="Hi, ich bin dein Stylish KI. Wie kann ich dir helfen heute?";
+var AI_URL=/^https?:$/.test(location.protocol)?"/api/chat":"";
+var GREET="Hi, ich bin #. Wie kann ich dir helfen?";
 var AV={Mo:"👦",Sarah:"👧",Panda:"🐼",Fuchs:"🦊",Hase:"🐰"};
-var LOC=["de-DE","en-US","fr-FR","es-ES","pt-BR","ar-SA","hi-IN","zh-CN"];
-var msgs=$("msgs"),cin=$("cin"),H=[],pend=null,busy=false,vm=false,rec=null,SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+var msgs=$("msgs"),cin=$("cin"),H=[],pend=null,busy=false;
 function skin(){return prof.skin||prof.ai||"Mo"}
-function chatHead(){if(!AV)return;$("cav").textContent=AV[skin()];$("cnm").textContent=tr(skin())}
+function aiName(){return prof.ai==="Sarah"?"Sarah":"Mo"}
+function chatHead(){if(!AV)return;$("cav").textContent=AV[skin()];$("cnm").textContent=aiName();if(!H.length){msgs.textContent="";bub("ai",tr(GREET).replace("#",aiName()))}}
 function bub(cls,txt,im){var b=el("div","m "+cls);
   if(im){var i=document.createElement("img");i.src=im;i.alt="";b.appendChild(i)}
   if(txt)b.appendChild(document.createTextNode(txt));msgs.appendChild(b);msgs.scrollTop=msgs.scrollHeight;return b}
-function chatRefresh(){chatHead();if(!H.length){msgs.textContent="";bub("ai",tr(GREET))}}
+function chatRefresh(){chatHead()}
 function setOn(id,b){$(id).classList.toggle("on",b);$(id).setAttribute("aria-pressed",String(b))}
-function chatTab(k){if(k==="chat")msgs.scrollTop=msgs.scrollHeight;else if(vm)stopVM()}
+function chatTab(k){if(k==="chat")msgs.scrollTop=msgs.scrollHeight}
 function sys(){
-  var c=cities[sel],g=prof.ai==="Sarah"?"a young woman":"a young man";
-  return "You are Stylish KI, the AI stylist inside the fashion app Look Good. Your persona is "+prof.ai+" ("+g+"), shown as "+skin()+". "
-  +"You are one of the smartest assistants available: accurate, practical, creative, expert in fashion, outfits, colours, fit, occasions, weather, care and shopping, and able to help with any other topic too. "
-  +"LENGTH: answer very briefly, usually 2-3 short sentences, no long lists, no markdown. Write more only when the topic truly needs depth. "
-  +"If a request is vague (for example 'I want to wear something but don't know what'), ask ONE concrete follow-up question (occasion, weather, style, daily routine) instead of guessing. "
-  +"LANGUAGE: reply in the language the user writes in (app language: "+LN[li()]+"). First observe how the person writes (formal or casual, slang, emojis, length). "
-  +"Do not copy slang from the very first message; after a few messages adapt naturally, e.g. if they write 'wallah' or 'hey bro', answer in the same casual youth tone. Never mock, never overdo it. "
-  +"Get to know the person: remember what they tell you (taste, sizes, budget, job, routine) and use it. If they send a photo, describe and judge the outfit or item concretely. "
-  +"Your replies may be read aloud, so avoid emoji spam and special symbols. "
-  +"User: "+(prof.name||"unknown")+(prof.birth?", age "+age(prof.birth):"")+(prof.gender&&prof.gender!=="Keine Angabe"?", gender "+prof.gender:"")+". "
-  +(prof.loc&&c&&LW?"Current weather (user allowed location use): "+LW+".":"Do not use the user's location.")}
+  var c=cities[sel],me=aiName(),g=me==="Sarah"?"a young woman":"a young man",d=new Date();
+  return "Your name is "+me+". You are "+g+" and the personal stylist inside the fashion app LOOK GOOD. "
+  +"IDENTITY: your name is only "+me+". Never call yourself ChatGPT, Claude, Gemini, an assistant or a language model, and never name any AI company or model. If someone asks who made you or what model you are, say you are "+me+", the stylist in LOOK GOOD. If someone sincerely asks whether you are a real human, be honest that you are the app's AI stylist, briefly and casually. "
+  +"STYLE: text like a good friend on WhatsApp, not like an AI. Usually 1-2 short sentences, at most 3. Sometimes one short line is enough. No lists, no headings, no markdown, no long explanations, no 'Great question', no 'Here are some tips'. At most one emoji, only if the person uses emojis. "
+  +"MIRROR THE PERSON right from their first message: same language, same tone, same slang, same length. If they say 'bro', 'digga', 'wallah', 'girl', 'girly', 'babe', answer in that vibe (e.g. 'Bro, ...'). If they write formally or are older, answer politely and calmly. If they write in lowercase without punctuation, you can too. Never mock, never overdo it, never sound fake. "
+  +"OUTFIT HELP: before you suggest an outfit, first ask ONE short question about their day (where they go, what they do, which vibe), unless they already told you. Then give a concrete outfit in 1-2 sentences that fits their day AND the weather below. Be specific (colours, pieces, shoes), not generic. "
+  +"You know fashion, colours, fits, occasions, care and shopping very well, and you can chat about anything else too, always short. Remember what the person tells you in this chat (style, sizes, budget, routine) and use it. If they send a photo, react like a friend: say concretely what works and what you would change, in 1-2 sentences. "
+  +"Person: "+(prof.name||"unknown")+(prof.birth?", "+age(prof.birth)+" years old":"")+(prof.gender&&prof.gender!=="Keine Angabe"?", "+({"Männlich":"male","Weiblich":"female","Andere":"other"}[prof.gender]||prof.gender):"")+". App language: "+LN[li()]+". "
+  +"Local time: "+d.toLocaleString("de-DE",{weekday:"long",hour:"2-digit",minute:"2-digit"})+". "
+  +(prof.loc&&c&&LW?"Weather where they are (use it for every outfit idea, do not recite it unless useful): "+LW+".":"You do not know their location or weather; if it matters for an outfit, ask what the weather is like.")}
 function ask(){
   if(!AI_URL)return Promise.reject(new Error("nourl"));
-  return fetch(AI_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:AI_MODEL,max_tokens:600,system:sys(),messages:H.slice(-20)})})
+  return fetch(AI_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({max_tokens:400,system:sys(),messages:H.slice(-30)})})
     .then(function(r){if(!r.ok)throw new Error("http");return r.json()})
     .then(function(d){var t=(d.content||[]).map(function(p){return p.text||""}).join("").trim()||d.text||"";if(!t)throw new Error("empty");return t})}
 function send(txt){
@@ -869,53 +1063,22 @@ function send(txt){
   var parts=[];if(im)parts.push({type:"image",source:{type:"base64",media_type:"image/jpeg",data:im.split(",")[1]}});
   parts.push({type:"text",text:txt||"(photo)"});H.push({role:"user",content:parts});
   busy=true;var tb=bub("ai typing","…");
-  ask().then(function(a){tb.remove();busy=false;H.push({role:"assistant",content:[{type:"text",text:a}]});bub("ai",a);if(vm)speak(a,loop)})
-  .catch(function(e){tb.remove();busy=false;H.pop();bub("ai",tr(AI_URL?"Die KI ist gerade nicht erreichbar. Versuch es gleich noch mal.":"Die KI ist noch nicht mit einem Server verbunden. Trage in der Datei bei AI_URL deinen Server ein."));if(vm)stopVM()})}
+  ask().then(function(a){tb.remove();busy=false;H.push({role:"assistant",content:[{type:"text",text:a}]});bub("ai",a)})
+  .catch(function(e){tb.remove();busy=false;H.pop();bub("ai",tr(AI_URL?"Die KI ist gerade nicht erreichbar. Versuch es gleich noch mal.":"Ich bin gerade nicht verbunden. Öffne die App über deinen Link, dann kann ich dir antworten."))})}
 /* Foto */
 function clrImg(){pend=null;$("cpre").classList.add("hidden")}
 $("cph").onclick=function(){$("cfile").click()};
 $("cx").onclick=clrImg;
-$("cfile").onchange=function(e){var f=e.target.files[0];e.target.value="";if(!f)return;
+$("ccam").onclick=function(){$("ccamf").click()};
+$("cfile").onchange=$("ccamf").onchange=function(e){var f=e.target.files[0];e.target.value="";if(!f)return;
   var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,1024/Math.max(im.width,im.height)),c=document.createElement("canvas");
     c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);pend=c.toDataURL("image/jpeg",.8);$("cimg").src=pend;$("cpre").classList.remove("hidden")};im.src=r.result};r.readAsDataURL(f)};
-/* Stimme: Diktieren und Gespräch */
-function stopRec(){if(rec){var r=rec;rec=null;try{r.onend=null;r.abort()}catch(e){}}setOn("cmic",false)}
-function listen(cb,interim){
-  if(!SR){say("Spracheingabe wird hier nicht unterstützt.");return false}
-  stopRec();var r=new SR(),fin="";rec=r;r.lang=LOC[li()];r.interimResults=!!interim;r.continuous=false;
-  r.onresult=function(e){var s="";for(var i=0;i<e.results.length;i++)s+=e.results[i][0].transcript;fin=s;if(interim)cin.value=s};
-  r.onerror=function(e){if(/not-allowed|service-not-allowed/.test(e.error)){vm=false;setOn("cvc",false)}};
-  r.onend=function(){if(rec===r)rec=null;setOn("cmic",false);cb(fin.trim())};
-  try{r.start()}catch(e){return false}return true}
-function voiceFor(){
-  var code=LC[li()],f=prof.ai==="Sarah",vs=(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(function(v){return v.lang.toLowerCase().indexOf(code)===0}),
-  fe=/female|woman|femme|mujer|mulher|anna|sarah|helena|marie|julia|samantha|victoria|karen|paulina|monica|amelie|sandra|zira|hedda|katja|lekha|tessa|joana|luciana|xiaoxiao|mei|ting|google .*(female)/i,
-  ma=/\bmale\b|hans|daniel|thomas|jorge|diego|felipe|david|mark|stefan|conrad|killian|henri|rishi|kangkang|hemant|yunxi|maged|google .*(male)/i;
-  var m=vs.filter(function(v){return f?fe.test(v.name):(ma.test(v.name)&&!fe.test(v.name))})[0];return{v:m||vs[0]||null,hit:!!m}}
-function speak(t,done){
-  if(!window.speechSynthesis){if(done)done();return}
-  speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t.replace(/[\u{1F000}-\u{1FFFF}\u2600-\u27BF\uFE0F]/gu,"")),p=voiceFor();
-  u.lang=LOC[li()];if(p.v)u.voice=p.v;if(!p.hit)u.pitch=prof.ai==="Sarah"?1.3:.75;
-  u.onend=u.onerror=function(){if(done)done()};speechSynthesis.speak(u)}
-function loop(){if(!vm)return;setOn("cvc",true);
-  if(!listen(function(t){if(!vm)return;if(t)send(t);else loop()}))stopVM()}
-function stopVM(){vm=false;setOn("cvc",false);stopRec();if(window.speechSynthesis)speechSynthesis.cancel()}
-$("cvc").onclick=function(){
-  if(vm){stopVM();return}
-  if(!SR){say("Spracheingabe wird hier nicht unterstützt.");return}
-  vm=true;setOn("cvc",true);say("Ich höre zu …");
-  if(!H.length)speak(tr(GREET),loop);else loop()};
-$("cmic").onclick=function(){
-  if(rec){stopRec();return}
-  if(vm)stopVM();
-  if(listen(function(){cin.focus()},true))setOn("cmic",true)};
 $("csend").onclick=function(){send()};
 cin.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();send()}});
 /* Profilbild der KI: Mo, Sarah, Panda, Fuchs, Hase */
 $("cav").onclick=function(){
   menu("Figur wählen","",["Mo","Sarah","Panda","Fuchs","Hase"].map(function(n){
     return{t:AV[n]+" "+tr(n)+(skin()===n?" ✓":""),fn:function(){prof.skin=n;if(n==="Mo"||n==="Sarah")prof.ai=n;saveProf();chatHead();paintProf()}}}))};
-if(window.speechSynthesis)speechSynthesis.getVoices();
 
 applyLang();
 })();
