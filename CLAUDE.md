@@ -31,8 +31,18 @@ Keep `server/index.html` an exact copy of `look-good-app.html` (`cp look-good-ap
 8. **AI chat page** (tab "AI"): greeting "Hi, ich bin Mo/Sarah. Wie kann ich dir helfen?" (translated), message bubbles, **typing + photo from gallery + take photo (camera) only. No microphone, no voice conversation (removed on purpose by the owner).** The avatar at the top can be tapped to switch the picture (Mo, Sarah, Panda, Fuchs, Hase); the AI's **name is always Mo or Sarah** (`prof.ai`).
 9. **AI personality** (system prompt in `sys()`): name is only Mo or Sarah, never ChatGPT/Claude/Gemini or any model/company (honest that it is the app's AI stylist if sincerely asked). Texts like a friend on WhatsApp: **1–2 short sentences, max 3**, no lists/markdown. **Mirrors the person from the first message** (language, slang like "bro", "digga", "wallah", "girly", tone, age; polite with formal/older users). For outfits: first asks ONE short question about the person's day, then a concrete outfit that fits the day and the **weather** (`LW` = now, feels-like, wind, today min/max + rain chance, tomorrow; only if location is allowed). Knows name, age, gender, local time.
 
-## 4. What is deliberately NOT built (placeholder only)
-- **Wardrobe tab ("Garderobe")**: currently only an empty placeholder screen ("Your clothes will land here soon."). An earlier attempt was thrown away on purpose. **Do not build any wardrobe, avatar, try-on or dressing-room feature until the owner describes it again.** When he does, ask him questions first and show him a visual reference before building.
+## 4. Wardrobe (built Nov 2026, owner chose "Weg A": 3D avatar in the app)
+- Layout like the owner's reference image: 6 category buttons left (Tops, Hosen, Schuhe, Jacken, Accessoires, Socken), 3D stage in the middle (drag to rotate 360°, arrow buttons turn 45°), 6 right (Schmuck, Uhren, Brillen, Taschen, Unterwäsche, Mehr). Below: "Dein Outfit (n)" thumbnails with ×, "Alles löschen", "Look speichern".
+- Category tap opens a bottom sheet: sub-type chips, 3-column grid of the user's items (tap = put on/take off), "Bearbeiten" (delete), "+ hinzufügen". Empty category shows only the add prompt (no fake items).
+- Adding an item: photo (camera or gallery) → background removed by flood-fill from the border (works best on plain light background) → main colour detected → form (type, colour, optional name) → saved and put on. If the server/AI is connected, Claude vision pre-fills type, name and colour.
+- Avatar: intro card "Erstelle deine Figur" → "Mit Selfie" (AI reads skin/hair/eyes/beard/build from the selfie if the server is connected, otherwise local colour sampling; photo is not stored) or "Selbst gestalten". Editor tabs Körper (body shape m/f, height, build, shoulders, legs, skin tone), Gesicht (eye colour/size/shape, nose, lips, face shape, brows), Haare (11 styles, colour, beard).
+- 3D: three.js r149 subset inlined at the end of the HTML (MIT, ~450 KB, works offline). Body and garments are signed-distance fields meshed with surface nets (one smooth surface, no visible joints); garments are offset shells of selected body parts with clip planes (hems, sleeve length). Head/face/hair are parametric meshes. Cloth sways with rotation inertia and with wind.
+- Background: street (procedural buildings, lamps) matched to the Home weather (`WX`: sun/cloud/rain/snow/fog/storm, night with lit windows, snow/rain particles, wet ground) or a dark studio when no city is chosen or the user picks "Hintergrund: Studio" (`prof.wbg`).
+- Storage: items with photos in IndexedDB `lookgood/items`; `lg_avatar`, `lg_outfit`, `lg_looks` in localStorage. "Konto löschen" clears all of it.
+- The AI chat gets the wardrobe list and the current outfit in its system prompt (`wdForAI()`), so Mo/Sarah can suggest outfits from the user's own clothes.
+- Source of the wardrobe code lives inside look-good-app.html (search "Garderobe: 3D-Figur" and "Garderobe: Bedienung").
+
+## 4b. Still deliberately NOT built
 - **Friends tab**: empty placeholder too.
 - Real accounts / database / real login / real email or SMS codes.
 - The "Chat history" list in the profile (empty by design for now).
@@ -56,7 +66,6 @@ Keep `server/index.html` an exact copy of `look-good-app.html` (`cp look-good-ap
 
 ## 8. Suggested next steps (ask the owner which one first)
 1. Verify the deployed AI chat with a real key; tune the personality prompt from his real conversations.
-2. Re-describe and then design the **Wardrobe** (he will explain; see section 4).
 3. Real accounts (database + login), then store chat history.
 4. Friends tab.
 5. Package as an installable app (PWA or Capacitor) once the features are stable.

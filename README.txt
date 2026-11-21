@@ -14,8 +14,9 @@ SO GEHST DU VOR
 KI ONLINE STELLEN (damit der Chat antwortet)
 1. API-Schlüssel erstellen: console.anthropic.com -> API Keys. Etwas Guthaben aufladen.
    Den Schlüssel nie in die HTML-Datei schreiben und nie weitergeben.
-2. Die 3 Dateien aus server/ in ein neues GitHub-Repository hochladen.
-3. Auf render.com: New -> Web Service -> Repository wählen.
+2. Der Code liegt schon auf GitHub (Repository LookGood-).
+3. Auf render.com: New -> Web Service -> Repository LookGood- wählen.
+   Root Directory: server
    Start command: npm start
    Environment: ANTHROPIC_API_KEY = dein Schlüssel
    (optional) AI_MODEL = claude-sonnet-5-5   (günstiger und schneller)
@@ -23,5 +24,6 @@ KI ONLINE STELLEN (damit der Chat antwortet)
    Öffne die App über diesen Link auf dem Handy. Test: https://DEIN-LINK/api/health
 
 HINWEIS
-- Die Garderobe ist absichtlich nur ein leerer Platzhalter.
+- Garderobe: 3D-Figur, eigene Kleidung per Foto, Wetter-Straße. Fotos bleiben nur auf dem Gerät.
+- Nach jeder Änderung muss server/index.html eine genaue Kopie von look-good-app.html sein.
 - Auf dem kostenlosen Render-Tarif schläft der Server, die erste Nachricht kann ca. 30 Sekunden dauern.
