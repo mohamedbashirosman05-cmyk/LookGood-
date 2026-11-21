@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Look Good</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap">
+<style>
+:root{--bg:#F4F1FA;--ink:#241A38;--muted:#6E6585;--card:#FFFFFF;--line:#DDD6EC;--accent:#E0275F;--accent-ink:#FFFFFF;--focus:#5B3FD1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E0B14;--ink:#F3EEFA;--muted:#A99EC0;--card:#1B1625;--line:#2E2640;--accent:#FF6E96;--accent-ink:#2A0A16;--focus:#B7A2FF}}
+:root[data-theme="dark"]{--bg:#0E0B14;--ink:#F3EEFA;--muted:#A99EC0;--card:#1B1625;--line:#2E2640;--accent:#FF6E96;--accent-ink:#2A0A16;--focus:#B7A2FF}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;overflow-y:auto}
+.hidden{display:none!important}
+h2{margin:0;font-size:2rem;line-height:1.1;letter-spacing:-.025em;font-weight:800}
+h3{margin:0 0 8px;font-size:.95rem;font-weight:600;opacity:.8}
+
+#splash{justify-content:center;background:var(--bg);z-index:5;transition:opacity .5s,visibility .5s}
+#splash.out{opacity:0;visibility:hidden}
+.logo{margin:0;font-weight:800;line-height:.92;letter-spacing:-.03em;text-align:center;font-size:clamp(3.4rem,17vw,7rem)}
+.logo .row{display:block;white-space:nowrap}
+.logo .ch{display:inline-block;position:relative;opacity:0;transform:translateY(60%) rotate(-8deg);animation:drop .6s cubic-bezier(.2,.9,.3,1.2) forwards;animation-delay:calc(var(--i)*110ms + 200ms)}
+.logo .o{color:var(--accent)}
+.logo .o::before{content:"";position:absolute;left:50%;top:52%;width:.08em;height:.08em;border-radius:50%;background:var(--ink);box-shadow:.17em 0 0 var(--ink);transform:translate(-.125em,-.04em)}
+@keyframes drop{to{opacity:1;transform:none}}
+.skip{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom,0px));color:var(--muted);font-size:.9rem;background:none;border:0;padding:8px 12px;cursor:pointer}
+
+#login{padding:28px 22px 28px}
+.wrap{width:100%;max-width:400px;flex:1;display:flex;flex-direction:column;gap:14px}
+.mini{font-weight:800;font-size:1.5rem;letter-spacing:-.03em;margin:8px 0 18px}
+.mini .o,.brand .o{color:var(--accent)}
+.sub{margin:0 0 6px;color:var(--muted);max-width:34ch;line-height:1.4}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:52px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);font-weight:600;cursor:pointer;transition:transform .12s}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn svg{width:20px;height:20px;fill:currentColor}
+.g{font-weight:800;font-size:1.1rem;background:conic-gradient(#4285F4 0 25%,#34A853 0 50%,#FBBC05 0 75%,#EA4335 0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.9rem}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.phone{display:flex;align-items:center;min-height:52px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);padding:0 16px;gap:10px}
+.phone span{font-weight:600;color:var(--muted)}
+.phone input{flex:1;min-width:0;border:0;background:none;outline:0;font-size:1rem;min-height:48px}
+.phone:focus-within{outline:3px solid var(--focus);outline-offset:2px}
+.err{color:var(--accent);font-size:.88rem;min-height:1.2em;margin:0}
+.fine{font-size:.78rem;color:var(--muted);line-height:1.4;margin:0}
+
+/* App */
+#app{align-items:stretch;overflow:hidden}
+.hero{position:relative;border-radius:26px;overflow:hidden;padding:16px;color:#fff}
+.heroin{position:relative;z-index:1;display:flex;flex-direction:column;gap:14px}
+#scene{position:absolute;inset:0}
+#scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#scene::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.08) 40%,rgba(0,0,0,.5))}
+.bar,.views,.tabs{position:relative;z-index:1}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:16px 20px 8px}
+.brand{font-weight:800;font-size:1.35rem;letter-spacing:-.03em}
+.avatar{width:42px;height:42px;border-radius:50%;border:2px solid currentColor;background:var(--card) center/cover;color:inherit;display:grid;place-items:center;font-weight:800;cursor:pointer;padding:0;overflow:hidden}
+.views{flex:1;overflow-y:auto;padding:4px 20px 20px}
+.view{display:flex;flex-direction:column;gap:14px;max-width:560px;margin:0 auto;animation:fade .25s}
+@keyframes fade{from{opacity:0}}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 6px;scrollbar-width:none}
+.chip{flex:none;min-height:40px;padding:0 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.4);background:rgba(15,25,45,.3);color:#fff;font-weight:600;cursor:pointer;backdrop-filter:blur(10px)}
+.chip[aria-pressed="true"]{background:#fff;color:#14203A;border-color:#fff}
+.now{color:#fff;text-align:center;padding:6px 0 4px;text-shadow:0 2px 14px rgba(0,0,0,.35)}
+.city{font-size:1.7rem;font-weight:600}
+.temp{font-size:clamp(3.4rem,15vw,5.2rem);line-height:1;font-weight:400;letter-spacing:-.04em;margin:2px 0}
+.cond{font-size:1.15rem;font-weight:600}
+.note{margin-top:6px;opacity:.9}
+.glass{background:rgba(15,25,45,.38);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:14px 16px;color:#fff}
+.hours{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center}
+.hours div{display:flex;flex-direction:column;gap:6px;font-weight:600}
+.hours small{opacity:.8;font-weight:400}
+.hours span,.day span{display:grid;place-items:center}
+.wi{width:22px;height:22px}
+.hours .now1{background:rgba(255,255,255,.2);border-radius:12px}
+.hours div{padding:8px 0}
+.pill{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-size:.82rem}
+.pill .wi{width:15px;height:15px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.card h3{margin:0;opacity:1;font-size:1rem}
+.card p{margin:0;color:var(--muted);line-height:1.45}
+.col{display:flex;flex-direction:column;gap:14px}
+.stack{display:flex;flex-direction:column;gap:8px}
+.day{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid rgba(255,255,255,.15)}
+.day:first-of-type{border-top:0}
+.day b{flex:1;font-weight:600}
+.day em{font-style:normal;opacity:.75;margin-right:8px}
+.empty{margin:40px auto;text-align:center;color:var(--muted);line-height:1.4;max-width:30ch}
+.empty h2{color:var(--ink);margin-bottom:8px}
+.tabs{display:flex;border-top:1.5px solid var(--line);background:var(--bg)}
+.tab{flex:1;min-height:64px;background:none;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:.7rem;font-weight:600;color:var(--muted);cursor:pointer}
+.tab svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-selected="true"]{color:var(--accent)}
+#profile{display:block;position:absolute;inset:0;z-index:8;background:var(--bg);overflow-y:auto;padding:0 20px 28px;animation:slide .28s}
+@keyframes slide{from{transform:translateX(32px);opacity:0}}
+.pwrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.ptop{display:flex;align-items:center;min-height:56px;padding-top:8px}
+.back{width:44px;height:44px;border-radius:50%;border:0;background:var(--card);display:grid;place-items:center;cursor:pointer}
+.back svg,.ic svg,.pen svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.pid{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:4px 0 10px}
+.big{position:relative;width:112px;height:112px;border-radius:50%;border:3px solid var(--accent);background:var(--card) center/cover;display:grid;place-items:center;font-size:2.4rem;font-weight:800;margin-bottom:8px}
+.pen{position:absolute;right:-4px;bottom:-4px;width:40px;height:40px;border-radius:50%;border:3px solid var(--bg);background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;cursor:pointer;padding:0}
+.pen svg{width:18px;height:18px}
+.pname{font-size:1.6rem;font-weight:800;letter-spacing:-.02em}
+.puser,.pinfo{color:var(--muted)}
+.list{border:1.5px solid var(--line);border-radius:22px;background:var(--card);overflow:hidden}
+.set{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border:0;border-top:1px solid var(--line);background:none;text-align:left;cursor:pointer}
+.set:first-child{border-top:0}
+div.set{cursor:default}
+.ic{width:42px;height:42px;border-radius:50%;background:var(--bg);display:grid;place-items:center;flex:none}
+.set .tx{flex:1;min-width:0}
+.set b{display:block}
+.set small{color:var(--muted)}
+.seg{display:flex;background:var(--bg);border-radius:999px;padding:3px;flex:none}
+.seg button{border:0;background:none;padding:7px 14px;border-radius:999px;font-weight:600;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.sw{width:52px;height:30px;border-radius:15px;border:0;background:var(--line);position:relative;cursor:pointer;flex:none;transition:background .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s}
+.sw[aria-checked="true"]{background:var(--accent)}
+.sw[aria-checked="true"]::after{transform:translateX(22px)}
+.btn svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.logo .o{position:relative;display:inline-block}
+.wtop{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ohead{display:flex;align-items:center;gap:14px;margin:8px 0 18px}
+.prog{flex:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.prog i{display:block;height:100%;width:25%;background:var(--accent);border-radius:3px;transition:width .3s}
+#onb{padding:20px 22px 28px}
+.step{display:flex;flex-direction:column;gap:12px}
+.step label{display:flex;flex-direction:column;gap:6px;font-size:.88rem;font-weight:600}
+.step input{min-height:52px;padding:0 16px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);font-size:1rem}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button{min-height:46px;padding:0 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);font-weight:600;cursor:pointer}
+.opts button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.foot{margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:6px}
+#tips{display:flex;flex-direction:column}
+.daily{background:var(--card);background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 14%,var(--card)),var(--card));border:1.5px solid var(--line);border-radius:22px;padding:18px 18px 16px}
+.dl{font-size:.74rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.d1{margin:8px 0 0;font-size:1.12rem;line-height:1.4;font-weight:600}
+.d2{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);color:var(--muted);line-height:1.4}
+#sets{display:flex;flex-direction:column;gap:6px}
+h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);opacity:1}
+.fl{display:flex;flex-direction:column;gap:6px}
+.fl small{font-weight:600;font-size:.85rem;color:var(--muted)}
+.sheet{position:absolute;inset:0;background:rgba(20,10,30,.55);display:flex;align-items:flex-end;justify-content:center;z-index:10}
+.panel{width:100%;max-width:480px;max-height:80%;overflow-y:auto;background:var(--bg);border-radius:24px 24px 0 0;padding:20px;display:flex;flex-direction:column;gap:10px}
+.panel h3{font-size:1.2rem;opacity:1;margin:0}
+.panel input{min-height:52px;padding:0 16px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);font-size:1rem}
+.link{background:none;border:0;padding:8px 0;color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+#toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-size:.92rem;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:90vw;text-align:center;z-index:20}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){#profile{animation:none}.logo .ch{animation:none;opacity:1;transform:none}.view{animation:none}#splash,#toast,.btn{transition:none}}
+
+#v-chat{height:100%;min-height:0;gap:10px;width:100%}
+.chead{display:flex;align-items:center;gap:12px}
+.cav{width:52px;height:52px;border-radius:50%;border:2px solid var(--accent);background:var(--card);font-size:1.7rem;display:grid;place-items:center;cursor:pointer;padding:0;flex:none}
+.cnm{display:block;font-weight:800;font-size:1.1rem}.chead small{color:var(--muted)}
+.msgs{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px 0}
+.m{max-width:84%;padding:10px 14px;border-radius:18px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere;unicode-bidi:plaintext}
+.m.ai{align-self:flex-start;background:var(--card);border:1.5px solid var(--line);border-end-start-radius:6px}
+.m.me{align-self:flex-end;background:var(--accent);color:var(--accent-ink);border-end-end-radius:6px}
+.m.typing{opacity:.6}.m img{display:block;max-width:100%;max-height:220px;border-radius:12px;margin-bottom:6px}
+.cbar,.cpre{display:flex;align-items:center;gap:6px}
+.cbar input[type=text]{flex:1;min-width:0;min-height:46px;padding:0 14px;border-radius:23px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:1rem}
+.ib{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none;padding:0}
+.ib svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ib.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.cpre img{height:56px;border-radius:10px}
+[dir=rtl] .pen{right:auto;left:-4px}[dir=rtl] .set{text-align:right}[dir=rtl] .back svg{transform:scaleX(-1)}
+[dir=rtl] .sw::after{left:auto;right:3px}[dir=rtl] .sw[aria-checked="true"]::after{transform:translateX(-22px)}
+</style>
+</head>
+<body>
+
+<section id="splash" class="screen" aria-label="Look Good wird gestartet">
+  <h1 class="logo" id="logo" aria-label="Look Good"></h1>
+  <button class="skip" id="skip" type="button">Überspringen</button>
+</section>
+
+<main id="login" class="screen hidden">
+  <div class="wrap">
+    <div class="ohead"><button class="back" id="aback" type="button" aria-label="Zurück"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button></div>
+    <h2 id="hTitle">Konto erstellen</h2>
+    <p class="sub" id="hSub"></p>
+    <button class="btn" type="button" data-go="Apple">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c0-2.2 1.8-3.3 1.9-3.4-1-1.5-2.6-1.7-3.2-1.7-1.4-.1-2.6.8-3.3.8-.7 0-1.7-.8-2.8-.7-1.4 0-2.8.8-3.5 2.1-1.5 2.6-.4 6.4 1.1 8.5.7 1 1.6 2.2 2.7 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 1.9-1 2.6-2.1.8-1.2 1.2-2.3 1.2-2.4 0 0-2.3-.9-2.3-3.2zM14.2 6.1c.6-.7 1-1.7.9-2.7-.9 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.6 1 .1 1.9-.5 2.5-1.2z"/></svg>
+      <span id="tApple">Mit Apple fortfahren</span>
+    </button>
+    <button class="btn" type="button" data-go="Google"><span class="g" aria-hidden="true">G</span><span id="tGoogle">Mit Google fortfahren</span></button>
+    <div class="or">oder mit Telefonnummer</div>
+    <label class="phone"><span>+49</span><input id="tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="Telefonnummer" aria-label="Telefonnummer"></label>
+    <p class="err" id="err" role="alert"></p>
+    <p class="fine">Prototyp: Die Anmeldung ist noch nicht mit einem Server verbunden.</p>
+    <p class="fine" style="text-align:center"><span id="swText"></span> <button class="link" id="swMode" type="button"></button></p>
+    <button class="btn primary" id="pgo" type="button" style="margin-top:auto">Weiter</button>
+  </div>
+</main>
+
+<section id="welcome" class="screen hidden" aria-label="Willkommen">
+  <div class="wrap" style="padding:28px 22px">
+    <div class="wtop">
+      <h1 class="logo" aria-label="Look Good"><span class="row" aria-hidden="true">L<span class="o">O</span><span class="o">O</span>K</span><span class="row" aria-hidden="true">G<span class="o">O</span><span class="o">O</span>D</span></h1>
+      <p class="sub" style="text-align:center;margin:18px auto 0">Dein persönlicher Stylist. Jeden Tag.</p>
+    </div>
+    <button class="btn primary" id="wSign" type="button">Konto erstellen</button>
+    <button class="btn" id="wLogin" type="button">Anmelden</button>
+  </div>
+</section>
+
+<section id="onb" class="screen hidden" aria-label="Über dich">
+  <div class="wrap">
+    <div class="ohead"><button class="back" id="oback" type="button" aria-label="Zurück"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button><div class="prog"><i id="pbar"></i></div></div>
+    <div class="step" data-s="0"><h2>Wie heißt du?</h2><p class="sub">So spricht dich dein Stylist an.</p>
+      <label>Vorname<input id="oFirst" type="text" autocomplete="given-name" maxlength="30"></label>
+      <label>Nachname<input id="oLast" type="text" autocomplete="family-name" maxlength="40"></label></div>
+    <div class="step hidden" data-s="1"><h2>Wann hast du Geburtstag?</h2><p class="sub">Daraus berechnen wir dein Alter.</p>
+      <input id="oBirth" type="date" min="1920-01-01" aria-label="Geburtsdatum">
+      <h3 style="margin-top:14px">Geschlecht</h3>
+      <div class="opts" id="oGender"><button type="button" data-v="Männlich">Männlich</button><button type="button" data-v="Weiblich">Weiblich</button><button type="button" data-v="Andere">Andere</button><button type="button" data-v="Keine Angabe">Keine Angabe</button></div></div>
+        <p class="err" id="oerr" role="alert"></p>
+    <div class="foot"><button class="btn primary" id="onext" type="button">Weiter</button></div>
+  </div>
+</section>
+
+<div id="app" class="screen hidden home">
+  <header class="bar">
+    <div class="brand" aria-label="Look Good">L<span class="o">oo</span>k G<span class="o">oo</span>d</div>
+    <button class="avatar" id="avatar" type="button" aria-label="Profil öffnen">Du</button>
+    <input id="pfile" type="file" accept="image/*" hidden>
+  </header>
+  <div class="views" id="views">
+    <section id="v-home" class="view">
+      <div id="noCity" class="card">
+        <h3>Welche Stadt?</h3>
+        <p>Wähle deine Stadt. Dann siehst du das echte Wetter.</p>
+        <button class="btn primary" id="pick" type="button">Stadt wählen</button>
+      </div>
+      <div id="wx" class="col hidden">
+        <div class="hero">
+          <div id="scene" aria-hidden="true"></div>
+          <div class="heroin">
+            <div class="now"><div class="city" id="cName"></div><div class="temp" id="cTemp"></div><div class="cond" id="cCond"></div><div class="note" id="cReg"></div><div class="pills" id="cPills"></div></div>
+            <div class="glass"><h3>Nächste 4 Stunden</h3><div class="hours" id="hours"></div></div>
+            <div class="glass"><h3>Heute, morgen, übermorgen</h3><div id="days"></div></div>
+            <div class="chips noswipe" id="cities"></div>
+          </div>
+        </div>
+        <div id="tips"></div>
+        <p class="fine" id="wnote"></p>
+      </div>
+    </section>
+    <section id="v-chat" class="view hidden noswipe">
+      <div class="chead"><button class="cav" id="cav" type="button" aria-label="Figur wählen"></button><div><b class="cnm" id="cnm"></b><small>Stylish KI</small></div></div>
+      <div class="msgs" id="msgs" aria-live="polite"></div>
+      <div class="cpre hidden" id="cpre"><img id="cimg" alt=""><button class="ib" id="cx" type="button" aria-label="Abbrechen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="cbar">
+        <button class="ib" id="cph" type="button" aria-label="Foto senden"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></button>
+        <input id="cin" type="text" placeholder="Schreib eine Nachricht …" autocomplete="off" aria-label="Schreib eine Nachricht …">
+        <button class="ib" id="cmic" type="button" aria-label="Diktieren"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+        <button class="ib" id="cvc" type="button" aria-label="Gespräch"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4"/></svg></button>
+        <button class="ib on" id="csend" type="button" aria-label="Senden"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
+      </div>
+      <input id="cfile" type="file" accept="image/*" hidden>
+    </section>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Hauptmenü">
+    <button class="tab" id="t-home" role="tab" type="button"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Home</button>
+    <button class="tab" id="t-wardrobe" role="tab" type="button"><svg viewBox="0 0 24 24"><path d="M12 7a2.5 2.5 0 1 0-2.5-2.5M12 7v2l9 6a1.5 1.5 0 0 1-.8 2.7H3.8A1.5 1.5 0 0 1 3 15l9-6"/></svg>Garderobe</button>
+    <button class="tab" id="t-friends" role="tab" type="button"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.5-6s6 2 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.3c2 .7 3.2 2.5 3.5 5.7"/></svg>Freunde</button>
+    <button class="tab" id="t-chat" role="tab" type="button"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg>AI</button>
+      </nav>
+  <div id="profile" class="screen hidden" role="dialog" aria-label="Profil">
+    <div class="pwrap">
+      <div class="ptop"><button class="back" id="pback" type="button" aria-label="Zurück"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button></div>
+      <div class="pid">
+        <div class="big" id="big"><span id="bigtxt">Du</span><button class="pen" id="pen" type="button" aria-label="Profilbild ändern"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button></div>
+        <div class="pname" id="pname"></div><div class="puser" id="puser"></div><div class="pinfo" id="pinfo"></div>
+        <button class="btn" id="pedit" type="button" style="max-width:260px;margin-top:8px">Profil bearbeiten</button>
+      </div>
+      <div id="sets"></div>
+      <button class="btn" id="pout" type="button"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>Abmelden</button>
+      <button class="link" id="pdel" type="button" style="align-self:center;color:var(--muted)">Konto löschen</button>
+    </div>
+  </div>
+  <div id="sheet" class="sheet hidden"><div class="panel" id="panel"></div></div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=tr(x);return e}
+var toast=$("toast"),tt;
+function say(m){toast.textContent=tr(m);toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show")},2600)}
+
+var D={
+"Überspringen":"Skip|Passer|Omitir|Pular|تخطي|छोड़ें|跳过",
+"oder mit Telefonnummer":"or with phone number|ou avec un numéro de téléphone|o con número de teléfono|ou com número de telefone|أو برقم الهاتف|या फ़ोन नंबर से|或使用手机号",
+"Telefonnummer":"Phone number|Numéro de téléphone|Número de teléfono|Número de telefone|رقم الهاتف|फ़ोन नंबर|手机号",
+"Prototyp: Die Anmeldung ist noch nicht mit einem Server verbunden.":"Prototype: sign-in isn't connected to a server yet.|Prototype : la connexion n'est pas encore reliée à un serveur.|Prototipo: el inicio de sesión aún no está conectado a un servidor.|Protótipo: o login ainda não está ligado a um servidor.|نموذج أولي: تسجيل الدخول غير متصل بخادم بعد.|प्रोटोटाइप: साइन-इन अभी सर्वर से जुड़ा नहीं है।|原型：登录尚未连接服务器。",
+"Weiter":"Continue|Continuer|Continuar|Continuar|متابعة|आगे|继续",
+"Dein persönlicher Stylist. Jeden Tag.":"Your personal stylist. Every day.|Ton styliste personnel. Chaque jour.|Tu estilista personal. Cada día.|O teu estilista pessoal. Todos os dias.|مصمّم أزيائك الشخصي. كل يوم.|आपका निजी स्टाइलिस्ट। हर दिन।|你的专属造型师，每一天。",
+"Konto erstellen":"Create account|Créer un compte|Crear cuenta|Criar conta|إنشاء حساب|खाता बनाएँ|创建账号",
+"Anmelden":"Log in|Se connecter|Iniciar sesión|Entrar|تسجيل الدخول|लॉग इन करें|登录",
+"Wie heißt du?":"What's your name?|Comment tu t'appelles ?|¿Cómo te llamas?|Como te chamas?|ما اسمك؟|आपका नाम क्या है?|你叫什么名字？",
+"So spricht dich dein Stylist an.":"This is how your stylist will address you.|C'est ainsi que ton styliste t'appellera.|Así te hablará tu estilista.|É assim que o teu estilista te vai tratar.|هكذا سيناديك مصمّمك.|आपका स्टाइलिस्ट आपको इसी नाम से बुलाएगा।|造型师会这样称呼你。",
+"Vorname":"First name|Prénom|Nombre|Nome|الاسم الأول|पहला नाम|名",
+"Nachname":"Last name|Nom|Apellido|Apelido|اسم العائلة|उपनाम|姓",
+"Wann hast du Geburtstag?":"When is your birthday?|Quand est ton anniversaire ?|¿Cuándo es tu cumpleaños?|Quando é o teu aniversário?|متى عيد ميلادك؟|आपका जन्मदिन कब है?|你的生日是哪天？",
+"Daraus berechnen wir dein Alter.":"We use it to calculate your age.|Nous en déduisons ton âge.|Con esto calculamos tu edad.|Com isto calculamos a tua idade.|نحسب منه عمرك.|इससे हम आपकी उम्र निकालते हैं।|我们据此计算你的年龄。",
+"Geburtsdatum":"Date of birth|Date de naissance|Fecha de nacimiento|Data de nascimento|تاريخ الميلاد|जन्म तिथि|出生日期",
+"Geschlecht":"Gender|Genre|Género|Género|الجنس|लिंग|性别",
+"Männlich":"Male|Homme|Hombre|Masculino|ذكر|पुरुष|男",
+"Weiblich":"Female|Femme|Mujer|Feminino|أنثى|महिला|女",
+"Andere":"Other|Autre|Otro|Outro|آخر|अन्य|其他",
+"Keine Angabe":"Prefer not to say|Non précisé|Prefiero no decirlo|Prefiro não dizer|بدون تحديد|बताना नहीं चाहते|不透露",
+"Los geht’s":"Let's go|C'est parti|¡Vamos!|Vamos lá|هيا بنا|चलिए शुरू करें|开始吧",
+"Welche Stadt?":"Which city?|Quelle ville ?|¿Qué ciudad?|Que cidade?|أي مدينة؟|कौन सा शहर?|哪个城市？",
+"Wähle deine Stadt. Dann siehst du das echte Wetter.":"Choose your city to see the real weather.|Choisis ta ville pour voir la météo réelle.|Elige tu ciudad para ver el tiempo real.|Escolhe a tua cidade para ver o tempo real.|اختر مدينتك لترى الطقس الحقيقي.|अपना शहर चुनें और असली मौसम देखें।|选择你的城市，查看实时天气。",
+"Stadt wählen":"Choose city|Choisir une ville|Elegir ciudad|Escolher cidade|اختر المدينة|शहर चुनें|选择城市",
+"Nächste 4 Stunden":"Next 4 hours|4 prochaines heures|Próximas 4 horas|Próximas 4 horas|الساعات الأربع القادمة|अगले 4 घंटे|未来4小时",
+"Heute, morgen, übermorgen":"Today, tomorrow, day after|Aujourd'hui, demain, après-demain|Hoy, mañana, pasado mañana|Hoje, amanhã, depois de amanhã|اليوم وغدًا وبعد غد|आज, कल, परसों|今天、明天、后天",
+"Home":"Home|Accueil|Inicio|Início|الرئيسية|होम|首页",
+"Garderobe":"Wardrobe|Garde-robe|Armario|Guarda-roupa|الخزانة|वॉर्डरोब|衣橱",
+"Freunde":"Friends|Amis|Amigos|Amigos|الأصدقاء|दोस्त|好友",
+"AI":"AI|IA|IA|IA|الذكاء|AI|AI",
+"KI":"AI|IA|IA|IA|الذكاء الاصطناعي|AI|AI",
+"Stylish KI":"Stylish AI|IA Stylish|IA Stylish|IA Stylish|Stylish AI|Stylish AI|Stylish AI",
+"Zurück":"Back|Retour|Atrás|Voltar|رجوع|वापस|返回",
+"Hauptmenü":"Main menu|Menu principal|Menú principal|Menu principal|القائمة الرئيسية|मुख्य मेनू|主菜单",
+"Profil öffnen":"Open profile|Ouvrir le profil|Abrir perfil|Abrir perfil|فتح الملف الشخصي|प्रोफ़ाइल खोलें|打开个人资料",
+"Profilbild ändern":"Change profile picture|Changer la photo de profil|Cambiar foto de perfil|Alterar foto de perfil|تغيير صورة الملف|प्रोफ़ाइल फ़ोटो बदलें|更换头像",
+"Profil bearbeiten":"Edit profile|Modifier le profil|Editar perfil|Editar perfil|تعديل الملف الشخصي|प्रोफ़ाइल संपादित करें|编辑资料",
+"Abmelden":"Log out|Se déconnecter|Cerrar sesión|Terminar sessão|تسجيل الخروج|लॉग आउट|退出登录",
+"Konto löschen":"Delete account|Supprimer le compte|Eliminar cuenta|Eliminar conta|حذف الحساب|खाता हटाएँ|删除账号",
+"Du":"You|Toi|Tú|Tu|أنت|आप|你",
+"Dein Name":"Your name|Ton nom|Tu nombre|O teu nome|اسمك|आपका नाम|你的名字",
+"benutzername":"username|nom_utilisateur|usuario|utilizador|اسم_المستخدم|यूज़रनेम|用户名",
+"Willkommen zurück":"Welcome back|Bon retour|Bienvenido de nuevo|Bem-vindo de volta|مرحبًا بعودتك|वापसी पर स्वागत है|欢迎回来",
+"Wähle, wie du dich registrieren möchtest.":"Choose how you'd like to sign up.|Choisis comment t'inscrire.|Elige cómo quieres registrarte.|Escolhe como te queres registar.|اختر طريقة التسجيل.|चुनें कि आप कैसे रजिस्टर करना चाहते हैं।|选择注册方式。",
+"Melde dich mit deinem Konto an.":"Log in with your account.|Connecte-toi avec ton compte.|Inicia sesión con tu cuenta.|Entra com a tua conta.|سجّل الدخول بحسابك.|अपने खाते से लॉग इन करें।|使用你的账号登录。",
+"Mit Apple registrieren":"Sign up with Apple|S'inscrire avec Apple|Registrarse con Apple|Registar com Apple|التسجيل عبر Apple|Apple से रजिस्टर करें|使用 Apple 注册",
+"Mit Apple anmelden":"Sign in with Apple|Se connecter avec Apple|Iniciar sesión con Apple|Entrar com Apple|الدخول عبر Apple|Apple से साइन इन करें|使用 Apple 登录",
+"Mit Google registrieren":"Sign up with Google|S'inscrire avec Google|Registrarse con Google|Registar com Google|التسجيل عبر Google|Google से रजिस्टर करें|使用 Google 注册",
+"Mit Google anmelden":"Sign in with Google|Se connecter avec Google|Iniciar sesión con Google|Entrar com Google|الدخول عبر Google|Google से साइन इन करें|使用 Google 登录",
+"Schon ein Konto?":"Already have an account?|Déjà un compte ?|¿Ya tienes cuenta?|Já tens conta?|لديك حساب؟|पहले से खाता है?|已有账号？",
+"Noch kein Konto?":"No account yet?|Pas encore de compte ?|¿Aún no tienes cuenta?|Ainda não tens conta?|ليس لديك حساب؟|अभी खाता नहीं है?|还没有账号？",
+"Registrieren":"Sign up|S'inscrire|Registrarse|Registar|سجّل|रजिस्टर करें|注册",
+"Gib deine Telefonnummer ein.":"Enter your phone number.|Saisis ton numéro de téléphone.|Introduce tu número de teléfono.|Introduz o teu número de telefone.|أدخل رقم هاتفك.|अपना फ़ोन नंबर दर्ज करें।|请输入手机号。",
+"Gib deinen Vornamen ein.":"Enter your first name.|Saisis ton prénom.|Escribe tu nombre.|Escreve o teu nome.|أدخل اسمك الأول.|अपना पहला नाम दर्ज करें।|请输入名字。",
+"Gib deinen Nachnamen ein.":"Enter your last name.|Saisis ton nom.|Escribe tu apellido.|Escreve o teu apelido.|أدخل اسم العائلة.|अपना उपनाम दर्ज करें।|请输入姓氏。",
+"Wähle dein Geburtsdatum.":"Pick your date of birth.|Choisis ta date de naissance.|Elige tu fecha de nacimiento.|Escolhe a tua data de nascimento.|اختر تاريخ ميلادك.|अपनी जन्म तिथि चुनें।|请选择出生日期。",
+"Bitte prüfe dein Geburtsdatum.":"Please check your date of birth.|Vérifie ta date de naissance.|Revisa tu fecha de nacimiento.|Verifica a tua data de nascimento.|يرجى التحقق من تاريخ الميلاد.|कृपया अपनी जन्म तिथि जाँचें।|请检查出生日期。",
+"Du musst mindestens 13 Jahre alt sein.":"You must be at least 13 years old.|Tu dois avoir au moins 13 ans.|Debes tener al menos 13 años.|Tens de ter pelo menos 13 anos.|يجب ألا يقل عمرك عن 13 عامًا.|आपकी उम्र कम से कम 13 साल होनी चाहिए।|你必须年满13岁。",
+"Bitte wähle eine Option.":"Please choose an option.|Choisis une option.|Elige una opción.|Escolhe uma opção.|يرجى اختيار خيار.|कृपया एक विकल्प चुनें।|请选择一项。",
+"Konto":"Account|Compte|Cuenta|Conta|الحساب|खाता|账号",
+"Login-Daten":"Login details|Identifiants|Datos de acceso|Dados de acesso|بيانات الدخول|लॉगिन विवरण|登录信息",
+"E-Mail, Passwort, Anmeldung":"Email, password, sign-in|E-mail, mot de passe, connexion|Correo, contraseña, acceso|E-mail, palavra-passe, acesso|البريد وكلمة المرور والدخول|ईमेल, पासवर्ड, साइन-इन|邮箱、密码、登录",
+"Wer sieht dein Profil":"Who sees your profile|Qui voit ton profil|Quién ve tu perfil|Quem vê o teu perfil|من يرى ملفك|आपकी प्रोफ़ाइल कौन देखे|谁可以看到你的资料",
+"Alle":"Everyone|Tout le monde|Todos|Todos|الجميع|सभी|所有人",
+"Nur Freunde":"Friends only|Amis uniquement|Solo amigos|Só amigos|الأصدقاء فقط|केवल दोस्त|仅好友",
+"Niemand":"Nobody|Personne|Nadie|Ninguém|لا أحد|कोई नहीं|不公开",
+"Chat mit Mo oder Sarah":"Chat with Mo or Sarah|Chat avec Mo ou Sarah|Chat con Mo o Sarah|Chat com Mo ou Sarah|دردشة مع Mo أو Sarah|Mo या Sarah से चैट|与 Mo 或 Sarah 聊天",
+"Persönliche Stilberatung":"Personal style advice|Conseils de style personnalisés|Asesoría de estilo personal|Aconselhamento de estilo pessoal|نصائح أزياء شخصية|व्यक्तिगत स्टाइल सलाह|个人穿搭建议",
+"Chat-Verlauf":"Chat history|Historique des chats|Historial de chat|Histórico de chat|سجل الدردشة|चैट इतिहास|聊天记录",
+"Vergangene Chats mit der KI":"Past chats with the AI|Anciens chats avec l'IA|Chats anteriores con la IA|Chats anteriores com a IA|محادثات سابقة مع الذكاء|AI के साथ पिछली चैट|与AI的历史聊天",
+"Noch keine Chats mit der KI. Hier erscheinen später deine Gespräche.":"No chats with the AI yet. Your conversations will appear here later.|Pas encore de chats avec l'IA. Tes conversations apparaîtront ici.|Aún no hay chats con la IA. Tus conversaciones aparecerán aquí.|Ainda não há chats com a IA. As tuas conversas vão aparecer aqui.|لا محادثات مع الذكاء بعد. ستظهر محادثاتك هنا لاحقًا.|AI के साथ अभी कोई चैट नहीं। आपकी बातचीत यहाँ दिखेगी।|还没有与AI的聊天，之后会显示在这里。",
+"Benachrichtigungen":"Notifications|Notifications|Notificaciones|Notificações|الإشعارات|सूचनाएँ|通知",
+"Tägliche Wetter-Nachricht":"Daily weather message|Message météo quotidien|Mensaje diario del tiempo|Mensagem diária do tempo|رسالة الطقس اليومية|दैनिक मौसम संदेश|每日天气提醒",
+"Morgens ein kurzer Hinweis":"A short note each morning|Un petit message le matin|Un aviso breve cada mañana|Um aviso curto de manhã|تنبيه قصير كل صباح|हर सुबह एक छोटा संदेश|每天早上简短提示",
+"Freunde und Snaps":"Friends and snaps|Amis et snaps|Amigos y snaps|Amigos e snaps|الأصدقاء واللقطات|दोस्त और स्नैप|好友与快拍",
+"Wenn dir jemand schreibt":"When someone writes to you|Quand quelqu'un t'écrit|Cuando alguien te escribe|Quando alguém te escreve|عندما يراسلك أحد|जब कोई आपको लिखे|有人给你发消息时",
+"Datenschutz":"Privacy|Confidentialité|Privacidad|Privacidade|الخصوصية|गोपनीयता|隐私",
+"Standort für die KI":"Location for the AI|Position pour l'IA|Ubicación para la IA|Localização para a IA|الموقع للذكاء الاصطناعي|AI के लिए लोकेशन|AI使用位置",
+"Die KI darf deine Stadt für Vorschläge nutzen":"The AI may use your city for suggestions|L'IA peut utiliser ta ville pour ses suggestions|La IA puede usar tu ciudad para sugerencias|A IA pode usar a tua cidade para sugestões|يمكن للذكاء استخدام مدينتك للاقتراحات|AI सुझावों के लिए आपके शहर का उपयोग कर सकता है|AI可使用你的城市给出建议",
+"App":"App|Application|Aplicación|Aplicação|التطبيق|ऐप|应用",
+"Erscheinungsbild":"Appearance|Apparence|Apariencia|Aparência|المظهر|दिखावट|外观",
+"Hell oder dunkel":"Light or dark|Clair ou sombre|Claro u oscuro|Claro ou escuro|فاتح أو داكن|हल्का या गहरा|浅色或深色",
+"Hell":"Light|Clair|Claro|Claro|فاتح|हल्का|浅色",
+"Dunkel":"Dark|Sombre|Oscuro|Escuro|داكن|गहरा|深色",
+"Sprache":"Language|Langue|Idioma|Idioma|اللغة|भाषा|语言",
+"Die KI darf deinen Standort nutzen.":"The AI may use your location.|L'IA peut utiliser ta position.|La IA puede usar tu ubicación.|A IA pode usar a tua localização.|يمكن للذكاء استخدام موقعك.|AI आपकी लोकेशन का उपयोग कर सकता है।|AI可以使用你的位置。",
+"Die KI sieht deinen Standort nicht mehr.":"The AI no longer sees your location.|L'IA ne voit plus ta position.|La IA ya no ve tu ubicación.|A IA já não vê a tua localização.|لم يعد الذكاء يرى موقعك.|AI अब आपकी लोकेशन नहीं देखता।|AI不再看到你的位置。",
+"Abbrechen":"Cancel|Annuler|Cancelar|Cancelar|إلغاء|रद्द करें|取消",
+"Schließen":"Close|Fermer|Cerrar|Fechar|إغلاق|बंद करें|关闭",
+"Benutzername":"Username|Nom d'utilisateur|Usuario|Utilizador|اسم المستخدم|यूज़रनेम|用户名",
+"zum Beispiel mia.styles":"e.g. mia.styles|par ex. mia.styles|por ejemplo mia.styles|por exemplo mia.styles|مثل mia.styles|जैसे mia.styles|例如 mia.styles",
+"Speichern":"Save|Enregistrer|Guardar|Guardar|حفظ|सहेजें|保存",
+"Profil gespeichert":"Profile saved|Profil enregistré|Perfil guardado|Perfil guardado|تم حفظ الملف|प्रोफ़ाइल सहेजी गई|资料已保存",
+"Angemeldet mit":"Signed in with|Connecté avec|Sesión iniciada con|Sessão iniciada com|تم الدخول عبر|साइन-इन विधि:|登录方式：",
+"E-Mail:":"Email:|E-mail :|Correo:|E-mail:|البريد:|ईमेल:|邮箱：",
+"Noch keine E-Mail hinterlegt.":"No email saved yet.|Aucun e-mail enregistré.|Aún no hay correo guardado.|Ainda sem e-mail guardado.|لا يوجد بريد محفوظ بعد.|अभी कोई ईमेल सहेजा नहीं है।|尚未保存邮箱。",
+"E-Mail ändern":"Change email|Changer l'e-mail|Cambiar correo|Alterar e-mail|تغيير البريد|ईमेल बदलें|更改邮箱",
+"E-Mail hinzufügen":"Add email|Ajouter un e-mail|Añadir correo|Adicionar e-mail|إضافة بريد|ईमेल जोड़ें|添加邮箱",
+"Passwort ändern":"Change password|Changer le mot de passe|Cambiar contraseña|Alterar palavra-passe|تغيير كلمة المرور|पासवर्ड बदलें|修改密码",
+"Passwort vergessen?":"Forgot password?|Mot de passe oublié ?|¿Olvidaste la contraseña?|Esqueceste a palavra-passe?|نسيت كلمة المرور؟|पासवर्ड भूल गए?|忘记密码？",
+"E-Mail":"Email|E-mail|Correo|E-mail|البريد|ईमेल|邮箱",
+"E-Mail-Adresse":"Email address|Adresse e-mail|Correo electrónico|Endereço de e-mail|عنوان البريد|ईमेल पता|邮箱地址",
+"Gib eine gültige E-Mail-Adresse ein.":"Enter a valid email address.|Saisis une adresse e-mail valide.|Introduce un correo válido.|Introduz um e-mail válido.|أدخل بريدًا صالحًا.|मान्य ईमेल दर्ज करें।|请输入有效邮箱。",
+"E-Mail gespeichert":"Email saved|E-mail enregistré|Correo guardado|E-mail guardado|تم حفظ البريد|ईमेल सहेजा गया|邮箱已保存",
+"Aktuelles Passwort":"Current password|Mot de passe actuel|Contraseña actual|Palavra-passe atual|كلمة المرور الحالية|वर्तमान पासवर्ड|当前密码",
+"Neues Passwort":"New password|Nouveau mot de passe|Nueva contraseña|Nova palavra-passe|كلمة مرور جديدة|नया पासवर्ड|新密码",
+"Neues Passwort wiederholen":"Repeat new password|Répète le nouveau mot de passe|Repite la nueva contraseña|Repete a nova palavra-passe|أعد كتابة كلمة المرور الجديدة|नया पासवर्ड दोहराएँ|重复新密码",
+"Ändern":"Change|Modifier|Cambiar|Alterar|تغيير|बदलें|修改",
+"Gib dein aktuelles Passwort ein.":"Enter your current password.|Saisis ton mot de passe actuel.|Introduce tu contraseña actual.|Introduz a tua palavra-passe atual.|أدخل كلمة المرور الحالية.|अपना वर्तमान पासवर्ड दर्ज करें।|请输入当前密码。",
+"Mindestens 8 Zeichen mit Groß- und Kleinbuchstaben, Zahl und Sonderzeichen.":"At least 8 characters with upper and lower case letters, a number and a symbol.|Au moins 8 caractères avec majuscules, minuscules, un chiffre et un symbole.|Mínimo 8 caracteres con mayúsculas, minúsculas, un número y un símbolo.|Mínimo 8 caracteres com maiúsculas, minúsculas, um número e um símbolo.|8 أحرف على الأقل مع أحرف كبيرة وصغيرة ورقم ورمز.|कम से कम 8 अक्षर: बड़े-छोटे अक्षर, एक अंक और एक चिह्न।|至少8个字符，含大小写字母、数字和符号。",
+"Die Passwörter stimmen nicht überein.":"Passwords don't match.|Les mots de passe ne correspondent pas.|Las contraseñas no coinciden.|As palavras-passe não coincidem.|كلمتا المرور غير متطابقتين.|पासवर्ड मेल नहीं खाते।|两次密码不一致。",
+"Passwort geprüft. Gespeichert wird erst mit dem Server.":"Password checked. It's only saved once a server is connected.|Mot de passe vérifié. Il ne sera enregistré qu'avec un serveur.|Contraseña verificada. Solo se guardará con un servidor.|Palavra-passe verificada. Só será guardada com um servidor.|تم التحقق. لن تُحفظ إلا بعد ربط خادم.|पासवर्ड जाँचा गया। सर्वर जुड़ने पर ही सहेजा जाएगा।|密码已检查，连接服务器后才会保存。",
+"Prototyp: Ohne Server wird noch nichts gespeichert.":"Prototype: nothing is saved without a server.|Prototype : rien n'est enregistré sans serveur.|Prototipo: sin servidor no se guarda nada.|Protótipo: sem servidor nada é guardado.|نموذج أولي: لا يُحفظ شيء بدون خادم.|प्रोटोटाइप: सर्वर के बिना कुछ सहेजा नहीं जाता।|原型：没有服务器不会保存任何内容。",
+"Passwort vergessen":"Forgot password|Mot de passe oublié|Contraseña olvidada|Palavra-passe esquecida|نسيت كلمة المرور|पासवर्ड भूल गए|忘记密码",
+"Code senden":"Send code|Envoyer le code|Enviar código|Enviar código|إرسال الرمز|कोड भेजें|发送验证码",
+"Code eingeben":"Enter code|Saisir le code|Introducir código|Introduzir código|أدخل الرمز|कोड दर्ज करें|输入验证码",
+"6-stelliger Code":"6-digit code|Code à 6 chiffres|Código de 6 dígitos|Código de 6 dígitos|رمز من 6 أرقام|6 अंकों का कोड|6位验证码",
+"Passwort setzen":"Set password|Définir le mot de passe|Establecer contraseña|Definir palavra-passe|تعيين كلمة المرور|पासवर्ड सेट करें|设置密码",
+"Der Code hat 6 Ziffern.":"The code has 6 digits.|Le code comporte 6 chiffres.|El código tiene 6 dígitos.|O código tem 6 dígitos.|الرمز مكوّن من 6 أرقام.|कोड में 6 अंक हैं।|验证码为6位数字。",
+"Fertig. Zurücksetzen klappt erst mit dem Server.":"Done. Resetting only works with a server.|Terminé. La réinitialisation nécessite un serveur.|Listo. Restablecer solo funciona con un servidor.|Pronto. A reposição só funciona com um servidor.|تم. إعادة التعيين تحتاج إلى خادم.|हो गया। रीसेट सर्वर के साथ ही काम करेगा।|完成。重置需连接服务器。",
+"Prototyp: Es wird noch keine E-Mail verschickt.":"Prototype: no email is sent yet.|Prototype : aucun e-mail n'est encore envoyé.|Prototipo: aún no se envía ningún correo.|Protótipo: ainda não é enviado nenhum e-mail.|نموذج أولي: لا يُرسل بريد بعد.|प्रोटोटाइप: अभी कोई ईमेल नहीं भेजा जाता।|原型：暂不发送邮件。",
+"Wir schicken dir einen Code per E-Mail.":"We'll send you a code by email.|Nous t'envoyons un code par e-mail.|Te enviamos un código por correo.|Enviamos-te um código por e-mail.|سنرسل لك رمزًا بالبريد.|हम आपको ईमेल से कोड भेजेंगे।|我们会通过邮件发送验证码。",
+"Konto löschen?":"Delete account?|Supprimer le compte ?|¿Eliminar cuenta?|Eliminar conta?|حذف الحساب؟|खाता हटाएँ?|删除账号？",
+"Dein Profil und deine Einstellungen werden von diesem Gerät gelöscht. Das kann nicht rückgängig gemacht werden.":"Your profile and settings will be deleted from this device. This can't be undone.|Ton profil et tes réglages seront supprimés de cet appareil. Action irréversible.|Tu perfil y ajustes se borrarán de este dispositivo. No se puede deshacer.|O teu perfil e definições serão apagados deste dispositivo. Não pode ser desfeito.|سيُحذف ملفك وإعداداتك من هذا الجهاز. لا يمكن التراجع.|आपकी प्रोफ़ाइल और सेटिंग्स इस डिवाइस से हट जाएँगी। इसे वापस नहीं किया जा सकता।|你的资料和设置将从此设备删除，无法撤销。",
+"Endgültig löschen":"Delete permanently|Supprimer définitivement|Eliminar definitivamente|Eliminar definitivamente|حذف نهائي|हमेशा के लिए हटाएँ|永久删除",
+"Klar":"Clear|Dégagé|Despejado|Limpo|صافٍ|साफ़|晴",
+"Überwiegend klar":"Mostly clear|Plutôt dégagé|Mayormente despejado|Maioritariamente limpo|صافٍ غالبًا|ज़्यादातर साफ़|大部晴朗",
+"Teils bewölkt":"Partly cloudy|Partiellement nuageux|Parcialmente nublado|Parcialmente nublado|غائم جزئيًا|आंशिक बादल|局部多云",
+"Bedeckt":"Overcast|Couvert|Cubierto|Encoberto|ملبّد|घने बादल|阴",
+"Nebel":"Fog|Brouillard|Niebla|Nevoeiro|ضباب|कोहरा|雾",
+"Nieselregen":"Drizzle|Bruine|Llovizna|Chuvisco|رذاذ|बूंदाबांदी|毛毛雨",
+"Regenschauer":"Showers|Averses|Chubascos|Aguaceiros|زخات مطر|बौछारें|阵雨",
+"Regen":"Rain|Pluie|Lluvia|Chuva|مطر|बारिश|雨",
+"Schnee":"Snow|Neige|Nieve|Neve|ثلج|बर्फ़|雪",
+"Gewitter":"Thunderstorm|Orage|Tormenta|Trovoada|عاصفة رعدية|आंधी-तूफ़ान|雷暴",
+"Bewölkt":"Cloudy|Nuageux|Nublado|Nublado|غائم|बादल|多云",
+"Live-Wetter nur in der Datei-Version":"Live weather only in the file version|Météo en direct uniquement dans la version fichier|Tiempo en vivo solo en la versión de archivo|Tempo ao vivo só na versão em ficheiro|الطقس المباشر في نسخة الملف فقط|लाइव मौसम केवल फ़ाइल संस्करण में|实时天气仅在文件版本中可用",
+"Lädt …":"Loading …|Chargement …|Cargando …|A carregar …|جارٍ التحميل …|लोड हो रहा है …|加载中 …",
+"Jetzt":"Now|Maintenant|Ahora|Agora|الآن|अभी|现在",
+"Std.":"h|h|h|h|س|घं.|时",
+"Heute":"Today|Aujourd'hui|Hoy|Hoje|اليوم|आज|今天",
+"Morgen":"Tomorrow|Demain|Mañana|Amanhã|غدًا|कल|明天",
+"Übermorgen":"Day after tomorrow|Après-demain|Pasado mañana|Depois de amanhã|بعد غد|परसों|后天",
+"Diese Vorschau darf keine Wetterdaten abrufen. Öffne die Datei-Version im Browser, dann lädt das echte Wetter.":"This preview can't fetch weather data. Open the file version in your browser to load real weather.|Cet aperçu ne peut pas charger la météo. Ouvre la version fichier dans le navigateur.|Esta vista previa no puede obtener el tiempo. Abre la versión de archivo en el navegador.|Esta pré-visualização não obtém o tempo. Abre a versão em ficheiro no navegador.|لا تستطيع هذه المعاينة جلب الطقس. افتح نسخة الملف في المتصفح.|यह प्रीव्यू मौसम नहीं ला सकता। फ़ाइल संस्करण ब्राउज़र में खोलें।|此预览无法获取天气，请在浏览器中打开文件版本。",
+"Schön, dass du da bist 😉":"Great to have you here 😉|Content de te voir 😉|Qué bien que estés aquí 😉|Que bom que estás aqui 😉|سعيد بوجودك 😉|आपका यहाँ होना अच्छा लगा 😉|很高兴见到你 😉",
+"Wind":"Wind|Vent|Viento|Vento|الرياح|हवा|风速",
+"Feuchte":"Humidity|Humidité|Humedad|Humidade|الرطوبة|नमी|湿度",
+"Gefühlt":"Feels like|Ressenti|Sensación|Sensação|المحسوس|महसूस|体感",
+"Heute für dich":"Today for you|Aujourd'hui pour toi|Hoy para ti|Hoje para ti|اليوم لأجلك|आज आपके लिए|今日为你",
+"Wetterdaten: Open-Meteo.com.":"Weather data: Open-Meteo.com.|Données météo : Open-Meteo.com.|Datos del tiempo: Open-Meteo.com.|Dados meteorológicos: Open-Meteo.com.|بيانات الطقس: Open-Meteo.com.|मौसम डेटा: Open-Meteo.com।|天气数据：Open-Meteo.com。",
+"Stadt hinzufügen":"Add city|Ajouter une ville|Añadir ciudad|Adicionar cidade|إضافة مدينة|शहर जोड़ें|添加城市",
+"Stadt eingeben":"Enter city|Saisir une ville|Escribe una ciudad|Escreve uma cidade|أدخل مدينة|शहर लिखें|输入城市",
+"Stadt":"City|Ville|Ciudad|Cidade|مدينة|शहर|城市",
+"Stadt entfernen":"Remove city|Retirer la ville|Quitar ciudad|Remover cidade|إزالة المدينة|शहर हटाएँ|移除城市",
+"Keine Stadt gefunden. Prüfe die Schreibweise.":"No city found. Check the spelling.|Aucune ville trouvée. Vérifie l'orthographe.|No se encontró la ciudad. Revisa la ortografía.|Nenhuma cidade encontrada. Verifica a ortografia.|لم يُعثر على مدينة. تحقق من الإملاء.|कोई शहर नहीं मिला। वर्तनी जाँचें।|未找到城市，请检查拼写。",
+"Keine Treffer in der Liste. Die Online-Suche ist in dieser Vorschau nicht erreichbar.":"No matches in the list. Online search isn't available in this preview.|Aucun résultat dans la liste. La recherche en ligne n'est pas disponible dans cet aperçu.|Sin resultados en la lista. La búsqueda en línea no está disponible en esta vista previa.|Sem resultados na lista. A pesquisa online não está disponível nesta pré-visualização.|لا نتائج في القائمة. البحث عبر الإنترنت غير متاح في هذه المعاينة.|सूची में कोई परिणाम नहीं। इस प्रीव्यू में ऑनलाइन खोज उपलब्ध नहीं है।|列表中没有结果，此预览无法在线搜索。",
+"Heute gewittert es, bleib lieber drinnen, wenn es richtig losgeht ⚡":"Thunderstorms today. Stay inside if it gets rough ⚡|Orages aujourd'hui, reste plutôt à l'intérieur s'il se déchaîne ⚡|Hoy hay tormenta; mejor quédate dentro si se pone fuerte ⚡|Hoje há trovoada; fica em casa se apertar ⚡|عواصف رعدية اليوم، ابقَ في الداخل إن اشتدّت ⚡|आज आंधी-तूफ़ान है, ज़्यादा हो तो घर में रहें ⚡|今天有雷暴，雷雨大时请待在室内 ⚡",
+"Heute regnet es, deine Regenjacke freut sich schon auf ihren Auftritt 😉":"It's raining today, your rain jacket can't wait for its big moment 😉|Il pleut aujourd'hui, ton imperméable attend son grand moment 😉|Hoy llueve, tu chubasquero está deseando lucirse 😉|Hoje chove, o teu impermeável já espera o seu momento 😉|الجو ماطر اليوم، وسترتك المطرية متشوقة لدورها 😉|आज बारिश है, आपका रेनकोट अपने मौके का इंतज़ार कर रहा है 😉|今天下雨，你的雨衣迫不及待要登场了 😉",
+"Ab # Uhr wird es nass, pack dir eine Jacke ein 😉":"From # o'clock it gets wet, pack a jacket 😉|Dès # h il va pleuvoir, prends une veste 😉|A partir de las # h llueve, lleva una chaqueta 😉|A partir das # h chove, leva um casaco 😉|ستمطر ابتداءً من الساعة #، خذ سترة معك 😉|# बजे से बारिश होगी, जैकेट साथ रखें 😉|从#点起会下雨，带件外套吧 😉",
+"Es schneit, zieh dich schön warm an, dann kann der Schnee kommen ❄️":"It's snowing, dress warm and let the snow come ❄️|Il neige, couvre-toi bien et la neige peut venir ❄️|Está nevando, abrígate bien y que venga la nieve ❄️|Está a nevar, agasalha-te bem e que venha a neve ❄️|الثلج يتساقط، ارتدِ ملابس دافئة ودعه يأتي ❄️|बर्फ़ गिर रही है, गर्म कपड़े पहनें ❄️|在下雪，穿暖和点，雪尽管来 ❄️",
+"Richtig heiß heute, trink genug Wasser und gönn dir Schatten ☀️":"Really hot today, drink plenty of water and find some shade ☀️|Très chaud aujourd'hui, bois beaucoup d'eau et cherche l'ombre ☀️|Hace mucho calor, bebe agua y busca sombra ☀️|Muito calor hoje, bebe água e procura sombra ☀️|الجو حار جدًا اليوم، اشرب الماء واستظل ☀️|आज बहुत गर्मी है, खूब पानी पिएँ और छाँव में रहें ☀️|今天很热，多喝水，找个阴凉处 ☀️",
+"Die Sonne meint es heute ernst, vergiss die Sonnencreme nicht 😎":"The sun means business today, don't forget sunscreen 😎|Le soleil tape fort aujourd'hui, n'oublie pas la crème solaire 😎|El sol aprieta hoy, no olvides el protector solar 😎|O sol está forte hoje, não te esqueças do protetor solar 😎|الشمس قوية اليوم، لا تنسَ واقي الشمس 😎|आज धूप तेज़ है, सनस्क्रीन न भूलें 😎|今天阳光很猛，别忘了防晒 😎",
+"Heute ist es kalt, Mütze und warme Jacke sind dein bester Freund 🧣":"It's cold today, a hat and warm jacket are your best friends 🧣|Il fait froid, bonnet et veste chaude sont tes meilleurs amis 🧣|Hace frío, gorro y chaqueta abrigada son tus mejores amigos 🧣|Está frio, gorro e casaco quente são os teus melhores amigos 🧣|الجو بارد اليوم، القبعة والسترة الدافئة خير صديق 🧣|आज ठंड है, टोपी और गर्म जैकेट पहनें 🧣|今天很冷，帽子和暖和的外套是你的好朋友 🧣",
+"Heute weht es ordentlich, eine windfeste Jacke ist die beste Wahl 💨":"Quite windy today, a windproof jacket is the best choice 💨|Beaucoup de vent aujourd'hui, une veste coupe-vent est idéale 💨|Hoy hay mucho viento, una chaqueta cortavientos es lo mejor 💨|Hoje há muito vento, um casaco corta-vento é a melhor escolha 💨|الرياح قوية اليوم، سترة واقية من الرياح أفضل خيار 💨|आज तेज़ हवा है, विंडप्रूफ जैकेट सबसे अच्छी है 💨|今天风很大，防风外套最合适 💨",
+"Schönes Wetter heute, perfekt für einen Spaziergang 😊":"Lovely weather today, perfect for a walk 😊|Beau temps aujourd'hui, parfait pour une balade 😊|Buen tiempo hoy, perfecto para pasear 😊|Bom tempo hoje, perfeito para um passeio 😊|طقس جميل اليوم، مثالي للتنزه 😊|आज मौसम सुहावना है, सैर के लिए बढ़िया 😊|今天天气不错，很适合散步 😊",
+"Mit LOOK GOOD siehst du heute garantiert gut aus 😉":"With LOOK GOOD you'll look great today, guaranteed 😉|Avec LOOK GOOD, tu auras garanti belle allure aujourd'hui 😉|Con LOOK GOOD hoy seguro que te ves genial 😉|Com o LOOK GOOD hoje vais ficar giríssimo, garantido 😉|مع LOOK GOOD ستبدو رائعًا اليوم، مضمون 😉|LOOK GOOD के साथ आज आप पक्का बढ़िया दिखेंगे 😉|有了 LOOK GOOD，今天保证你好看 😉",
+"Zieh an, worin du dich stark fühlst ✨":"Wear what makes you feel strong ✨|Porte ce qui te donne confiance ✨|Ponte lo que te haga sentir fuerte ✨|Veste o que te faz sentir forte ✨|ارتدِ ما يمنحك القوة ✨|वही पहनें जिसमें आप मज़बूत महसूस करें ✨|穿让你自信的衣服 ✨",
+"Du hast heute einen richtig guten Look verdient 😊":"You deserve a really good look today 😊|Tu mérites un super look aujourd'hui 😊|Hoy te mereces un look genial 😊|Hoje mereces um look incrível 😊|تستحق إطلالة رائعة اليوم 😊|आज आप एक शानदार लुक के हक़दार हैं 😊|你今天值得拥有一身好造型 😊",
+"Heute ist dein Tag, mach was draus 🔥":"Today is your day, make it count 🔥|Aujourd'hui c'est ton jour, profites-en 🔥|Hoy es tu día, aprovéchalo 🔥|Hoje é o teu dia, aproveita 🔥|اليوم يومك، استغله 🔥|आज आपका दिन है, इसे खास बनाएँ 🔥|今天是你的日子，好好把握 🔥",
+"Hauptsache, du fühlst dich wohl, der Rest kommt von allein 😉":"As long as you feel good, the rest follows 😉|Tant que tu te sens bien, le reste suit 😉|Lo importante es que te sientas bien, lo demás viene solo 😉|O importante é sentires-te bem, o resto vem sozinho 😉|المهم أن ترتاح، والباقي يأتي وحده 😉|बस आप सहज महसूस करें, बाकी अपने आप हो जाएगा 😉|只要你自在，其余自然会来 😉",
+"Hier landen bald deine Kleidungsstücke.":"Your clothes will land here soon.|Tes vêtements arriveront bientôt ici.|Aquí estarán pronto tus prendas.|As tuas peças vão aparecer aqui em breve.|ستظهر ملابسك هنا قريبًا.|आपके कपड़े जल्द यहाँ दिखेंगे।|你的衣服很快会出现在这里。",
+"Hier findest du bald deine Freunde und Snaps.":"You'll soon find your friends and snaps here.|Tu retrouveras bientôt ici tes amis et snaps.|Pronto encontrarás aquí a tus amigos y snaps.|Em breve vais encontrar aqui os teus amigos e snaps.|ستجد أصدقاءك ولقطاتك هنا قريبًا.|यहाँ जल्द ही आपके दोस्त और स्नैप दिखेंगे।|你很快会在这里看到好友和快拍。",
+"Hi, ich bin dein Stylish KI. Wie kann ich dir helfen heute?":"Hi, I'm your Stylish AI. How can I help you today?|Salut, je suis ton IA Stylish. Comment puis-je t'aider aujourd'hui ?|¡Hola, soy tu IA Stylish! ¿En qué puedo ayudarte hoy?|Olá, sou a tua IA Stylish. Como posso ajudar-te hoje?|مرحبًا، أنا ذكاؤك Stylish. كيف يمكنني مساعدتك اليوم؟|हाय, मैं आपका Stylish AI हूँ। आज मैं आपकी कैसे मदद कर सकता हूँ?|嗨，我是你的 Stylish AI。今天有什么可以帮你？",
+"Schreib eine Nachricht …":"Write a message …|Écris un message …|Escribe un mensaje …|Escreve uma mensagem …|اكتب رسالة …|संदेश लिखें …|输入消息 …",
+"Foto senden":"Send photo|Envoyer une photo|Enviar foto|Enviar foto|إرسال صورة|फ़ोटो भेजें|发送照片",
+"Diktieren":"Dictate|Dicter|Dictar|Ditar|إملاء|बोलकर लिखें|语音输入",
+"Gespräch":"Voice chat|Conversation vocale|Charla por voz|Conversa por voz|محادثة صوتية|वॉइस चैट|语音对话",
+"Senden":"Send|Envoyer|Enviar|Enviar|إرسال|भेजें|发送",
+"Spracheingabe wird hier nicht unterstützt.":"Voice input isn't supported here.|La saisie vocale n'est pas prise en charge ici.|La entrada de voz no es compatible aquí.|A entrada de voz não é suportada aqui.|الإدخال الصوتي غير مدعوم هنا.|यहाँ वॉइस इनपुट समर्थित नहीं है।|此处不支持语音输入。",
+"Ich höre zu …":"Listening …|J'écoute …|Te escucho …|Estou a ouvir …|أستمع …|मैं सुन रहा हूँ …|我在听 …",
+"Die KI ist noch nicht mit einem Server verbunden. Trage in der Datei bei AI_URL deinen Server ein.":"The AI isn't connected to a server yet. Enter your server at AI_URL in the file.|L'IA n'est pas encore reliée à un serveur. Renseigne ton serveur dans AI_URL dans le fichier.|La IA aún no está conectada a un servidor. Indica tu servidor en AI_URL dentro del archivo.|A IA ainda não está ligada a um servidor. Indica o teu servidor em AI_URL no ficheiro.|الذكاء الاصطناعي غير متصل بخادم بعد. ضع خادمك في AI_URL داخل الملف.|AI अभी सर्वर से जुड़ा नहीं है। फ़ाइल में AI_URL पर अपना सर्वर डालें।|AI 尚未连接服务器，请在文件中的 AI_URL 填入你的服务器。",
+"Die KI ist gerade nicht erreichbar. Versuch es gleich noch mal.":"The AI isn't reachable right now. Try again in a moment.|L'IA est injoignable pour le moment. Réessaie dans un instant.|La IA no está disponible ahora. Inténtalo de nuevo en un momento.|A IA não está disponível agora. Tenta de novo daqui a pouco.|الذكاء غير متاح حاليًا. حاول مجددًا بعد قليل.|AI अभी उपलब्ध नहीं है। थोड़ी देर बाद फिर कोशिश करें।|AI暂时无法连接，请稍后再试。",
+"Figur wählen":"Choose character|Choisir un personnage|Elegir personaje|Escolher personagem|اختر الشخصية|किरदार चुनें|选择形象",
+"Panda":"Panda|Panda|Panda|Panda|باندا|पांडा|熊猫",
+"Fuchs":"Fox|Renard|Zorro|Raposa|ثعلب|लोमड़ी|狐狸",
+"Hase":"Rabbit|Lapin|Conejo|Coelho|أرنب|खरगोश|兔子"
+};
+for(var k in D)D[k]=D[k].split("|");
+
+var LN=["Deutsch","English","Français","Español","Português","العربية","हिन्दी","中文"],LC=["de","en","fr","es","pt","ar","hi","zh"],LW="";
+function li(){var i=prof?LN.indexOf(prof.lang):0;return i<0?0:i}
+function tr(s){var i=li();if(!i||s==null)return s;var a=D[s];return a&&a[i-1]||s}
+function ts(c,a,b){return tr(c?a:b)}
+function pl(){var c=LC[li()];return c==="de"||c==="fr"?c:"en"}
+/* Startanimation */
+var logo=$("logo"),n=0;
+["LOOK","GOOD"].forEach(function(w){var r=el("span","row");r.setAttribute("aria-hidden","true");
+  w.split("").forEach(function(c){var s=el("span","ch"+(c==="O"?" o":""),c);s.style.setProperty("--i",n++);r.appendChild(s)});logo.appendChild(r)});
+var splash=$("splash"),login=$("login"),app=$("app"),welcome=$("welcome"),done=false;
+function finish(){if(done)return;done=true;welcome.classList.remove("hidden");splash.classList.add("out");setTimeout(function(){splash.classList.add("hidden")},550)}
+setTimeout(finish,matchMedia("(prefers-reduced-motion: reduce)").matches?900:2900);
+$("skip").onclick=finish;
+
+/* Anmeldung */
+function enter(){login.classList.add("hidden");if(mode==="login"&&prof.done)goHome();else startOnb()}
+function goHome(){["welcome","login","onb"].forEach(function(i){$(i).classList.add("hidden")});app.classList.remove("hidden");showTab("home");render()}
+document.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){prof.login=b.dataset.go;prof.phone="";saveProf();enter()}});
+function submitPhone(){
+  var d=$("tel").value.replace(/\D/g,"");
+  if(d.length<6){$("err").textContent=tr("Gib deine Telefonnummer ein.");return false}
+  $("err").textContent="";prof.login="Telefonnummer";prof.phone=d;saveProf();enter();return true}
+$("pgo").onclick=submitPhone;
+$("tel").addEventListener("keydown",function(e){if(e.key==="Enter")submitPhone()});
+
+/* Sheet */
+var sheet=$("sheet"),panel=$("panel");
+function closeSheet(){sheet.classList.add("hidden")}
+sheet.addEventListener("click",function(e){if(e.target===sheet)closeSheet()});
+
+/* Profil */
+function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+var DEF={name:"",last:"",user:"",photo:"",email:"",ai:"Mo",loc:true,theme:"",login:"",phone:"",birth:"",gender:"",vis:"Alle",nW:true,nF:true,lang:"Deutsch",done:false};
+var prof=Object.assign({},DEF,ls("lg_prof")||{});
+function saveProf(){ls("lg_prof",prof)}
+if(prof.theme)document.documentElement.setAttribute("data-theme",prof.theme);
+function info(title,text){panel.textContent="";panel.appendChild(el("h3","",title));if(text)panel.appendChild(el("p","fine",text));var c=el("button","link","Schließen");c.type="button";c.onclick=closeSheet;panel.appendChild(c);sheet.classList.remove("hidden")}
+function menu(title,text,items){
+  panel.textContent="";panel.appendChild(el("h3","",title));if(text)panel.appendChild(el("p","fine",text));
+  items.forEach(function(it){var b=el("button","btn",it.t);b.type="button";b.onclick=function(){closeSheet();it.fn()};panel.appendChild(b)});
+  var c=el("button","link","Abbrechen");c.type="button";c.onclick=closeSheet;panel.appendChild(c);sheet.classList.remove("hidden")}
+function form(title,fields,ok,onOk,note){
+  panel.textContent="";panel.appendChild(el("h3","",title));
+  var vals={},ins={};
+  fields.forEach(function(f){
+    var w=el("div","fl");w.appendChild(el("small","",f.label));
+    if(f.opts){var g=el("div","opts");vals[f.id]=f.val||"";
+      f.opts.forEach(function(o){var b=el("button","",o);b.type="button";b.setAttribute("aria-pressed",String(o===vals[f.id]));
+        b.onclick=function(){vals[f.id]=o;Array.prototype.forEach.call(g.children,function(x){x.setAttribute("aria-pressed",String(x===b))})};g.appendChild(b)});
+      w.appendChild(g)}
+    else{var i=el("input");i.type=f.type||"text";i.value=f.val||"";if(f.ph)i.placeholder=tr(f.ph);if(f.ac)i.autocomplete=f.ac;if(i.type==="date")i.max=new Date().toISOString().slice(0,10);ins[f.id]=i;w.appendChild(i)}
+    panel.appendChild(w)});
+  var er=el("p","err");er.setAttribute("role","alert");panel.appendChild(er);
+  var b=el("button","btn primary",ok);b.type="button";
+  b.onclick=function(){Object.keys(ins).forEach(function(k){vals[k]=ins[k].value.trim()});var m=onOk(vals);if(m){er.textContent=tr(m);return}closeSheet()};
+  panel.appendChild(b);
+  if(note)panel.appendChild(el("p","fine",note));
+  var c=el("button","link","Abbrechen");c.type="button";c.onclick=closeSheet;panel.appendChild(c);
+  sheet.classList.remove("hidden")}
+function mailOk(v){return/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(v)}
+function pwStrong(p){return p.length>=8&&/[a-z]/.test(p)&&/[A-Z]/.test(p)&&/\d/.test(p)&&/[^\w\s]/.test(p)}
+var PWMSG="Mindestens 8 Zeichen mit Groß- und Kleinbuchstaben, Zahl und Sonderzeichen.";
+function editProfile(){
+  form("Profil bearbeiten",[
+    {id:"name",label:"Vorname",val:prof.name,ac:"given-name"},
+    {id:"last",label:"Nachname",val:prof.last,ac:"family-name"},
+    {id:"user",label:"Benutzername",val:prof.user,ph:"zum Beispiel mia.styles"},
+    {id:"birth",label:"Geburtsdatum",type:"date",val:prof.birth},
+    {id:"gender",label:"Geschlecht",opts:["Männlich","Weiblich","Andere","Keine Angabe"],val:prof.gender}],
+  "Speichern",function(v){
+    if(!v.name)return"Gib deinen Vornamen ein.";
+    if(!v.last)return"Gib deinen Nachnamen ein.";
+    if(!v.birth)return"Wähle dein Geburtsdatum.";
+    var a=age(v.birth);if(isNaN(a)||a>110)return"Bitte prüfe dein Geburtsdatum.";if(a<13)return"Du musst mindestens 13 Jahre alt sein.";
+    if(!v.gender)return"Bitte wähle eine Option.";
+    prof.name=v.name;prof.last=v.last;prof.user=v.user.replace(/^@/,"").replace(/[^\w.]/g,"");prof.birth=v.birth;prof.gender=v.gender;
+    saveProf();paintProf();say("Profil gespeichert");return""})}
+function loginSheet(){
+  menu("Login-Daten",(prof.login?tr("Angemeldet mit")+" "+tr(prof.login)+(prof.phone?" (+49 "+prof.phone+"). ":". "):"")+(prof.email?tr("E-Mail:")+" "+prof.email+".":tr("Noch keine E-Mail hinterlegt.")),[
+    {t:prof.email?"E-Mail ändern":"E-Mail hinzufügen",fn:emailSheet},{t:"Passwort ändern",fn:pwSheet},{t:"Passwort vergessen?",fn:forgotSheet}])}
+function emailSheet(){form("E-Mail",[{id:"e",label:"E-Mail-Adresse",type:"email",val:prof.email,ph:"du@beispiel.de",ac:"email"}],"Speichern",function(v){
+  if(!mailOk(v.e))return"Gib eine gültige E-Mail-Adresse ein.";prof.email=v.e;saveProf();paintProf();say("E-Mail gespeichert");return""})}
+function pwSheet(){form("Passwort ändern",[{id:"o",label:"Aktuelles Passwort",type:"password",ac:"current-password"},{id:"n",label:"Neues Passwort",type:"password",ac:"new-password"},{id:"r",label:"Neues Passwort wiederholen",type:"password",ac:"new-password"}],"Ändern",function(v){
+  if(!v.o)return"Gib dein aktuelles Passwort ein.";if(!pwStrong(v.n))return PWMSG;if(v.n!==v.r)return"Die Passwörter stimmen nicht überein.";
+  say("Passwort geprüft. Gespeichert wird erst mit dem Server.");return""},"Prototyp: Ohne Server wird noch nichts gespeichert.")}
+function forgotSheet(){form("Passwort vergessen",[{id:"e",label:"E-Mail-Adresse",type:"email",val:prof.email,ph:"du@beispiel.de"}],"Code senden",function(v){
+  if(!mailOk(v.e))return"Gib eine gültige E-Mail-Adresse ein.";
+  setTimeout(function(){form("Code eingeben",[{id:"c",label:"6-stelliger Code",ph:"123456"},{id:"n",label:"Neues Passwort",type:"password",ac:"new-password"}],"Passwort setzen",function(w){
+    if(!/^\d{6}$/.test(w.c))return"Der Code hat 6 Ziffern.";if(!pwStrong(w.n))return PWMSG;
+    say("Fertig. Zurücksetzen klappt erst mit dem Server.");return""},"Prototyp: Es wird noch keine E-Mail verschickt.")},0);return""},tr("Wir schicken dir einen Code per E-Mail.")+" "+tr("Prototyp: Es wird noch keine E-Mail verschickt."))}
+function choose(title,key,list,after){menu(title,"",list.map(function(o){return{t:(prof[key]===o?"✓ ":"")+tr(o),fn:function(){prof[key]=o;saveProf();paintProf();if(after)after(o)}}}))}
+var PI={
+key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/>',
+eye:'<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>',
+chat:'<path d="M4 5h16v11H9l-5 4z"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+bell:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/>',
+pin:'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+moon:'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>'};
+var SETS=[
+ ["Konto",[{i:"key",t:"Login-Daten",s:"E-Mail, Passwort, Anmeldung",go:loginSheet},{i:"eye",t:"Wer sieht dein Profil",s:function(){return prof.vis},go:function(){choose("Wer sieht dein Profil","vis",["Alle","Nur Freunde","Niemand"])}}]],
+ ["KI",[{i:"chat",t:"Chat mit Mo oder Sarah",s:"Persönliche Stilberatung",seg:"ai",o:["Mo","Sarah"]},{i:"clock",t:"Chat-Verlauf",s:"Vergangene Chats mit der KI",go:function(){info("Chat-Verlauf","Noch keine Chats mit der KI. Hier erscheinen später deine Gespräche.")}}]],
+ ["Benachrichtigungen",[{i:"bell",t:"Tägliche Wetter-Nachricht",s:"Morgens ein kurzer Hinweis",sw:"nW"},{i:"bell",t:"Freunde und Snaps",s:"Wenn dir jemand schreibt",sw:"nF"}]],
+ ["Datenschutz",[{i:"pin",t:"Standort für die KI",s:"Die KI darf deine Stadt für Vorschläge nutzen",sw:"loc"}]],
+ ["App",[{i:"moon",t:"Erscheinungsbild",s:"Hell oder dunkel",seg:"theme",o:["Hell","Dunkel"],v:["light","dark"]},{i:"globe",t:"Sprache",s:function(){return prof.lang},go:function(){choose("Sprache","lang",LN,function(){applyLang()})}}]]];
+function renderSets(){
+  var H=$("sets");H.textContent="";
+  SETS.forEach(function(g){
+    H.appendChild(el("h3","sh",g[0]));var L=el("div","list");
+    g[1].forEach(function(r){
+      var row=el(r.go?"button":"div","set");if(r.go){row.type="button";row.onclick=r.go}
+      var ic=el("span","ic");ic.innerHTML='<svg viewBox="0 0 24 24">'+PI[r.i]+'</svg>';row.appendChild(ic);
+      var tx=el("span","tx");tx.appendChild(el("b","",r.t));tx.appendChild(el("small","",typeof r.s==="function"?r.s():r.s));row.appendChild(tx);
+      if(r.seg){var sg=el("span","seg"),now=r.seg==="theme"?(prof.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")):prof[r.seg];
+        r.o.forEach(function(o,n){var val=r.v?r.v[n]:o,b=el("button","",o);b.type="button";b.setAttribute("aria-pressed",String(now===val));
+          b.onclick=function(){prof[r.seg]=val;if(r.seg==="ai")prof.skin=val;if(r.seg==="theme")document.documentElement.setAttribute("data-theme",val);saveProf();paintProf()};sg.appendChild(b)});
+        row.appendChild(sg)}
+      if(r.sw){var tg=el("button","sw");tg.type="button";tg.setAttribute("role","switch");tg.setAttribute("aria-label",tr(r.t));tg.setAttribute("aria-checked",String(prof[r.sw]));
+        tg.onclick=function(){prof[r.sw]=!prof[r.sw];saveProf();paintProf();if(r.sw==="loc")say(prof.loc?"Die KI darf deinen Standort nutzen.":"Die KI sieht deinen Standort nicht mehr.")};row.appendChild(tg)}
+      L.appendChild(row)});
+    H.appendChild(L)})}
+function paintProf(){
+  var ini=prof.name?prof.name.charAt(0).toUpperCase():tr("Du");
+  [$("avatar"),$("big")].forEach(function(x){x.style.backgroundImage=prof.photo?"url("+prof.photo+")":""});
+  $("avatar").textContent=prof.photo?"":ini;$("bigtxt").textContent=prof.photo?"":ini;
+  $("pname").textContent=prof.name||tr("Dein Name");$("puser").textContent=prof.user?"@"+prof.user:"@"+tr("benutzername");
+  $("pinfo").textContent=prof.phone?"+49 "+prof.phone:(prof.email||(prof.login?tr("Angemeldet mit")+" "+tr(prof.login):""));
+  chatHead();renderSets()}
+$("avatar").onclick=function(){paintProf();$("profile").classList.remove("hidden");$("profile").scrollTop=0};
+$("pback").onclick=function(){$("profile").classList.add("hidden")};
+$("pen").onclick=function(){$("pfile").click()};
+$("pfile").onchange=function(e){var f=e.target.files[0];e.target.value="";if(!f)return;
+  var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,300/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);prof.photo=c.toDataURL("image/jpeg",.85);saveProf();paintProf()};im.src=r.result};r.readAsDataURL(f)};
+$("pedit").onclick=editProfile;
+$("pout").onclick=function(){$("profile").classList.add("hidden");app.classList.add("hidden");welcome.classList.remove("hidden");$("tel").value=""};
+$("pdel").onclick=function(){menu("Konto löschen?","Dein Profil und deine Einstellungen werden von diesem Gerät gelöscht. Das kann nicht rückgängig gemacht werden.",[{t:"Endgültig löschen",fn:function(){try{localStorage.removeItem("lg_prof");localStorage.removeItem("lg_cities")}catch(e){}location.reload()}}])};
+paintProf();
+
+/* Tabs mit Wischen */
+var KEYS=["home","wardrobe","friends","chat"],cur="home";
+var TXT={wardrobe:["Garderobe","Hier landen bald deine Kleidungsstücke."],friends:["Freunde","Hier findest du bald deine Freunde und Snaps."],chat:["AI","Hier sprichst du bald mit deinem Stylisten."]};
+function emptyViews(){["wardrobe","friends"].forEach(function(k){var s=$("v-"+k);if(!s){s=el("section","view hidden");s.id="v-"+k;$("views").appendChild(s)}s.textContent="";var e=el("div","empty");e.appendChild(el("h2","",TXT[k][0]));e.appendChild(el("p","",TXT[k][1]));s.appendChild(e)})}emptyViews();
+function showTab(k){cur=k;app.classList.toggle("home",k==="home");
+  KEYS.forEach(function(t){$("v-"+t).classList.toggle("hidden",t!==k);$("t-"+t).setAttribute("aria-selected",String(t===k))});$("views").scrollTop=0;chatTab(k)}
+KEYS.forEach(function(k){$("t-"+k).onclick=function(){showTab(k)}});
+var tx=0,ty=0;
+app.addEventListener("touchstart",function(e){tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+app.addEventListener("touchend",function(e){
+  if(e.target.closest&&e.target.closest(".noswipe,.sheet"))return;
+  var t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;
+  if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.6){var i=KEYS.indexOf(cur)+(dx<0?1:-1);if(i>=0&&i<KEYS.length)showTab(KEYS[i])}},{passive:true});
+
+/* Registrieren, Anmelden, Fragen, Stylist-Wahl */
+var mode="signup",step=0,ob={};
+function showAuth(m){mode=m;var s=m==="signup";
+  welcome.classList.add("hidden");login.classList.remove("hidden");
+  $("hTitle").textContent=ts(s,"Konto erstellen","Willkommen zurück");
+  $("hSub").textContent=ts(s,"Wähle, wie du dich registrieren möchtest.","Melde dich mit deinem Konto an.");
+  $("tApple").textContent=ts(s,"Mit Apple registrieren","Mit Apple anmelden");
+  $("tGoogle").textContent=ts(s,"Mit Google registrieren","Mit Google anmelden");
+  $("swText").textContent=ts(s,"Schon ein Konto?","Noch kein Konto?");$("swMode").textContent=ts(s,"Anmelden","Registrieren");$("err").textContent=""}
+$("wSign").onclick=function(){showAuth("signup")};
+$("wLogin").onclick=function(){showAuth("login")};
+$("swMode").onclick=function(){showAuth(mode==="signup"?"login":"signup")};
+$("aback").onclick=function(){login.classList.add("hidden");welcome.classList.remove("hidden")};
+var onb=$("onb");
+function startOnb(){onb.classList.remove("hidden");showStep(0)}
+function showStep(i){step=i;
+  document.querySelectorAll("#onb .step").forEach(function(x){x.classList.toggle("hidden",+x.dataset.s!==i)});
+  $("pbar").style.width=(i+1)*50+"%";$("oerr").textContent="";$("onext").textContent=tr(i===1?"Los geht’s":"Weiter");
+  if(i===1)$("oBirth").max=new Date().toISOString().slice(0,10)}
+document.querySelectorAll("#oGender button").forEach(function(b){b.onclick=function(){ob.gender=b.dataset.v;document.querySelectorAll("#oGender button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))})}});
+function age(v){var b=new Date(v),n=new Date(),a=n.getFullYear()-b.getFullYear(),m=n.getMonth()-b.getMonth();if(m<0||(m===0&&n.getDate()<b.getDate()))a--;return a}
+function oerr(t){$("oerr").textContent=tr(t);return false}
+function valid(i){
+  if(i===0){var f=$("oFirst").value.trim(),l=$("oLast").value.trim();if(!f)return oerr("Gib deinen Vornamen ein.");if(!l)return oerr("Gib deinen Nachnamen ein.");prof.name=f;prof.last=l;return true}
+  var b=$("oBirth").value;if(!b)return oerr("Wähle dein Geburtsdatum.");var a=age(b);
+  if(isNaN(a)||a>110)return oerr("Bitte prüfe dein Geburtsdatum.");if(a<13)return oerr("Du musst mindestens 13 Jahre alt sein.");
+  if(!ob.gender)return oerr("Bitte wähle eine Option.");prof.birth=b;prof.gender=ob.gender;return true}
+function nextStep(){if(!valid(step))return;saveProf();if(step<1)showStep(1);else{prof.done=true;saveProf();paintProf();goHome()}}
+$("onext").onclick=nextStep;
+$("oback").onclick=function(){if(step>0)showStep(step-1);else{onb.classList.add("hidden");login.classList.remove("hidden")}};
+onb.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT")nextStep()});
+
+/* Kurze Hinweise unter dem Wetter */
+var CARE=["Mit LOOK GOOD siehst du heute garantiert gut aus 😉","Zieh an, worin du dich stark fühlst ✨","Du hast heute einen richtig guten Look verdient 😊","Heute ist dein Tag, mach was draus 🔥","Hauptsache, du fühlst dich wohl, der Rest kommt von allein 😉"];
+function care(){return CARE[Math.floor(Date.now()/864e5)%CARE.length]}
+function tipsRender(a,b){
+  var T=$("tips");T.textContent="";var c=el("div","daily");
+  c.appendChild(el("div","dl","Heute für dich"));c.appendChild(el("p","d1",a));c.appendChild(el("p","d2",b));T.appendChild(c)}
+function wtips(d,cur,w,day,i0){
+  var t=Math.round(cur.temperature_2m),uv=(d.daily.uv_index_max||[])[0]||0,wind=cur.wind_speed_10m,ri=-1,rt="",j;
+  for(j=1;j<5;j++){if((d.hourly.precipitation_probability[i0+j]||0)>=50){ri=j;rt=d.hourly.time[i0+j];break}}
+  if(cur.weather_code>=95)return"Heute gewittert es, bleib lieber drinnen, wenn es richtig losgeht ⚡";
+  if(w.k==="rain")return"Heute regnet es, deine Regenjacke freut sich schon auf ihren Auftritt 😉";
+  if(ri>0)return tr("Ab # Uhr wird es nass, pack dir eine Jacke ein 😉").replace("#",parseInt(rt.slice(11,13),10));
+  if(w.k==="snow")return"Es schneit, zieh dich schön warm an, dann kann der Schnee kommen ❄️";
+  if(t>=28)return"Richtig heiß heute, trink genug Wasser und gönn dir Schatten ☀️";
+  if(day&&uv>=3)return"Die Sonne meint es heute ernst, vergiss die Sonnencreme nicht 😎";
+  if(t<=5)return"Heute ist es kalt, Mütze und warme Jacke sind dein bester Freund 🧣";
+  if(wind>=40)return"Heute weht es ordentlich, eine windfeste Jacke ist die beste Wahl 💨";
+  return"Schönes Wetter heute, perfekt für einen Spaziergang 😊"}
+
+/* Wetter: echte Daten von Open-Meteo. Funktioniert nur, wenn die Seite Internetzugriff hat. */
+var IC={
+sun:'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>',
+moon:'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+cloud:'<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>',
+part:'<path d="M12 2v2M4.93 4.93l1.41 1.41M20 12h2M19.07 4.93l-1.41 1.41M15.947 12.65a4 4 0 0 0-5.925-4.128M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/>',
+rain:'<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M16 14v6M8 14v6M12 16v6"/>',
+snow:'<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M8 16h.01M8 20h.01M12 18h.01M12 22h.01M16 16h.01M16 20h.01"/>',
+wind:'<path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>',
+drop:'<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>',
+temp:'<path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>'};
+function ico(n){return '<svg class="wi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[n]+'</svg>'}
+function wmo(c,day){
+  if(c===0||c===1)return{t:c===0?"Klar":"Überwiegend klar",i:day?"sun":"moon",k:"sun"};
+  if(c===2)return{t:"Teils bewölkt",i:day?"part":"cloud",k:"cloud"};
+  if(c===3)return{t:"Bedeckt",i:"cloud",k:"cloud"};
+  if(c===45||c===48)return{t:"Nebel",i:"cloud",k:"cloud"};
+  if(c>=51&&c<=57)return{t:"Nieselregen",i:"rain",k:"rain"};
+  if((c>=61&&c<=67)||(c>=80&&c<=82))return{t:c>=80?"Regenschauer":"Regen",i:"rain",k:"rain"};
+  if((c>=71&&c<=77)||c===85||c===86)return{t:"Schnee",i:"snow",k:"snow"};
+  if(c>=95)return{t:"Gewitter",i:"rain",k:"rain"};
+  return{t:"Bewölkt",i:"cloud",k:"cloud"}}
+function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+var PH={frankfurt:"photo-1467269204594-9661b134dd2b",berlin:"photo-1560969184-10fe8719e047",amsterdam:"photo-1534351590666-13e3e96b5017"},PG=["photo-1477959858617-67f85cf4f1df","photo-1449824913935-59a10b8d2000","photo-1480714378408-67cf0d13bc1b"];
+function photo(n){var id=PH[n.toLowerCase().split(" ")[0]]||PG[hash(n.toLowerCase())%3];return"https://images.unsplash.com/"+id+"?auto=format&fit=crop&w=1000&q=85"}
+var cities=[],sel=0,req=0;
+try{var sv=JSON.parse(localStorage.getItem("lg_cities")||"null");if(sv&&sv.list&&sv.list.length){cities=sv.list;sel=Math.min(sv.sel||0,cities.length-1)}}catch(e){}
+function save(){try{localStorage.setItem("lg_cities",JSON.stringify({list:cities,sel:sel}))}catch(e){}}
+function load(c){
+  var u="https://api.open-meteo.com/v1/forecast?latitude="+c.lat+"&longitude="+c.lon+"&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset,uv_index_max&timezone=auto&forecast_days=3&wind_speed_unit=kmh";
+  return fetch(u).then(function(r){if(!r.ok)throw new Error("http");return r.json()})}
+function slot(label,iconName,temp,cls){
+  var b=el("div",cls||"");b.appendChild(el("small","",label));var sp=el("span");if(iconName)sp.innerHTML=ico(iconName);else sp.textContent="–";b.appendChild(sp);b.appendChild(el("b","",temp));return b}
+function paint(c,d,err){
+  var cur=d&&d.current,day=true,k="cloud",i;
+  if(d){i=d.daily.time.indexOf(cur.time.slice(0,10));day=i>=0?(cur.time>=d.daily.sunrise[i]&&cur.time<d.daily.sunset[i]):true;k=wmo(cur.weather_code,day).k}
+  var night=!day,sky=night?["#0B1633","#2B3C6B"]:k==="sun"?["#3C96F2","#BFE3FF"]:k==="rain"?["#46505F","#8794A4"]:k==="snow"?["#8EA2B8","#DCE6F0"]:["#7C90A8","#CBD5E1"];
+  var sc=$("scene");sc.style.background="linear-gradient(180deg,"+sky[0]+","+sky[1]+")";
+  sc.textContent="";var im=document.createElement("img");im.alt="";im.src=photo(c.n);im.onerror=function(){im.remove()};sc.appendChild(im);
+  $("cName").textContent=c.n;$("cReg").textContent=c.region||"";
+  var P=$("cPills"),H=$("hours"),D=$("days");P.textContent="";H.textContent="";D.textContent="";
+  if(!d){
+    $("cTemp").textContent="–";$("cCond").textContent=tr(err?"Live-Wetter nur in der Datei-Version":"Lädt …");
+    for(var z=0;z<5;z++)H.appendChild(slot(z===0?"Jetzt":"+"+z+" "+tr("Std."),null,"–"));
+    ["Heute","Morgen","Übermorgen"].forEach(function(n){var r=el("div","day");r.appendChild(el("b","",n));r.appendChild(el("b","","–"));D.appendChild(r)});
+    $("wnote").textContent=err?tr("Diese Vorschau darf keine Wetterdaten abrufen. Öffne die Datei-Version im Browser, dann lädt das echte Wetter."):"";
+    tipsRender("Schön, dass du da bist 😉",care());return}
+  var w=wmo(cur.weather_code,day);
+  $("cTemp").textContent=Math.round(cur.temperature_2m)+"°";LW=c.n+": "+Math.round(cur.temperature_2m)+"°C, "+w.t;$("cCond").textContent=tr(w.t);
+  [["wind",tr("Wind")+" "+Math.round(cur.wind_speed_10m)+" km/h"],["drop",tr("Feuchte")+" "+Math.round(cur.relative_humidity_2m)+" %"],["temp",tr("Gefühlt")+" "+Math.round(cur.apparent_temperature)+"°"]].forEach(function(x){var s=el("span","pill");s.innerHTML=ico(x[0]);s.appendChild(document.createTextNode(x[1]));P.appendChild(s)});
+  var i0=d.hourly.time.indexOf(cur.time.slice(0,13)+":00");if(i0<0)i0=0;var pr=0;
+  for(var j=0;j<5;j++){var t=d.hourly.time[i0+j];if(!t)break;
+    var di=d.daily.time.indexOf(t.slice(0,10)),isD=di>=0?(t>=d.daily.sunrise[di]&&t<d.daily.sunset[di]):true;
+    pr=Math.max(pr,d.hourly.precipitation_probability[i0+j]||0);
+    H.appendChild(slot(j===0?"Jetzt":t.slice(11,16),wmo(d.hourly.weather_code[i0+j],isD).i,Math.round(d.hourly.temperature_2m[i0+j])+"°",j===0?"now1":""))}
+  d.daily.time.slice(0,3).forEach(function(x,n){
+    var r=el("div","day"),sp=el("span");sp.innerHTML=ico(wmo(d.daily.weather_code[n],true).i);r.appendChild(sp);
+    r.appendChild(el("b","",["Heute","Morgen","Übermorgen"][n]));
+    var p=d.daily.precipitation_probability_max[n];if(p!=null&&p>=20)r.appendChild(el("em","",p+" %"));
+    r.appendChild(el("em","",Math.round(d.daily.temperature_2m_min[n])+"°"));r.appendChild(el("b","",Math.round(d.daily.temperature_2m_max[n])+"°"));D.appendChild(r)});
+  $("wnote").textContent=tr("Wetterdaten: Open-Meteo.com.");tipsRender(wtips(d,cur,w,day,i0),care())}
+function render(){
+  var has=cities.length>0;
+  $("noCity").classList.toggle("hidden",has);$("wx").classList.toggle("hidden",!has);
+  if(!has)return;
+  var c=cities[sel],my=++req;paint(c,null,false);
+  var C=$("cities");C.textContent="";
+  if(cities.length>1)cities.forEach(function(x,n){var b=el("button","chip",x.n);b.type="button";b.setAttribute("aria-pressed",String(n===sel));b.onclick=function(){sel=n;save();render()};C.appendChild(b)});
+  var add=el("button","chip","+");add.type="button";add.setAttribute("aria-label",tr("Stadt hinzufügen"));add.onclick=citySheet;C.appendChild(add);
+  load(c).then(function(d){if(my===req)paint(c,d,false)}).catch(function(){if(my===req)paint(c,null,true)})}
+function addCity(c){
+  var dup=cities.findIndex(function(x){return Math.abs(x.lat-c.lat)<.05&&Math.abs(x.lon-c.lon)<.05});
+  if(dup>=0)sel=dup;else{cities.push(c);sel=cities.length-1}
+  save();closeSheet();render()}
+var DB=("Berlin|Deutschland|52.52|13.40;Hamburg|Deutschland|53.55|10.00;München|Bayern, Deutschland|48.14|11.58;Köln|Nordrhein-Westfalen, Deutschland|50.94|6.96;Frankfurt am Main|Hessen, Deutschland|50.11|8.68;Stuttgart|Baden-Württemberg, Deutschland|48.78|9.18;Düsseldorf|Nordrhein-Westfalen, Deutschland|51.23|6.78;Dortmund|Nordrhein-Westfalen, Deutschland|51.51|7.47;Essen|Nordrhein-Westfalen, Deutschland|51.46|7.01;Leipzig|Sachsen, Deutschland|51.34|12.37;Bremen|Deutschland|53.08|8.80;Dresden|Sachsen, Deutschland|51.05|13.74;Hannover|Niedersachsen, Deutschland|52.37|9.74;Nürnberg|Bayern, Deutschland|49.45|11.08;Duisburg|Nordrhein-Westfalen, Deutschland|51.43|6.76;Bochum|Nordrhein-Westfalen, Deutschland|51.48|7.22;Wuppertal|Nordrhein-Westfalen, Deutschland|51.26|7.15;Bielefeld|Nordrhein-Westfalen, Deutschland|52.02|8.53;Bonn|Nordrhein-Westfalen, Deutschland|50.73|7.10;Münster|Nordrhein-Westfalen, Deutschland|51.96|7.63;Karlsruhe|Baden-Württemberg, Deutschland|49.01|8.40;Mannheim|Baden-Württemberg, Deutschland|49.49|8.47;Augsburg|Bayern, Deutschland|48.37|10.90;Wiesbaden|Hessen, Deutschland|50.08|8.24;Mainz|Rheinland-Pfalz, Deutschland|50.00|8.27;Rüsselsheim am Main|Hessen, Deutschland|49.99|8.41;Darmstadt|Hessen, Deutschland|49.87|8.65;Offenbach am Main|Hessen, Deutschland|50.10|8.76;Hanau|Hessen, Deutschland|50.13|8.92;Kassel|Hessen, Deutschland|51.31|9.50;Gießen|Hessen, Deutschland|50.58|8.68;Fulda|Hessen, Deutschland|50.55|9.68;Bad Homburg|Hessen, Deutschland|50.23|8.62;Freiburg|Baden-Württemberg, Deutschland|47.99|7.85;Heidelberg|Baden-Württemberg, Deutschland|49.40|8.69;Kiel|Schleswig-Holstein, Deutschland|54.32|10.14;Lübeck|Schleswig-Holstein, Deutschland|53.87|10.69;Rostock|Mecklenburg-Vorpommern, Deutschland|54.09|12.14;Erfurt|Thüringen, Deutschland|50.98|11.03;Magdeburg|Sachsen-Anhalt, Deutschland|52.13|11.63;Potsdam|Brandenburg, Deutschland|52.40|13.07;Saarbrücken|Saarland, Deutschland|49.24|6.99;Aachen|Nordrhein-Westfalen, Deutschland|50.78|6.08;Braunschweig|Niedersachsen, Deutschland|52.27|10.52;Würzburg|Bayern, Deutschland|49.79|9.95;Regensburg|Bayern, Deutschland|49.01|12.10;Ulm|Baden-Württemberg, Deutschland|48.40|9.99;Koblenz|Rheinland-Pfalz, Deutschland|50.36|7.59;Trier|Rheinland-Pfalz, Deutschland|49.76|6.64;Wien|Österreich|48.21|16.37;Salzburg|Österreich|47.81|13.04;Graz|Österreich|47.07|15.44;Innsbruck|Österreich|47.26|11.39;Zürich|Schweiz|47.38|8.54;Genf|Schweiz|46.20|6.14;Basel|Schweiz|47.56|7.59;Bern|Schweiz|46.95|7.45;London|Vereinigtes Königreich|51.51|-0.13;Manchester|Vereinigtes Königreich|53.48|-2.24;Birmingham|Vereinigtes Königreich|52.49|-1.89;Edinburgh|Vereinigtes Königreich|55.95|-3.19;Dublin|Irland|53.35|-6.26;Paris|Frankreich|48.86|2.35;Lyon|Frankreich|45.76|4.84;Marseille|Frankreich|43.30|5.37;Madrid|Spanien|40.42|-3.70;Barcelona|Spanien|41.39|2.17;Valencia|Spanien|39.47|-0.38;Sevilla|Spanien|37.39|-5.98;Lissabon|Portugal|38.72|-9.14;Rom|Italien|41.90|12.50;Mailand|Italien|45.46|9.19;Neapel|Italien|40.85|14.27;Amsterdam|Niederlande|52.37|4.90;Rotterdam|Niederlande|51.92|4.48;Brüssel|Belgien|50.85|4.35;Antwerpen|Belgien|51.22|4.40;Luxemburg|Luxemburg|49.61|6.13;Kopenhagen|Dänemark|55.68|12.57;Stockholm|Schweden|59.33|18.07;Oslo|Norwegen|59.91|10.75;Helsinki|Finnland|60.17|24.94;Warschau|Polen|52.23|21.01;Prag|Tschechien|50.08|14.44;Budapest|Ungarn|47.50|19.04;Bukarest|Rumänien|44.43|26.10;Sofia|Bulgarien|42.70|23.32;Belgrad|Serbien|44.79|20.45;Zagreb|Kroatien|45.81|15.98;Sarajevo|Bosnien und Herzegowina|43.86|18.41;Pristina|Kosovo|42.66|21.17;Skopje|Nordmazedonien|42.00|21.43;Tirana|Albanien|41.33|19.82;Athen|Griechenland|37.98|23.73;Istanbul|Türkei|41.01|28.98;Ankara|Türkei|39.93|32.86;Moskau|Russland|55.76|37.62;Kiew|Ukraine|50.45|30.52;Dubai|Vereinigte Arabische Emirate|25.20|55.27;Abu Dhabi|Vereinigte Arabische Emirate|24.45|54.38;Doha|Katar|25.29|51.53;Riad|Saudi-Arabien|24.71|46.68;Dschidda|Saudi-Arabien|21.54|39.17;Mekka|Saudi-Arabien|21.42|39.83;Kairo|Ägypten|30.04|31.24;Beirut|Libanon|33.89|35.50;Damaskus|Syrien|33.51|36.28;Amman|Jordanien|31.95|35.93;Bagdad|Irak|33.31|44.37;Teheran|Iran|35.69|51.39;Tel Aviv|Israel|32.09|34.78;Kabul|Afghanistan|34.53|69.17;Mogadischu|Somalia|2.05|45.32;Nairobi|Kenia|-1.29|36.82;Addis Abeba|Äthiopien|9.03|38.74;Lagos|Nigeria|6.52|3.38;Casablanca|Marokko|33.57|-7.59;Marrakesch|Marokko|31.63|-8.01;Tunis|Tunesien|36.81|10.18;Algier|Algerien|36.75|3.06;Kapstadt|Südafrika|-33.92|18.42;Johannesburg|Südafrika|-26.20|28.05;New York|USA|40.71|-74.01;Los Angeles|USA|34.05|-118.24;Chicago|USA|41.88|-87.63;Miami|Florida, USA|25.76|-80.19;San Francisco|USA|37.77|-122.42;Houston|USA|29.76|-95.37;Washington|USA|38.91|-77.04;Boston|USA|42.36|-71.06;Las Vegas|USA|36.17|-115.14;Seattle|USA|47.61|-122.33;Toronto|Kanada|43.65|-79.38;Vancouver|Kanada|49.28|-123.12;Montreal|Kanada|45.50|-73.57;Mexiko-Stadt|Mexiko|19.43|-99.13;São Paulo|Brasilien|-23.55|-46.63;Rio de Janeiro|Brasilien|-22.91|-43.17;Buenos Aires|Argentinien|-34.60|-58.38;Bogotá|Kolumbien|4.71|-74.07;Lima|Peru|-12.05|-77.04;Santiago|Chile|-33.45|-70.67;Tokio|Japan|35.68|139.69;Seoul|Südkorea|37.57|126.98;Peking|China|39.90|116.41;Shanghai|China|31.23|121.47;Hongkong|China|22.32|114.17;Singapur|Singapur|1.35|103.82;Bangkok|Thailand|13.76|100.50;Mumbai|Indien|19.08|72.88;Delhi|Indien|28.61|77.21;Karatschi|Pakistan|24.86|67.01;Dhaka|Bangladesch|23.81|90.41;Jakarta|Indonesien|-6.21|106.85;Manila|Philippinen|14.60|120.98;Taschkent|Usbekistan|41.30|69.24;Sydney|Australien|-33.87|151.21;Melbourne|Australien|-37.81|144.96;Auckland|Neuseeland|-36.85|174.76;Florenz|Italien|43.77|11.26;Fukuoka|Japan|33.59|130.40;Fortaleza|Brasilien|-3.73|-38.52;Faisalabad|Pakistan|31.42|73.08;Fürth|Bayern, Deutschland|49.48|10.99;Flensburg|Schleswig-Holstein, Deutschland|54.78|9.44;Foshan|China|23.02|113.12;Fès|Marokko|34.03|-5.00;Frankfurt (Oder)|Brandenburg, Deutschland|52.35|14.55;Funchal|Portugal|32.65|-16.91;Fort Worth|USA|32.76|-97.33;Fresno|USA|36.74|-119.79;Florianópolis|Brasilien|-27.60|-48.55;Osnabrück|Niedersachsen, Deutschland|52.28|8.04;Oldenburg|Niedersachsen, Deutschland|53.14|8.21;Göttingen|Niedersachsen, Deutschland|51.54|9.93;Pforzheim|Baden-Württemberg, Deutschland|48.89|8.70;Reutlingen|Baden-Württemberg, Deutschland|48.49|9.21;Ingolstadt|Bayern, Deutschland|48.76|11.43;Bremerhaven|Bremen, Deutschland|53.54|8.58;Halle (Saale)|Sachsen-Anhalt, Deutschland|51.48|11.97;Chemnitz|Sachsen, Deutschland|50.83|12.92;Jena|Thüringen, Deutschland|50.93|11.59;Oberhausen|Nordrhein-Westfalen, Deutschland|51.47|6.85;Gelsenkirchen|Nordrhein-Westfalen, Deutschland|51.52|7.10;Mönchengladbach|Nordrhein-Westfalen, Deutschland|51.20|6.44;Krefeld|Nordrhein-Westfalen, Deutschland|51.34|6.59;Leverkusen|Nordrhein-Westfalen, Deutschland|51.03|6.98;Hagen|Nordrhein-Westfalen, Deutschland|51.36|7.47;Paderborn|Nordrhein-Westfalen, Deutschland|51.72|8.75;Kaiserslautern|Rheinland-Pfalz, Deutschland|49.44|7.77;Ludwigshafen|Rheinland-Pfalz, Deutschland|49.48|8.44;Worms|Rheinland-Pfalz, Deutschland|49.63|8.36;Groß-Gerau|Hessen, Deutschland|49.92|8.48;Raunheim|Hessen, Deutschland|50.00|8.46;Kelsterbach|Hessen, Deutschland|50.06|8.53;Dreieich|Hessen, Deutschland|50.02|8.70;Langen|Hessen, Deutschland|49.99|8.67;Flörsheim am Main|Hessen, Deutschland|50.01|8.42;Hochheim am Main|Hessen, Deutschland|50.01|8.36;Osaka|Japan|34.69|135.50;Nagoya|Japan|35.18|136.91;Taipeh|Taiwan|25.03|121.57;Hanoi|Vietnam|21.03|105.85;Ho-Chi-Minh-Stadt|Vietnam|10.82|106.63;Kuala Lumpur|Malaysia|3.14|101.69;Colombo|Sri Lanka|6.93|79.86;Kathmandu|Nepal|27.72|85.32;Kalkutta|Indien|22.57|88.36;Chennai|Indien|13.08|80.27;Bangalore|Indien|12.97|77.59;Lahore|Pakistan|31.55|74.34;Islamabad|Pakistan|33.68|73.05;Almaty|Kasachstan|43.24|76.89;Baku|Aserbaidschan|40.41|49.87;Tiflis|Georgien|41.72|44.79;Eriwan|Armenien|40.18|44.51;Minsk|Belarus|53.90|27.57;Riga|Lettland|56.95|24.11;Tallinn|Estland|59.44|24.75;Vilnius|Litauen|54.69|25.28;Reykjavik|Island|64.15|-21.94;Porto|Portugal|41.15|-8.61;Bordeaux|Frankreich|44.84|-0.58;Toulouse|Frankreich|43.60|1.44;Nizza|Frankreich|43.70|7.27;Straßburg|Frankreich|48.57|7.75;Turin|Italien|45.07|7.69;Venedig|Italien|45.44|12.32;Bologna|Italien|44.49|11.34;Palermo|Italien|38.12|13.36;Málaga|Spanien|36.72|-4.42;Bilbao|Spanien|43.26|-2.93;Göteborg|Schweden|57.71|11.97;Malmö|Schweden|55.60|13.00;Bergen|Norwegen|60.39|5.32;Krakau|Polen|50.06|19.94;Danzig|Polen|54.35|18.65;Bratislava|Slowakei|48.15|17.11;Ljubljana|Slowenien|46.06|14.51;Thessaloniki|Griechenland|40.64|22.94;Izmir|Türkei|38.42|27.14;Antalya|Türkei|36.90|30.71;Bursa|Türkei|40.18|29.06;Gaziantep|Türkei|37.07|37.38;Konya|Türkei|37.87|32.48;Adana|Türkei|37.00|35.32;Maskat|Oman|23.59|58.41;Kuwait-Stadt|Kuwait|29.38|47.99;Manama|Bahrain|26.23|50.59;Sanaa|Jemen|15.37|44.19;Khartum|Sudan|15.50|32.56;Dakar|Senegal|14.72|-17.47;Accra|Ghana|5.60|-0.19;Abidjan|Elfenbeinküste|5.36|-4.01;Kinshasa|DR Kongo|-4.44|15.27;Luanda|Angola|-8.84|13.23;Daressalam|Tansania|-6.79|39.21;Kampala|Uganda|0.35|32.58;Havanna|Kuba|23.11|-82.37;Panama-Stadt|Panama|8.98|-79.52;Caracas|Venezuela|10.48|-66.90;Quito|Ecuador|-0.18|-78.47;Montevideo|Uruguay|-34.90|-56.16;Brasília|Brasilien|-15.79|-47.88;Atlanta|USA|33.75|-84.39;Dallas|USA|32.78|-96.80;Denver|USA|39.74|-104.99;Phoenix|USA|33.45|-112.07;Philadelphia|USA|39.95|-75.17;San Diego|USA|32.72|-117.16;Orlando|USA|28.54|-81.38;Perth|Australien|-31.95|115.86;Brisbane|Australien|-27.47|153.03").split(";").map(function(r){var a=r.split("|");return{n:a[0],region:a[1],lat:+a[2],lon:+a[3]}});
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ß/g,"ss").replace(/ae/g,"a").replace(/oe/g,"o").replace(/ue/g,"u").trim()}
+function local(q){
+  var n=norm(q);if(!n)return[];var a=[],b=[];
+  DB.forEach(function(c){var m=norm(c.n);if(m.indexOf(n)===0)a.push(c);else if(m.indexOf(" "+n)>-1)b.push(c)});
+  function byName(x,y){return x.n.localeCompare(y.n,"de")}
+  return a.sort(byName).concat(b.sort(byName)).slice(0,10)}
+function near(a,b){return Math.abs(a.lat-b.lat)<.15&&Math.abs(a.lon-b.lon)<.15}
+function online(q){
+  return fetch("https://photon.komoot.io/api/?q="+encodeURIComponent(q)+"&limit=15&lang="+pl()+"&osm_tag=place:city&osm_tag=place:town")
+    .then(function(r){if(!r.ok)throw new Error("http");return r.json()})
+    .then(function(j){var seen={},out=[];
+      (j.features||[]).forEach(function(f){var p=f.properties||{},g=f.geometry&&f.geometry.coordinates;if(!p.name||!g)return;
+        var key=p.name+"|"+(p.country||"");if(seen[key])return;seen[key]=1;
+        out.push({n:p.name,region:[p.state,p.country].filter(Boolean).join(", "),lat:g[1],lon:g[0]})});
+      return out})
+    .catch(function(){
+      if(q.length<3)return[];
+      return fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(q)+"&count=10&language="+LC[li()]+"&format=json")
+        .then(function(r){return r.json()})
+        .then(function(j){return(j.results||[]).map(function(x){return{n:x.name,region:[x.admin1,x.country].filter(Boolean).join(", "),lat:x.latitude,lon:x.longitude}})})})}
+function citySheet(){
+  panel.textContent="";panel.appendChild(el("h3","","Stadt wählen"));
+  var inp=el("input");inp.type="search";inp.placeholder=tr("Stadt eingeben");inp.autocomplete="off";inp.setAttribute("aria-label",tr("Stadt"));panel.appendChild(inp);
+  var res=el("div","stack");panel.appendChild(res);
+  var timer,seq=0;
+  function msg(t){res.textContent="";res.appendChild(el("p","fine",t))}
+  function show(list){
+    res.textContent="";
+    list.forEach(function(x){var b=el("button","btn",x.n+(x.region?" – "+x.region:""));b.type="button";b.style.justifyContent="flex-start";b.style.textAlign="left";b.onclick=function(){addCity(x)};res.appendChild(b)})}
+  function onType(){
+    var q=inp.value.trim(),my=++seq;clearTimeout(timer);
+    if(!q){res.textContent="";return}
+    var L=local(q);show(L);
+    timer=setTimeout(function(){
+      online(q).then(function(O){if(my!==seq)return;
+        var out=O.slice();L.forEach(function(c){if(!out.some(function(o){return near(o,c)}))out.push(c)});
+        out=out.slice(0,10);
+        if(out.length)show(out);else msg("Keine Stadt gefunden. Prüfe die Schreibweise.")})
+      .catch(function(){if(my===seq&&!L.length)msg("Keine Treffer in der Liste. Die Online-Suche ist in dieser Vorschau nicht erreichbar.")})},250)}
+  inp.addEventListener("input",onType);
+  inp.onkeydown=function(e){if(e.key==="Enter"){var f=res.querySelector("button");if(f)f.click()}};
+  if(cities.length){var rm=el("button","btn",tr("Stadt entfernen")+": "+cities[sel].n);rm.type="button";rm.onclick=function(){cities.splice(sel,1);sel=0;save();closeSheet();render()};panel.appendChild(rm)}
+  var c=el("button","link","Schließen");c.type="button";c.onclick=closeSheet;panel.appendChild(c);
+  sheet.classList.remove("hidden");setTimeout(function(){inp.focus()},50)}
+$("pick").onclick=citySheet;
+/* ===== Sprachen anwenden ===== */
+var SKIP={hTitle:1,hSub:1,tApple:1,tGoogle:1,swText:1,swMode:1,avatar:1,bigtxt:1,pname:1,puser:1,pinfo:1,onext:1,toast:1,cName:1,cTemp:1,cCond:1,cReg:1,wnote:1};
+var ST=[];
+(function(){
+  var skipSel="#logo,.logo,.brand,#sets,#tips,#hours,#days,#cities,#cPills,#panel,#v-wardrobe,#v-friends";
+  document.querySelectorAll("body *").forEach(function(e){
+    if(SKIP[e.id]||e.closest(skipSel))return;
+    ["placeholder","aria-label"].forEach(function(a){var v=e.getAttribute(a);if(v&&D[v])ST.push({e:e,a:a,k:v})});
+    Array.prototype.forEach.call(e.childNodes,function(n){if(n.nodeType!==3)return;var k=n.nodeValue.trim();if(k&&D[k])ST.push({n:n,o:n.nodeValue,k:k})})})})();
+function applyLang(){
+  var c=LC[li()];document.documentElement.lang=c;document.documentElement.dir=c==="ar"?"rtl":"ltr";
+  ST.forEach(function(s){var v=tr(s.k);if(s.a)s.e.setAttribute(s.a,v);else s.n.nodeValue=s.o.replace(s.k,function(){return v})});
+  emptyViews();paintProf();chatRefresh();
+  if(!login.classList.contains("hidden"))showAuth(mode);
+  if(!onb.classList.contains("hidden"))showStep(step);
+  render()}
+
+/* ===== KI-Chat =====
+   AI_URL: Adresse deines eigenen Servers (POST, Anthropic-Messages-Format).
+   Den API-Schlüssel nie in diese Datei schreiben, er gehört auf den Server. */
+var AI_URL="",AI_MODEL="claude-sonnet-4-6";
+var GREET="Hi, ich bin dein Stylish KI. Wie kann ich dir helfen heute?";
+var AV={Mo:"👦",Sarah:"👧",Panda:"🐼",Fuchs:"🦊",Hase:"🐰"};
+var LOC=["de-DE","en-US","fr-FR","es-ES","pt-BR","ar-SA","hi-IN","zh-CN"];
+var msgs=$("msgs"),cin=$("cin"),H=[],pend=null,busy=false,vm=false,rec=null,SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function skin(){return prof.skin||prof.ai||"Mo"}
+function chatHead(){if(!AV)return;$("cav").textContent=AV[skin()];$("cnm").textContent=tr(skin())}
+function bub(cls,txt,im){var b=el("div","m "+cls);
+  if(im){var i=document.createElement("img");i.src=im;i.alt="";b.appendChild(i)}
+  if(txt)b.appendChild(document.createTextNode(txt));msgs.appendChild(b);msgs.scrollTop=msgs.scrollHeight;return b}
+function chatRefresh(){chatHead();if(!H.length){msgs.textContent="";bub("ai",tr(GREET))}}
+function setOn(id,b){$(id).classList.toggle("on",b);$(id).setAttribute("aria-pressed",String(b))}
+function chatTab(k){if(k==="chat")msgs.scrollTop=msgs.scrollHeight;else if(vm)stopVM()}
+function sys(){
+  var c=cities[sel],g=prof.ai==="Sarah"?"a young woman":"a young man";
+  return "You are Stylish KI, the AI stylist inside the fashion app Look Good. Your persona is "+prof.ai+" ("+g+"), shown as "+skin()+". "
+  +"You are one of the smartest assistants available: accurate, practical, creative, expert in fashion, outfits, colours, fit, occasions, weather, care and shopping, and able to help with any other topic too. "
+  +"LENGTH: answer very briefly, usually 2-3 short sentences, no long lists, no markdown. Write more only when the topic truly needs depth. "
+  +"If a request is vague (for example 'I want to wear something but don't know what'), ask ONE concrete follow-up question (occasion, weather, style, daily routine) instead of guessing. "
+  +"LANGUAGE: reply in the language the user writes in (app language: "+LN[li()]+"). First observe how the person writes (formal or casual, slang, emojis, length). "
+  +"Do not copy slang from the very first message; after a few messages adapt naturally, e.g. if they write 'wallah' or 'hey bro', answer in the same casual youth tone. Never mock, never overdo it. "
+  +"Get to know the person: remember what they tell you (taste, sizes, budget, job, routine) and use it. If they send a photo, describe and judge the outfit or item concretely. "
+  +"Your replies may be read aloud, so avoid emoji spam and special symbols. "
+  +"User: "+(prof.name||"unknown")+(prof.birth?", age "+age(prof.birth):"")+(prof.gender&&prof.gender!=="Keine Angabe"?", gender "+prof.gender:"")+". "
+  +(prof.loc&&c&&LW?"Current weather (user allowed location use): "+LW+".":"Do not use the user's location.")}
+function ask(){
+  if(!AI_URL)return Promise.reject(new Error("nourl"));
+  return fetch(AI_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:AI_MODEL,max_tokens:600,system:sys(),messages:H.slice(-20)})})
+    .then(function(r){if(!r.ok)throw new Error("http");return r.json()})
+    .then(function(d){var t=(d.content||[]).map(function(p){return p.text||""}).join("").trim()||d.text||"";if(!t)throw new Error("empty");return t})}
+function send(txt){
+  txt=(txt==null?cin.value:txt).trim();if((!txt&&!pend)||busy)return;
+  cin.value="";var im=pend;clrImg();bub("me",txt,im);
+  H.forEach(function(m){m.content=m.content.filter(function(p){return p.type==="text"})});
+  var parts=[];if(im)parts.push({type:"image",source:{type:"base64",media_type:"image/jpeg",data:im.split(",")[1]}});
+  parts.push({type:"text",text:txt||"(photo)"});H.push({role:"user",content:parts});
+  busy=true;var tb=bub("ai typing","…");
+  ask().then(function(a){tb.remove();busy=false;H.push({role:"assistant",content:[{type:"text",text:a}]});bub("ai",a);if(vm)speak(a,loop)})
+  .catch(function(e){tb.remove();busy=false;H.pop();bub("ai",tr(AI_URL?"Die KI ist gerade nicht erreichbar. Versuch es gleich noch mal.":"Die KI ist noch nicht mit einem Server verbunden. Trage in der Datei bei AI_URL deinen Server ein."));if(vm)stopVM()})}
+/* Foto */
+function clrImg(){pend=null;$("cpre").classList.add("hidden")}
+$("cph").onclick=function(){$("cfile").click()};
+$("cx").onclick=clrImg;
+$("cfile").onchange=function(e){var f=e.target.files[0];e.target.value="";if(!f)return;
+  var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,1024/Math.max(im.width,im.height)),c=document.createElement("canvas");
+    c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);pend=c.toDataURL("image/jpeg",.8);$("cimg").src=pend;$("cpre").classList.remove("hidden")};im.src=r.result};r.readAsDataURL(f)};
+/* Stimme: Diktieren und Gespräch */
+function stopRec(){if(rec){var r=rec;rec=null;try{r.onend=null;r.abort()}catch(e){}}setOn("cmic",false)}
+function listen(cb,interim){
+  if(!SR){say("Spracheingabe wird hier nicht unterstützt.");return false}
+  stopRec();var r=new SR(),fin="";rec=r;r.lang=LOC[li()];r.interimResults=!!interim;r.continuous=false;
+  r.onresult=function(e){var s="";for(var i=0;i<e.results.length;i++)s+=e.results[i][0].transcript;fin=s;if(interim)cin.value=s};
+  r.onerror=function(e){if(/not-allowed|service-not-allowed/.test(e.error)){vm=false;setOn("cvc",false)}};
+  r.onend=function(){if(rec===r)rec=null;setOn("cmic",false);cb(fin.trim())};
+  try{r.start()}catch(e){return false}return true}
+function voiceFor(){
+  var code=LC[li()],f=prof.ai==="Sarah",vs=(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(function(v){return v.lang.toLowerCase().indexOf(code)===0}),
+  fe=/female|woman|femme|mujer|mulher|anna|sarah|helena|marie|julia|samantha|victoria|karen|paulina|monica|amelie|sandra|zira|hedda|katja|lekha|tessa|joana|luciana|xiaoxiao|mei|ting|google .*(female)/i,
+  ma=/\bmale\b|hans|daniel|thomas|jorge|diego|felipe|david|mark|stefan|conrad|killian|henri|rishi|kangkang|hemant|yunxi|maged|google .*(male)/i;
+  var m=vs.filter(function(v){return f?fe.test(v.name):(ma.test(v.name)&&!fe.test(v.name))})[0];return{v:m||vs[0]||null,hit:!!m}}
+function speak(t,done){
+  if(!window.speechSynthesis){if(done)done();return}
+  speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t.replace(/[\u{1F000}-\u{1FFFF}\u2600-\u27BF\uFE0F]/gu,"")),p=voiceFor();
+  u.lang=LOC[li()];if(p.v)u.voice=p.v;if(!p.hit)u.pitch=prof.ai==="Sarah"?1.3:.75;
+  u.onend=u.onerror=function(){if(done)done()};speechSynthesis.speak(u)}
+function loop(){if(!vm)return;setOn("cvc",true);
+  if(!listen(function(t){if(!vm)return;if(t)send(t);else loop()}))stopVM()}
+function stopVM(){vm=false;setOn("cvc",false);stopRec();if(window.speechSynthesis)speechSynthesis.cancel()}
+$("cvc").onclick=function(){
+  if(vm){stopVM();return}
+  if(!SR){say("Spracheingabe wird hier nicht unterstützt.");return}
+  vm=true;setOn("cvc",true);say("Ich höre zu …");
+  if(!H.length)speak(tr(GREET),loop);else loop()};
+$("cmic").onclick=function(){
+  if(rec){stopRec();return}
+  if(vm)stopVM();
+  if(listen(function(){cin.focus()},true))setOn("cmic",true)};
+$("csend").onclick=function(){send()};
+cin.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();send()}});
+/* Profilbild der KI: Mo, Sarah, Panda, Fuchs, Hase */
+$("cav").onclick=function(){
+  menu("Figur wählen","",["Mo","Sarah","Panda","Fuchs","Hase"].map(function(n){
+    return{t:AV[n]+" "+tr(n)+(skin()===n?" ✓":""),fn:function(){prof.skin=n;if(n==="Mo"||n==="Sarah")prof.ai=n;saveProf();chatHead();paintProf()}}}))};
+if(window.speechSynthesis)speechSynthesis.getVoices();
+
+applyLang();
+})();
+</script>
+</body>
+</html>
