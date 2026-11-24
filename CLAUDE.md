@@ -75,3 +75,8 @@ archiv/ holds earlier versions the owner shared, for context only:
 - 1-anfang.html – first version.
 - 2-mitte-live_6_2.html, 3-mitte-live_6_3-alte-garderobe.html – middle versions incl. the discarded wardrobe attempt (category buttons Tops/Hosen/Schuhe/Jacken/Kappen/Ketten/Uhren/Brillen/Taschen/Armbänder around a grey mannequin, "Person erstellen", "Dein Outfit", "Anprobieren"). Only use as a reference if the owner asks.
 The current app is look-good-app.html (+ server/index.html).
+
+## 10. New avatar (in progress, Nov 2026)
+- Owner rejected the procedural SDF figure as ugly. New approach approved by owner ("nimm das Risiko"): realistic MakeHuman characters generated with the `ara3d` library (MIT, npm ara3d@0.16.0) and `ara3d-data` (CC0, MakeHuman). Characters are generated in a headless browser, exported as GLB, compressed with gltf-transform (meshopt + webp, 1024 px textures, ~2.3 MB each) and embedded as base64, so the HTML works offline in the owner's code app.
+- `figur-test.html` = standalone test of the figure only (male/female, drag 360°, idle animation, blinking, dark studio). Not yet in the app; wait for the owner's verdict.
+- Owner's plan: new users first see a short intro with a default figure, then either take a selfie (AI picks the ara3d parameters so the figure looks similar) or build it themselves (face, hair, body, skin, height). Default clothes: men shorts only, women shorts + top.
