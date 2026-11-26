@@ -1,0 +1,11 @@
+Quellteile, aus denen LookGood.html zusammengebaut wird (Stand 26.11.2026).
+- w3d3.js   3D-Bühne: Licht, Straße/Studio, Wetter, Drehen, Figur bauen (ara3d), Haare schwingen
+- wd3.js    Garderobe-Bedienung inkl. Figur-Assistent (Schritte, Farbfeld)
+- wd.css, cr.css  Aussehen der Garderobe und des Assistenten
+- integrate3.py   setzt alles in die App ein (Basis: Commit 123b4b8 von look-good-app.html)
+- patch_*.py      Übersetzungen
+- prefix.js       liefert die eingebetteten 3D-Bausteine (window.LG_ASSETS) an ara3d aus
+- entry.js        Bündel-Einstieg: three@0.160.0 + ara3d@0.16.0 (MIT)
+- genrun.js       erzeugt Test-Figuren im Browser
+Änderungen an ara3d (im Bündel): Sperre für "als Datei geöffnet" entfernt; ohne Worker-Erlaubnis läuft der Worker-Code in der Seite.
+Daten: ara3d-data@1.2.0 (MakeHuman, CC0). Haar- und Augenbrauen-Texturen in helle Graustufen umgewandelt.
