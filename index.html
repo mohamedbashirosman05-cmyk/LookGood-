@@ -291,7 +291,7 @@ h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spaci
 .datef:focus-within{outline:3px solid var(--focus);outline-offset:2px}
 .datef svg{position:absolute;inset-inline-end:14px;top:50%;width:22px;height:22px;margin-top:-11px;fill:none;stroke:var(--muted);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
 #oBirthF input{position:absolute;inset:0;width:100%;height:100%;min-height:0;margin:0;padding:0;border:0;border-radius:16px;opacity:0;cursor:pointer;-webkit-appearance:none;appearance:none;background:transparent}
-#opanel .fl input{min-height:52px;padding:0 16px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);font-size:1rem}
+#panel .fl input[type=text]:not(.hidden),#opanel .fl input{min-height:52px;padding:0 16px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);font-size:1rem}
 .fid{display:grid;place-items:center;padding:6px 0 0}
 .fid svg{width:78px;height:78px;fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;animation:fidp 1s ease-in-out infinite}
 .fid.ok svg{stroke:#2fa84f;animation:none}
@@ -374,14 +374,15 @@ h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spaci
   <div class="wrap">
     <div class="ohead"><button class="back" id="oback" type="button" aria-label="Zurück"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button><div class="prog"><i id="pbar"></i></div></div>
     <div class="step" data-s="0"><h2>Wie sollen wir dich nennen?</h2><p class="sub">So spricht dich dein Stylist an.</p>
-      <label>Spitzname<input id="oNick" type="text" autocomplete="nickname" maxlength="20" placeholder="zum Beispiel Momo"></label></div>
+      <label>Spitzname<input id="oNick" type="text" autocomplete="nickname" maxlength="20"></label></div>
     <div class="step hidden" data-s="1"><h2>Wie heißt du?</h2>
       <label>Vorname<input id="oFirst" type="text" autocomplete="given-name" maxlength="30"></label>
       <label>Nachname<input id="oLast" type="text" autocomplete="family-name" maxlength="40"></label></div>
     <div class="step hidden" data-s="2"><h2>Wann hast du Geburtstag?</h2>
       <div class="datef" id="oBirthF"><span id="oBirthT"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><input id="oBirth" type="date" min="1920-01-01" aria-label="Geburtsdatum"></div>
       <h3 style="margin-top:14px">Geschlecht</h3>
-      <div class="gopts" id="oGender"><button type="button" data-v="Männlich">Männlich</button><button type="button" data-v="Weiblich">Weiblich</button><button type="button" data-v="Trans Mann">Trans Mann</button><button type="button" data-v="Trans Frau">Trans Frau</button><button type="button" data-v="Nicht-binär">Nicht-binär</button></div>
+      <div class="gopts" id="oGender"><button type="button" data-v="Männlich">Männlich</button><button type="button" data-v="Weiblich">Weiblich</button><button type="button" data-v="Nicht-binär">Nicht-binär</button><button type="button" data-v="Eigene Angabe">Eigene Angabe</button></div>
+      <input id="oGC" class="hidden" type="text" maxlength="30" aria-label="Dein Geschlecht" placeholder="Dein Geschlecht">
       <div class="gopts one"><button type="button" data-v="Keine Angabe">Keine Angabe</button></div></div>
         <p class="err" id="oerr" role="alert"></p>
     <div class="foot"><button class="btn primary" id="onext" type="button">Weiter</button></div>
@@ -459,6 +460,9 @@ var toast=$("toast"),tt;
 function say(m){toast.textContent=tr(m);toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show")},2600)}
 
 var D={
+"Eigene Angabe":"Custom|Personnalisé|Personalizado|Personalizado|مخصص|अपना विवरण|自定义",
+"Dein Geschlecht":"Your gender|Ton genre|Tu género|O teu género|جنسك|आपका जेंडर|你的性别",
+"Beschreibe dein Geschlecht.":"Describe your gender.|Décris ton genre.|Describe tu género.|Descreve o teu género.|صِف جنسك.|अपना जेंडर लिखें।|请描述你的性别。",
 "Wie sollen wir dich nennen?":"What should we call you?|Comment doit-on t'appeler ?|¿Cómo te llamamos?|Como te devemos chamar?|بماذا نناديك؟|हम आपको किस नाम से बुलाएँ?|我们该怎么称呼你？",
 "Spitzname":"Nickname|Surnom|Apodo|Alcunha|اللقب|उपनाम|昵称",
 "zum Beispiel Momo":"for example Momo|par exemple Momo|por ejemplo Momo|por exemplo Momo|مثلاً Momo|जैसे Momo|例如 Momo",
@@ -930,7 +934,7 @@ function auth(a,label,apply){var uid=owner(a);
   say("Konto wird geladen …");
   stash().then(function(){return unstash(uid)}).then(function(){prof=Object.assign({},DEF,ls("lg_prof")||{});if(apply)apply();prof.login=label;prof.session=true;saveProf();location.reload()})}
 function create(a,label,apply){
-  var mk=function(){prof=Object.assign({},DEF,{lang:prof.lang,theme:prof.theme});prof.uid=newUid();prof.acc={t:a.t,id:a.id};if(a.pw)prof.pw=a.pw;
+  var mk=function(){prof=Object.assign({},DEF,{lang:prof.lang,theme:prof.theme,langSet:prof.langSet});prof.uid=newUid();prof.acc={t:a.t,id:a.id};if(a.pw)prof.pw=a.pw;
     regId(idk(a),prof.uid);if(apply)apply();if(prof.email)regId("mail:"+prof.email.toLowerCase(),prof.uid);prof.login=label;prof.session=true;saveProf()};
   if(!prof.uid){mk();paintProf();return enter()}
   say("Konto wird geladen …");
@@ -1067,12 +1071,13 @@ sheet.addEventListener("click",function(e){if(e.target===sheet)closeSheet()});
 
 /* Profil */
 function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
-var DEF={name:"",last:"",nick:"",user:"",photo:"",email:"",ai:"Mo",loc:true,theme:"",login:"",phone:"",birth:"",gender:"",vis:"Alle",nW:true,nF:true,lang:"Deutsch",done:false};
+var DEF={name:"",last:"",nick:"",user:"",photo:"",email:"",ai:"Mo",loc:true,theme:"",login:"",phone:"",birth:"",gender:"",vis:"Alle",nW:true,nF:true,lang:"English",done:false};
 var prof=Object.assign({},DEF,ls("lg_prof")||{});
+if(!prof.langSet)prof.lang="English";
 function saveProf(){ls("lg_prof",prof)}
 if(prof.done&&!prof.acc&&prof.login){prof.acc=prof.login==="Telefonnummer"?{t:"phone",id:"+49"+prof.phone}:{t:String(prof.login).toLowerCase(),id:String(prof.login).toLowerCase()};if(prof.phone&&!prof.cc)prof.cc="+49";saveProf()}
 if(prof.acc&&!prof.uid){prof.uid=newUid();if(prof.acc.pw&&!prof.pw)prof.pw=prof.acc.pw;regId(idk(prof.acc),prof.uid);if(prof.email)regId("mail:"+prof.email.toLowerCase(),prof.uid);saveProf()}
-var GEN=["Männlich","Weiblich","Trans Mann","Trans Frau","Nicht-binär"];
+var GEN=["Männlich","Weiblich","Nicht-binär","Eigene Angabe"];
 function fem(){return prof.gender==="Weiblich"||prof.gender==="Trans Frau"}
 if(prof.theme)document.documentElement.setAttribute("data-theme",prof.theme);
 function info(title,text){panel.textContent="";panel.appendChild(el("h3","",title));if(text)panel.appendChild(el("p","fine",text));var c=el("button","link","Schließen");c.type="button";c.onclick=closeSheet;panel.appendChild(c);sheet.classList.remove("hidden")}
@@ -1087,8 +1092,9 @@ function form(title,fields,ok,onOk,note){
     var w=el("div","fl");w.appendChild(el("small","",f.label));
     if(f.opts){var g=el("div","opts");vals[f.id]=f.val||"";
       f.opts.forEach(function(o){var b=el("button","",o);b.type="button";b.setAttribute("aria-pressed",String(o===vals[f.id]));
-        b.onclick=function(){vals[f.id]=o;Array.prototype.forEach.call(g.children,function(x){x.setAttribute("aria-pressed",String(x===b))})};g.appendChild(b)});
-      w.appendChild(g)}
+        b.onclick=function(){vals[f.id]=o;Array.prototype.forEach.call(g.children,function(x){x.setAttribute("aria-pressed",String(x===b))});if(oi)oi.classList.toggle("hidden",o!==f.other.opt)};g.appendChild(b)});
+      w.appendChild(g);var oi=null;
+      if(f.other){oi=el("input");oi.type="text";oi.maxLength=30;oi.value=f.other.val||"";oi.setAttribute("aria-label",tr(f.other.label));oi.placeholder=tr(f.other.label);oi.classList.toggle("hidden",vals[f.id]!==f.other.opt);ins[f.other.id]=oi;w.appendChild(oi)}}
     else{var i=el("input");i.type=f.type||"text";i.value=f.val||"";if(f.ph)i.placeholder=tr(f.ph);if(f.ac)i.autocomplete=f.ac;if(i.type==="date")i.max=new Date().toISOString().slice(0,10);ins[f.id]=i;w.appendChild(i)}
     panel.appendChild(w)});
   var er=el("p","err");er.setAttribute("role","alert");panel.appendChild(er);
@@ -1103,19 +1109,19 @@ function pwStrong(p){return p.length>=8&&/[a-z]/.test(p)&&/[A-Z]/.test(p)&&/\d/.
 var PWMSG="Mindestens 8 Zeichen mit Groß- und Kleinbuchstaben, Zahl und Sonderzeichen.";
 function editProfile(){
   form("Profil bearbeiten",[
-    {id:"nick",label:"Spitzname",val:prof.nick,ac:"nickname",ph:"zum Beispiel Momo"},
+    {id:"nick",label:"Spitzname",val:prof.nick,ac:"nickname"},
     {id:"name",label:"Vorname",val:prof.name,ac:"given-name"},
     {id:"last",label:"Nachname",val:prof.last,ac:"family-name"},
-    {id:"user",label:"Benutzername",val:prof.user,ph:"zum Beispiel mia.styles"},
+    {id:"user",label:"Benutzername",val:prof.user},
     {id:"birth",label:"Geburtsdatum",type:"date",val:prof.birth},
-    {id:"gender",label:"Geschlecht",opts:GEN.concat("Keine Angabe"),val:prof.gender}],
+    {id:"gender",label:"Geschlecht",opts:GEN.concat("Keine Angabe"),val:prof.gender,other:{id:"gc",opt:"Eigene Angabe",label:"Dein Geschlecht",val:prof.gcustom}}],
   "Speichern",function(v){
     if(!v.nick)return"Gib deinen Spitznamen ein.";
     if(!v.name)return"Gib deinen Vornamen ein.";
     if(!v.last)return"Gib deinen Nachnamen ein.";
     if(!v.birth)return"Wähle dein Geburtsdatum.";
     var a=age(v.birth);if(isNaN(a)||a>110)return"Bitte prüfe dein Geburtsdatum.";if(a<13)return"Du musst mindestens 13 Jahre alt sein.";
-    if(!v.gender)return"Bitte wähle eine Option.";
+    if(!v.gender)return"Bitte wähle eine Option.";if(v.gender==="Eigene Angabe"&&!v.gc)return"Beschreibe dein Geschlecht.";prof.gcustom=v.gender==="Eigene Angabe"?v.gc:"";
     prof.nick=v.nick.slice(0,20);prof.name=v.name;prof.last=v.last;prof.user=v.user.replace(/^@/,"").replace(/[^\w.]/g,"");prof.birth=v.birth;prof.gender=v.gender;
     saveProf();paintProf();say("Profil gespeichert");return""})}
 function loginSheet(){
@@ -1151,10 +1157,10 @@ moon:'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
 globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>'};
 var SETS=[
  ["Konto",[{i:"key",t:"Login-Daten",s:"E-Mail, Passwort, Anmeldung",go:loginSheet},{i:"eye",t:"Wer sieht dein Profil",s:function(){return prof.vis},go:function(){choose("Wer sieht dein Profil","vis",["Alle","Nur Freunde","Niemand"])}}]],
- ["KI",[{i:"chat",t:"Chat mit Mo oder Sarah",s:"Persönliche Stilberatung",seg:"ai",o:["Mo","Sarah"]},{i:"clock",t:"Chat-Verlauf",s:"Vergangene Chats mit der KI",go:function(){info("Chat-Verlauf","Noch keine Chats mit der KI. Hier erscheinen später deine Gespräche.")}}]],
+ ["KI",[{i:"clock",t:"Chat-Verlauf",s:"Vergangene Chats mit der KI",go:function(){info("Chat-Verlauf","Noch keine Chats mit der KI. Hier erscheinen später deine Gespräche.")}}]],
  ["Benachrichtigungen",[{i:"bell",t:"Tägliche Wetter-Nachricht",s:"Morgens ein kurzer Hinweis",sw:"nW"},{i:"bell",t:"Freunde und Nachrichten",s:"Wenn dir jemand schreibt",sw:"nF"}]],
  ["Datenschutz",[{i:"pin",t:"Standort für die KI",s:"Die KI darf deine Stadt für Vorschläge nutzen",sw:"loc"}]],
- ["App",[{i:"moon",t:"Erscheinungsbild",s:"Hell oder dunkel",seg:"theme",o:["Hell","Dunkel"],v:["light","dark"]},{i:"globe",t:"Sprache",s:function(){return prof.lang},go:function(){choose("Sprache","lang",LN,function(){applyLang()})}}]]];
+ ["App",[{i:"moon",t:"Erscheinungsbild",s:"Hell oder dunkel",seg:"theme",o:["Hell","Dunkel"],v:["light","dark"]},{i:"globe",t:"Sprache",s:function(){return prof.lang},go:function(){choose("Sprache","lang",LN,function(){prof.langSet=true;saveProf();applyLang()})}}]]];
 function renderSets(){
   var H=$("sets");H.textContent="";
   SETS.forEach(function(g){
@@ -1223,7 +1229,8 @@ function showStep(i){step=i;
   document.querySelectorAll("#onb .step").forEach(function(x){x.classList.toggle("hidden",+x.dataset.s!==i)});
   $("pbar").style.width=Math.round((i+1)/3*100)+"%";$("oerr").textContent="";$("onext").textContent=tr(i===2?"Los geht’s":"Weiter");
   if(i===2){$("oBirth").max=new Date().toISOString().slice(0,10);paintBirth()}}
-document.querySelectorAll("#onb [data-v]").forEach(function(b){b.onclick=function(){ob.gender=b.dataset.v;document.querySelectorAll("#onb [data-v]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))})}});
+document.querySelectorAll("#onb [data-v]").forEach(function(b){b.onclick=function(){ob.gender=b.dataset.v;document.querySelectorAll("#onb [data-v]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
+  var c=b.dataset.v==="Eigene Angabe";$("oGC").classList.toggle("hidden",!c);if(c)setTimeout(function(){$("oGC").focus()},30)}});
 /* Geburtstag: Feld ist leer, bis ein Datum gewählt ist; Tippen öffnet die Datumsauswahl */
 function paintBirth(){var v=$("oBirth").value;$("oBirthT").textContent=v?new Date(v+"T12:00:00").toLocaleDateString(LC[li()],{day:"numeric",month:"long",year:"numeric"}):""}
 ["input","change"].forEach(function(t){$("oBirth").addEventListener(t,paintBirth)});
@@ -1235,7 +1242,8 @@ function valid(i){
   if(i===1){var f=$("oFirst").value.trim(),l=$("oLast").value.trim();if(!f)return oerr("Gib deinen Vornamen ein.");if(!l)return oerr("Gib deinen Nachnamen ein.");prof.name=f;prof.last=l;return true}
   var b=$("oBirth").value;if(!b)return oerr("Wähle dein Geburtsdatum.");var a=age(b);
   if(isNaN(a)||a>110)return oerr("Bitte prüfe dein Geburtsdatum.");if(a<13)return oerr("Du musst mindestens 13 Jahre alt sein.");
-  if(!ob.gender)return oerr("Bitte wähle eine Option.");prof.birth=b;prof.gender=ob.gender;return true}
+  if(!ob.gender)return oerr("Bitte wähle eine Option.");var gc=$("oGC").value.trim();if(ob.gender==="Eigene Angabe"&&!gc)return oerr("Beschreibe dein Geschlecht.");
+  prof.birth=b;prof.gender=ob.gender;prof.gcustom=ob.gender==="Eigene Angabe"?gc:"";return true}
 function nextStep(){if(!valid(step))return;saveProf();if(step<2)showStep(step+1);else{prof.done=true;saveProf();paintProf();goHome()}}
 $("onext").onclick=nextStep;
 $("oback").onclick=function(){if(step>0)showStep(step-1);else{onb.classList.add("hidden");showAuth(mode)}};
@@ -1423,7 +1431,7 @@ function sys(){
   +"MIRROR THE PERSON right from their first message: same language, same tone, same slang, same length. If they say 'bro', 'digga', 'wallah', 'girl', 'girly', 'babe', answer in that vibe (e.g. 'Bro, ...'). If they write formally or are older, answer politely and calmly. If they write in lowercase without punctuation, you can too. Never mock, never overdo it, never sound fake. "
   +"OUTFIT HELP: before you suggest an outfit, first ask ONE short question about their day (where they go, what they do, which vibe), unless they already told you. Then give a concrete outfit in 1-2 sentences that fits their day AND the weather below. Be specific (colours, pieces, shoes), not generic. "
   +"You know fashion, colours, fits, occasions, care and shopping very well, and you can chat about anything else too, always short. Remember what the person tells you in this chat (style, sizes, budget, routine) and use it. If they send a photo, react like a friend: say concretely what works and what you would change, in 1-2 sentences. "
-  +"Person: "+(prof.name||"unknown")+(prof.nick?" (likes to be called "+prof.nick+")":"")+(prof.birth?", "+age(prof.birth)+" years old":"")+(prof.gender&&prof.gender!=="Keine Angabe"?", "+({"Männlich":"male","Weiblich":"female","Trans Mann":"trans man","Trans Frau":"trans woman","Nicht-binär":"non-binary","Andere":"other"}[prof.gender]||prof.gender):"")+". App language: "+LN[li()]+". "
+  +"Person: "+(prof.name||"unknown")+(prof.nick?" (likes to be called "+prof.nick+")":"")+(prof.birth?", "+age(prof.birth)+" years old":"")+(prof.gender&&prof.gender!=="Keine Angabe"?", "+(prof.gender==="Eigene Angabe"?(prof.gcustom||"custom"):({"Männlich":"male","Weiblich":"female","Trans Mann":"trans man","Trans Frau":"trans woman","Nicht-binär":"non-binary","Andere":"other"}[prof.gender]||prof.gender)):"")+". App language: "+LN[li()]+". "
   +"Local time: "+d.toLocaleString("de-DE",{weekday:"long",hour:"2-digit",minute:"2-digit"})+". "
   +wdForAI()+" "+(prof.loc&&c&&LW?"Weather where they are (use it for every outfit idea, do not recite it unless useful): "+LW+".":"You do not know their location or weather; if it matters for an outfit, ask what the weather is like.")}
 function ask(){
