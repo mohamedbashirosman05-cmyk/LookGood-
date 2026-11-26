@@ -135,3 +135,48 @@ video.mirror{transform:scaleX(-1)}
 .nbar.show{transform:translate(-50%,0)}.nbt{display:flex;flex-direction:column;min-width:0}.nbt span{font-weight:700;font-size:.88rem}
 .oatfield{display:flex;align-items:center;gap:4px;min-height:52px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);padding:0 16px}.oatfield b{color:var(--muted)}.oatfield input{flex:1;border:0!important;background:none!important;outline:0;min-height:48px;padding:0!important;font-size:1rem}
 @media (prefers-reduced-motion:reduce){.sover,.nbar{animation:none;transition:none}}
+/* ---- LOOK-GOOD-Stil (26.11.): schlicht, eigene Linie statt Snap ---- */
+.tab.flash .fb{background:var(--ink);box-shadow:0 6px 16px rgba(36,26,56,.22)}
+.tab.flash .fb svg{stroke:var(--bg)}
+.tbadge{background:var(--accent)}
+.sicon .dot{background:var(--accent)}
+.sav{border-radius:50%}
+.savi{background:var(--card)!important;color:var(--ink);border:2px solid var(--ink);font-weight:700;font-size:calc(var(--s)*.42);letter-spacing:-.02em}
+.savi.ph{border-color:var(--ink)}
+.sav.ring{padding:0}.sav.ring .savi{border:2px solid var(--ink)}
+.sav.ring.new{background:none;box-shadow:0 0 0 2.5px var(--bg),0 0 0 4.5px var(--accent)}
+.sav.ring.seen{background:none;box-shadow:none}
+.splus{background:var(--ink);color:var(--bg)}
+.srow{gap:16px;padding:6px 4px 8px}
+.srowi.un{background:none}
+.srowi.un .sti b{font-weight:800}
+.sstat{gap:0!important}
+.sstat .spv{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:0 1 auto}
+.sstat.un .spv{color:var(--ink);font-weight:700}
+.sstat .sstate,.sstat .sago{flex:none;white-space:nowrap}
+.sstat .sstate::before,.sstat .sago::before{content:" · "}
+.sstat .typing{color:var(--accent);font-weight:700}
+.sdot{width:11px;height:11px;border-radius:50%;background:var(--accent);flex:none;margin:0 14px 0 4px}
+.sser{display:inline-flex;align-items:center;gap:2px;font-size:.72rem;font-weight:800;color:var(--ink);opacity:.85}
+.sser svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sbtn.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.cm.me{background:var(--ink);color:var(--bg)}
+.cm.fl{border:1.5px solid var(--line);font-weight:600}
+.cm.fl.new{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.cm.fl .sic{width:20px;height:20px}.cm.fl .sic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cm.me.ofit{border-color:var(--line)}
+.quote{border-inline-start-color:var(--accent)}
+.cround.cam{background:var(--ink);color:var(--bg)}
+.cround.send{background:var(--ink);color:var(--bg)}
+.cround.mic.rec{background:var(--accent)}
+.sprog{stroke:#fff}
+.shut.rec .sring{fill:rgba(255,255,255,.28)}
+.cpill.main{background:#fff;color:#111}
+.tlab{background:#fff;color:#111}
+.spick input{accent-color:var(--ink)}
+.etext.s2{background:#fff;color:#111}
+.st small.typing{color:var(--accent)}
+.sreq{flex-wrap:wrap;row-gap:8px}.sreq .sti{flex:1 1 calc(100% - 56px)}.sreq .sti small{white-space:normal}
+.sreq .sbtn{flex:1;max-width:none}.sreq>.sav{align-self:flex-start}
+.sstat .sstate::before,.sstat .sago::before{content:"·";margin:0 5px}
+.sav.ring.new{box-shadow:0 0 0 2.5px var(--bg),0 0 0 4.5px var(--ink)}

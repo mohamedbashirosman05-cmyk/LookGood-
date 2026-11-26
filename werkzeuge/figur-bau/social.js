@@ -1,7 +1,7 @@
 /* ===== Flash & Chat =====
    Daten-Schicht (SO.*) liegt heute nur auf diesem Gerät, mit Test-Freunden, die automatisch antworten.
    Später ersetzt ein Server genau diese Funktionen (soSend, soFriends …); die Oberfläche bleibt gleich. */
-var FC={photo:"#E0275F",video:"#7B4DFF",chat:"#1596C8"};
+var FC={photo:"var(--accent)",video:"var(--accent)",chat:"var(--accent)"};
 var DEMO=[
  {id:"u_lina",user:"lina.style",name:"Lina",bg:"#ffb38a"},{id:"u_jay",user:"jay.k",name:"Jay",bg:"#b9c2ff"},
  {id:"u_sami",user:"sami_",name:"Sami",bg:"#9fe3cf"},{id:"u_nora",user:"nora.fit",name:"Nora",bg:"#ffd27a"},
@@ -18,7 +18,7 @@ var SOP=null;
 function soInit(){if(SOP)return SOP;SO=ls("lg_social");if(SO&&SO.v===1){SOP=Promise.resolve();return SOP}
   SOP=soSeed();return SOP}
 function soSeed(){
-  SO={v:1,friends:["u_lina","u_jay","u_sami","u_nora"],reqIn:["u_elif"],reqOut:[],blocked:[],chats:{},stories:[],seen:{},myViews:{}};var now=Date.now();
+  SO={v:1,serie:{u_lina:12,u_jay:3},friends:["u_lina","u_jay","u_sami","u_nora"],reqIn:["u_elif"],reqOut:[],blocked:[],chats:{},stories:[],seen:{},myViews:{}};var now=Date.now();
   return Promise.all([demoImg("lina1","#ff7e5f","#feb47b","☕","Montagmorgen"),demoImg("jay1","#3a1c71","#d76d77","🔥","Neue Sneaker"),demoImg("lina2","#43cea2","#185a9d","🌧️","Regenjacke an"),demoImg("sami1","#f7971e","#ffd200","😎","Sonne!")]).then(function(){
     chat("u_lina").msgs.push({id:mid(),from:"u_lina",at:now-14*6e4,kind:"flash",mtype:"photo",media:"demo_lina1",timer:5,opened:null});
     chat("u_jay").msgs.push({id:mid(),from:"u_jay",at:now-62*6e4,kind:"text",text:"Bro, was ziehst du heute an?",opened:null});
@@ -40,17 +40,23 @@ function demoImg(key,c1,c2,emo,txt){var c=document.createElement("canvas");c.wid
 function ago(t){var d=(Date.now()-t)/6e4;if(d<1)return tr("Gerade eben");if(d<60)return tr("vor # Min.").replace("#",Math.floor(d));if(d<24*60)return tr("vor # Std.").replace("#",Math.floor(d/60));
   var y=new Date();y.setHours(0,0,0,0);if(t>=y-864e5)return tr("Gestern");return new Date(t).toLocaleDateString(LC[li()],{day:"numeric",month:"short"})}
 /* ---- Status einer Chat-Zeile (das Symbol-System) ---- */
+/* Zeilen-Status im eigenen LOOK-GOOD-Stil: ein Punkt für "neu", Vorschau, Wörter statt Symbole */
+function preview(m){if(!m)return"";if(m.kind==="text"||m.kind==="reply")return m.text;if(m.kind==="flash")return tr(m.mtype==="video"?"Video-Flash":"Flash");if(m.kind==="image")return tr("Foto");if(m.kind==="outfit")return tr("Outfit");if(m.kind==="voice")return tr("Sprachnachricht");return""}
 function rowState(uid){var ms=chat(uid).msgs.filter(function(m){return!m.deleted}),last=ms[ms.length-1];
   var unFl=ms.filter(function(m){return m.from!=="me"&&m.kind==="flash"&&!m.opened}),unTx=ms.filter(function(m){return m.from!=="me"&&m.kind!=="flash"&&!m.opened});
-  if(unFl.length){var v=unFl[unFl.length-1];return{icon:"sq",fill:true,col:v.mtype==="video"?FC.video:FC.photo,txt:"Neuer Flash",at:v.at,unread:true,flashes:unFl}}
-  if(unTx.length){var t=unTx[unTx.length-1];return{icon:"bub",fill:true,col:FC.chat,txt:"Neuer Chat",at:t.at,unread:true}}
-  if(!last)return{icon:"bub",fill:false,col:"var(--muted)",txt:"Tippe, um zu chatten",at:0};
-  var col=last.kind==="flash"?(last.mtype==="video"?FC.video:FC.photo):FC.chat;
-  if(last.from==="me")return{icon:"arrow",fill:!last.opened,col:col,txt:last.opened?(last.kind==="flash"?"Geöffnet":"Gelesen"):"Zugestellt",at:last.at};
-  return{icon:last.kind==="flash"?"sq":"bub",fill:false,col:col,txt:last.kind==="flash"?"Angesehen":"Empfangen",at:last.at}}
-function stIcon(s){var c=s.col,f=s.fill?c:"none";if(s.icon==="sq")return'<svg viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2.5" fill="'+f+'" stroke="'+c+'" stroke-width="2"/></svg>';
-  if(s.icon==="arrow")return'<svg viewBox="0 0 16 16"><path d="M2.5 2.5 14 8 2.5 13.5 5 8z" fill="'+f+'" stroke="'+c+'" stroke-width="1.8" stroke-linejoin="round"/></svg>';
-  return'<svg viewBox="0 0 16 16"><path d="M2 3.5h12v8H7l-3.5 3v-3H2z" fill="'+f+'" stroke="'+c+'" stroke-width="1.8" stroke-linejoin="round"/></svg>'}
+  if(unFl.length){var v=unFl[unFl.length-1];return{line:tr(unFl.length>1?"# neue Flashes":"Neuer Flash").replace("#",unFl.length),at:v.at,unread:true,flashes:unFl}}
+  if(unTx.length){var t=unTx[unTx.length-1];return{line:preview(t),at:t.at,unread:true}}
+  if(!last)return{line:tr("Noch keine Nachrichten"),at:0};
+  if(last.from==="me")return{line:tr("Du:")+" "+preview(last),state:tr(last.opened?"gesehen":"gesendet"),at:last.at};
+  return{line:preview(last),at:last.at}}
+/* Outfit-Serie: Tage hintereinander, an denen ihr euch beide Flashes geschickt habt */
+function dayKey(t){var d=new Date(t);return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()}
+function streak(uid){var base=(SO.serie&&SO.serie[uid])||0,ms=chat(uid).msgs.filter(function(m){return m.kind==="flash"}),days={};
+  ms.forEach(function(m){var k=dayKey(m.at);days[k]=days[k]||{};days[k][m.from==="me"?"me":"them"]=1});
+  var n=0,d=new Date();if(!(days[dayKey(d)]&&days[dayKey(d)].me&&days[dayKey(d)].them))d.setDate(d.getDate()-1);
+  for(;;){var k=dayKey(d);if(days[k]&&days[k].me&&days[k].them){n++;d.setDate(d.getDate()-1)}else break}
+  return n+base}
+function hangerSvg(){return'<svg viewBox="0 0 24 24"><path d="M12 7.5a2.3 2.3 0 1 0-2.3-2.3M12 7.5v1.7l8.6 5.6a1.4 1.4 0 0 1-.8 2.6H4.2a1.4 1.4 0 0 1-.8-2.6L12 9.2"/></svg>'}
 function unreadCount(){return SO?SO.friends.filter(function(u){return rowState(u).unread}).length+SO.reqIn.length:0}
 function badge(){var t=$("t-friends");if(!t)return;var b=t.querySelector(".tbadge");var n=unreadCount();if(!b){b=el("span","tbadge");t.appendChild(b)}b.textContent=n>9?"9+":String(n);b.classList.toggle("hidden",!n)}
 /* ---- Avatare ---- */
@@ -91,11 +97,12 @@ function inbox(){if(!SO)return;SV.textContent="";
   var list=el("div","slist"),fr=SO.friends.slice().sort(function(a,b){return(rowState(b).at||0)-(rowState(a).at||0)});
   if(!fr.length){var e=el("div","wnone");e.appendChild(el("b","","Noch keine Freunde"));e.appendChild(el("p","","Suche oben rechts nach Benutzernamen und schick eine Anfrage."));list.appendChild(e)}
   fr.forEach(function(uid){var s=rowState(uid),r=el("div","srowi"+(s.unread?" un":"")),main=el("button","smain");main.type="button";main.appendChild(avEl(uid,50));var t=el("div","sti");
-    var nm=el("b","",uinfo(uid).name);if(demoUser(uid)){nm.appendChild(el("span","stest","Test"))}t.appendChild(nm);
-    var st=el("small","sstat");var ic=el("span","sic");ic.innerHTML=stIcon(s);st.appendChild(ic);var lb=el("span","",TYP[uid]?"schreibt gerade …":s.txt);lb.style.color=s.unread?s.col:"";if(s.unread)lb.style.fontWeight="800";st.appendChild(lb);
-    if(s.at){st.appendChild(document.createTextNode(" · "+ago(s.at)))}t.appendChild(st);main.appendChild(t);
+    var nm=el("b","",uinfo(uid).name);if(demoUser(uid)){nm.appendChild(el("span","stest","Test"))}var sr=streak(uid);if(sr>1){var sb=el("span","sser");sb.innerHTML=hangerSvg();sb.appendChild(document.createTextNode(String(sr)));sb.title=tr("Outfit-Serie: # Tage").replace("#",sr);nm.appendChild(sb)}t.appendChild(nm);
+    var st=el("small","sstat"+(s.unread?" un":""));if(TYP[uid])st.appendChild(el("span","typing","schreibt gerade …"));else{var pv=el("span","spv");pv.textContent=s.line;st.appendChild(pv);
+      if(s.state){st.appendChild(el("span","sstate",s.state))}if(s.at)st.appendChild(el("span","sago",ago(s.at)))}t.appendChild(st);main.appendChild(t);
     main.onclick=function(){if(s.flashes)viewFlashes(uid);else openChat(uid)};r.appendChild(main);
-    var cb=el("button","sicon sm");cb.type="button";cb.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>';cb.setAttribute("aria-label",tr("Chat öffnen"));cb.onclick=function(){openChat(uid)};r.appendChild(cb);
+    if(s.unread){var dot=el("span","sdot");dot.setAttribute("aria-label",tr("Neu"));r.appendChild(dot)}
+    else{var cb=el("button","sicon sm");cb.type="button";cb.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>';cb.setAttribute("aria-label",tr("Chat öffnen"));cb.onclick=function(){openChat(uid)};r.appendChild(cb)}
     list.appendChild(r)});SV.appendChild(list);
   var note=el("p","fine snote","Test-Modus: Lina, Jay, Sami und die anderen sind Test-Freunde und antworten automatisch. Echte Freunde kommen, sobald der Server verbunden ist.");SV.appendChild(note);badge()}
 function live(s){return Date.now()-s.at<864e5}
@@ -149,8 +156,8 @@ function chPaint(first){var uid=OPEN;if(!uid)return;var o=overlay("schat"),c=cha
 function dayLabel(t){var d=new Date(t),n=new Date();if(d.toDateString()===n.toDateString())return tr("Heute");n.setDate(n.getDate()-1);if(d.toDateString()===n.toDateString())return tr("Gestern");return d.toLocaleDateString(LC[li()],{weekday:"long",day:"numeric",month:"long"})}
 function msgEl(uid,m){var mine=m.from==="me",w=el("div","cm "+(mine?"me":"them")+(m.saved?" saved":"")),tm=new Date(m.at).toLocaleTimeString(LC[li()],{hour:"2-digit",minute:"2-digit"});
   if(m.kind==="text")w.appendChild(document.createTextNode(m.text));
-  else if(m.kind==="flash"){w.classList.add("fl");var col=m.mtype==="video"?FC.video:FC.photo,s={icon:mine?"arrow":"sq",fill:!m.opened,col:col},ic=el("span","sic");ic.innerHTML=stIcon(s);w.appendChild(ic);
-    w.appendChild(el("span","",mine?(m.opened?"Flash geöffnet":"Flash zugestellt"):(m.opened?(m.saved?"Gespeicherter Flash · tippen":"Flash angesehen"):"Neuer Flash · zum Ansehen tippen")));w.style.setProperty("--fc",col);
+  else if(m.kind==="flash"){w.classList.add("fl");if(!mine&&!m.opened)w.classList.add("new");var ic=el("span","sic");ic.innerHTML=m.mtype==="video"?'<svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';w.appendChild(ic);
+    w.appendChild(el("span","",mine?(m.opened?"Flash gesehen":"Flash gesendet"):(m.opened?(m.saved?"Gespeicherter Flash · tippen":"Flash angesehen"):"Neuer Flash · zum Ansehen tippen")));
     if(!mine&&(!m.opened||m.saved))w.onclick=function(){viewFlashes(uid,m.id)}}
   else if(m.kind==="image"){w.classList.add("img");var im=document.createElement("img");im.alt="";mediaGet(m.media).then(function(u){if(u)im.src=u});w.appendChild(im);im.onclick=function(){viewSingle(m)}}
   else if(m.kind==="outfit"){w.classList.add("ofit");w.appendChild(el("b","",m.title||"Mein Outfit"));var g=el("div","ofg");(m.items||[]).forEach(function(x){var i=document.createElement("img");i.src=x.img;i.alt="";g.appendChild(i)});w.appendChild(g);if(m.wx)w.appendChild(el("small","",m.wx));w.appendChild(el("p","",m.text||"Passt das?"))}

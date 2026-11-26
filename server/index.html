@@ -439,6 +439,51 @@ video.mirror{transform:scaleX(-1)}
 .nbar.show{transform:translate(-50%,0)}.nbt{display:flex;flex-direction:column;min-width:0}.nbt span{font-weight:700;font-size:.88rem}
 .oatfield{display:flex;align-items:center;gap:4px;min-height:52px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);padding:0 16px}.oatfield b{color:var(--muted)}.oatfield input{flex:1;border:0!important;background:none!important;outline:0;min-height:48px;padding:0!important;font-size:1rem}
 @media (prefers-reduced-motion:reduce){.sover,.nbar{animation:none;transition:none}}
+/* ---- LOOK-GOOD-Stil (26.11.): schlicht, eigene Linie statt Snap ---- */
+.tab.flash .fb{background:var(--ink);box-shadow:0 6px 16px rgba(36,26,56,.22)}
+.tab.flash .fb svg{stroke:var(--bg)}
+.tbadge{background:var(--accent)}
+.sicon .dot{background:var(--accent)}
+.sav{border-radius:50%}
+.savi{background:var(--card)!important;color:var(--ink);border:2px solid var(--ink);font-weight:700;font-size:calc(var(--s)*.42);letter-spacing:-.02em}
+.savi.ph{border-color:var(--ink)}
+.sav.ring{padding:0}.sav.ring .savi{border:2px solid var(--ink)}
+.sav.ring.new{background:none;box-shadow:0 0 0 2.5px var(--bg),0 0 0 4.5px var(--accent)}
+.sav.ring.seen{background:none;box-shadow:none}
+.splus{background:var(--ink);color:var(--bg)}
+.srow{gap:16px;padding:6px 4px 8px}
+.srowi.un{background:none}
+.srowi.un .sti b{font-weight:800}
+.sstat{gap:0!important}
+.sstat .spv{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:0 1 auto}
+.sstat.un .spv{color:var(--ink);font-weight:700}
+.sstat .sstate,.sstat .sago{flex:none;white-space:nowrap}
+.sstat .sstate::before,.sstat .sago::before{content:" · "}
+.sstat .typing{color:var(--accent);font-weight:700}
+.sdot{width:11px;height:11px;border-radius:50%;background:var(--accent);flex:none;margin:0 14px 0 4px}
+.sser{display:inline-flex;align-items:center;gap:2px;font-size:.72rem;font-weight:800;color:var(--ink);opacity:.85}
+.sser svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sbtn.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.cm.me{background:var(--ink);color:var(--bg)}
+.cm.fl{border:1.5px solid var(--line);font-weight:600}
+.cm.fl.new{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.cm.fl .sic{width:20px;height:20px}.cm.fl .sic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cm.me.ofit{border-color:var(--line)}
+.quote{border-inline-start-color:var(--accent)}
+.cround.cam{background:var(--ink);color:var(--bg)}
+.cround.send{background:var(--ink);color:var(--bg)}
+.cround.mic.rec{background:var(--accent)}
+.sprog{stroke:#fff}
+.shut.rec .sring{fill:rgba(255,255,255,.28)}
+.cpill.main{background:#fff;color:#111}
+.tlab{background:#fff;color:#111}
+.spick input{accent-color:var(--ink)}
+.etext.s2{background:#fff;color:#111}
+.st small.typing{color:var(--accent)}
+.sreq{flex-wrap:wrap;row-gap:8px}.sreq .sti{flex:1 1 calc(100% - 56px)}.sreq .sti small{white-space:normal}
+.sreq .sbtn{flex:1;max-width:none}.sreq>.sav{align-self:flex-start}
+.sstat .sstate::before,.sstat .sago::before{content:"·";margin:0 5px}
+.sav.ring.new{box-shadow:0 0 0 2.5px var(--bg),0 0 0 4.5px var(--ink)}
 </style>
 </head>
 <body>
@@ -1182,7 +1227,20 @@ var D={
 "Test-Modus: Lina, Jay, Sami und die anderen sind Test-Freunde und antworten automatisch. Echte Freunde kommen, sobald der Server verbunden ist.":"Test mode: Lina, Jay, Sami and the others are test friends and reply automatically. Real friends come once the server is connected.|Mode test : Lina, Jay, Sami et les autres sont des amis de test qui répondent automatiquement. Les vrais amis arrivent dès que le serveur est connecté.|Modo de prueba: Lina, Jay, Sami y los demás son amigos de prueba y responden solos. Los amigos reales llegarán cuando el servidor esté conectado.|Modo de teste: Lina, Jay, Sami e os outros são amigos de teste e respondem automaticamente. Os amigos reais chegam quando o servidor estiver ligado.|وضع التجربة: لينا وجاي وسامي والآخرون أصدقاء تجريبيون ويردون تلقائيًا. يأتي الأصدقاء الحقيقيون عند ربط الخادم.|टेस्ट मोड: लीना, जे, सामी और बाकी टेस्ट दोस्त हैं और अपने-आप जवाब देते हैं। सर्वर जुड़ते ही असली दोस्त आएँगे।|测试模式：Lina、Jay、Sami 等是测试好友，会自动回复。连接服务器后才会有真实好友。",
 "24 Stunden für alle deine Freunde":"24 hours for all your friends|24 heures pour tous tes amis|24 horas para todos tus amigos|24 horas para todos os teus amigos|24 ساعة لكل أصدقائك|24 घंटे सभी दोस्तों के लिए|24 小时，对所有好友可见",
 "schreibt gerade …":"typing …|écrit …|escribiendo …|a escrever …|يكتب الآن …|लिख रहा है …|正在输入 …",
-"Gestern":"Yesterday|Hier|Ayer|Ontem|أمس|कल|昨天"
+"Gestern":"Yesterday|Hier|Ayer|Ontem|أمس|कल|昨天",
+"Video-Flash":"Video Flash|Flash vidéo|Flash de vídeo|Flash de vídeo|فلاش فيديو|वीडियो फ़्लैश|视频 Flash",
+"Foto":"Photo|Photo|Foto|Foto|صورة|फ़ोटो|照片",
+"Outfit":"Outfit|Tenue|Outfit|Outfit|إطلالة|आउटफ़िट|穿搭",
+"Sprachnachricht":"Voice message|Message vocal|Mensaje de voz|Mensagem de voz|رسالة صوتية|वॉइस मैसेज|语音消息",
+"# neue Flashes":"# new Flashes|# nouveaux Flashs|# Flashes nuevos|# novos Flashes|# فلاشات جديدة|# नए फ़्लैश|# 条新 Flash",
+"Noch keine Nachrichten":"No messages yet|Pas encore de messages|Aún no hay mensajes|Ainda sem mensagens|لا توجد رسائل بعد|अभी कोई संदेश नहीं|还没有消息",
+"Du:":"You:|Toi :|Tú:|Tu:|أنت:|आप:|你：",
+"gesehen":"seen|vu|visto|visto|تمت المشاهدة|देखा गया|已看",
+"gesendet":"sent|envoyé|enviado|enviado|تم الإرسال|भेजा गया|已发送",
+"Outfit-Serie: # Tage":"Outfit streak: # days|Série de tenues : # jours|Racha de outfits: # días|Série de outfits: # dias|سلسلة الإطلالات: # أيام|आउटफ़िट सिलसिला: # दिन|穿搭连续：# 天",
+"Neu":"New|Nouveau|Nuevo|Novo|جديد|नया|新",
+"Flash gesehen":"Flash seen|Flash vu|Flash visto|Flash visto|تمت مشاهدة الفلاش|फ़्लैश देखा गया|Flash 已看",
+"Flash gesendet":"Flash sent|Flash envoyé|Flash enviado|Flash enviado|تم إرسال الفلاش|फ़्लैश भेजा गया|Flash 已发送"
 };
 for(var k in D)D[k]=D[k].split("|");
 
@@ -2111,7 +2169,7 @@ wdBuild();wdLoad().then(function(){wdOutfit()});
 /* ===== Flash & Chat =====
    Daten-Schicht (SO.*) liegt heute nur auf diesem Gerät, mit Test-Freunden, die automatisch antworten.
    Später ersetzt ein Server genau diese Funktionen (soSend, soFriends …); die Oberfläche bleibt gleich. */
-var FC={photo:"#E0275F",video:"#7B4DFF",chat:"#1596C8"};
+var FC={photo:"var(--accent)",video:"var(--accent)",chat:"var(--accent)"};
 var DEMO=[
  {id:"u_lina",user:"lina.style",name:"Lina",bg:"#ffb38a"},{id:"u_jay",user:"jay.k",name:"Jay",bg:"#b9c2ff"},
  {id:"u_sami",user:"sami_",name:"Sami",bg:"#9fe3cf"},{id:"u_nora",user:"nora.fit",name:"Nora",bg:"#ffd27a"},
@@ -2128,7 +2186,7 @@ var SOP=null;
 function soInit(){if(SOP)return SOP;SO=ls("lg_social");if(SO&&SO.v===1){SOP=Promise.resolve();return SOP}
   SOP=soSeed();return SOP}
 function soSeed(){
-  SO={v:1,friends:["u_lina","u_jay","u_sami","u_nora"],reqIn:["u_elif"],reqOut:[],blocked:[],chats:{},stories:[],seen:{},myViews:{}};var now=Date.now();
+  SO={v:1,serie:{u_lina:12,u_jay:3},friends:["u_lina","u_jay","u_sami","u_nora"],reqIn:["u_elif"],reqOut:[],blocked:[],chats:{},stories:[],seen:{},myViews:{}};var now=Date.now();
   return Promise.all([demoImg("lina1","#ff7e5f","#feb47b","☕","Montagmorgen"),demoImg("jay1","#3a1c71","#d76d77","🔥","Neue Sneaker"),demoImg("lina2","#43cea2","#185a9d","🌧️","Regenjacke an"),demoImg("sami1","#f7971e","#ffd200","😎","Sonne!")]).then(function(){
     chat("u_lina").msgs.push({id:mid(),from:"u_lina",at:now-14*6e4,kind:"flash",mtype:"photo",media:"demo_lina1",timer:5,opened:null});
     chat("u_jay").msgs.push({id:mid(),from:"u_jay",at:now-62*6e4,kind:"text",text:"Bro, was ziehst du heute an?",opened:null});
@@ -2150,17 +2208,23 @@ function demoImg(key,c1,c2,emo,txt){var c=document.createElement("canvas");c.wid
 function ago(t){var d=(Date.now()-t)/6e4;if(d<1)return tr("Gerade eben");if(d<60)return tr("vor # Min.").replace("#",Math.floor(d));if(d<24*60)return tr("vor # Std.").replace("#",Math.floor(d/60));
   var y=new Date();y.setHours(0,0,0,0);if(t>=y-864e5)return tr("Gestern");return new Date(t).toLocaleDateString(LC[li()],{day:"numeric",month:"short"})}
 /* ---- Status einer Chat-Zeile (das Symbol-System) ---- */
+/* Zeilen-Status im eigenen LOOK-GOOD-Stil: ein Punkt für "neu", Vorschau, Wörter statt Symbole */
+function preview(m){if(!m)return"";if(m.kind==="text"||m.kind==="reply")return m.text;if(m.kind==="flash")return tr(m.mtype==="video"?"Video-Flash":"Flash");if(m.kind==="image")return tr("Foto");if(m.kind==="outfit")return tr("Outfit");if(m.kind==="voice")return tr("Sprachnachricht");return""}
 function rowState(uid){var ms=chat(uid).msgs.filter(function(m){return!m.deleted}),last=ms[ms.length-1];
   var unFl=ms.filter(function(m){return m.from!=="me"&&m.kind==="flash"&&!m.opened}),unTx=ms.filter(function(m){return m.from!=="me"&&m.kind!=="flash"&&!m.opened});
-  if(unFl.length){var v=unFl[unFl.length-1];return{icon:"sq",fill:true,col:v.mtype==="video"?FC.video:FC.photo,txt:"Neuer Flash",at:v.at,unread:true,flashes:unFl}}
-  if(unTx.length){var t=unTx[unTx.length-1];return{icon:"bub",fill:true,col:FC.chat,txt:"Neuer Chat",at:t.at,unread:true}}
-  if(!last)return{icon:"bub",fill:false,col:"var(--muted)",txt:"Tippe, um zu chatten",at:0};
-  var col=last.kind==="flash"?(last.mtype==="video"?FC.video:FC.photo):FC.chat;
-  if(last.from==="me")return{icon:"arrow",fill:!last.opened,col:col,txt:last.opened?(last.kind==="flash"?"Geöffnet":"Gelesen"):"Zugestellt",at:last.at};
-  return{icon:last.kind==="flash"?"sq":"bub",fill:false,col:col,txt:last.kind==="flash"?"Angesehen":"Empfangen",at:last.at}}
-function stIcon(s){var c=s.col,f=s.fill?c:"none";if(s.icon==="sq")return'<svg viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2.5" fill="'+f+'" stroke="'+c+'" stroke-width="2"/></svg>';
-  if(s.icon==="arrow")return'<svg viewBox="0 0 16 16"><path d="M2.5 2.5 14 8 2.5 13.5 5 8z" fill="'+f+'" stroke="'+c+'" stroke-width="1.8" stroke-linejoin="round"/></svg>';
-  return'<svg viewBox="0 0 16 16"><path d="M2 3.5h12v8H7l-3.5 3v-3H2z" fill="'+f+'" stroke="'+c+'" stroke-width="1.8" stroke-linejoin="round"/></svg>'}
+  if(unFl.length){var v=unFl[unFl.length-1];return{line:tr(unFl.length>1?"# neue Flashes":"Neuer Flash").replace("#",unFl.length),at:v.at,unread:true,flashes:unFl}}
+  if(unTx.length){var t=unTx[unTx.length-1];return{line:preview(t),at:t.at,unread:true}}
+  if(!last)return{line:tr("Noch keine Nachrichten"),at:0};
+  if(last.from==="me")return{line:tr("Du:")+" "+preview(last),state:tr(last.opened?"gesehen":"gesendet"),at:last.at};
+  return{line:preview(last),at:last.at}}
+/* Outfit-Serie: Tage hintereinander, an denen ihr euch beide Flashes geschickt habt */
+function dayKey(t){var d=new Date(t);return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()}
+function streak(uid){var base=(SO.serie&&SO.serie[uid])||0,ms=chat(uid).msgs.filter(function(m){return m.kind==="flash"}),days={};
+  ms.forEach(function(m){var k=dayKey(m.at);days[k]=days[k]||{};days[k][m.from==="me"?"me":"them"]=1});
+  var n=0,d=new Date();if(!(days[dayKey(d)]&&days[dayKey(d)].me&&days[dayKey(d)].them))d.setDate(d.getDate()-1);
+  for(;;){var k=dayKey(d);if(days[k]&&days[k].me&&days[k].them){n++;d.setDate(d.getDate()-1)}else break}
+  return n+base}
+function hangerSvg(){return'<svg viewBox="0 0 24 24"><path d="M12 7.5a2.3 2.3 0 1 0-2.3-2.3M12 7.5v1.7l8.6 5.6a1.4 1.4 0 0 1-.8 2.6H4.2a1.4 1.4 0 0 1-.8-2.6L12 9.2"/></svg>'}
 function unreadCount(){return SO?SO.friends.filter(function(u){return rowState(u).unread}).length+SO.reqIn.length:0}
 function badge(){var t=$("t-friends");if(!t)return;var b=t.querySelector(".tbadge");var n=unreadCount();if(!b){b=el("span","tbadge");t.appendChild(b)}b.textContent=n>9?"9+":String(n);b.classList.toggle("hidden",!n)}
 /* ---- Avatare ---- */
@@ -2201,11 +2265,12 @@ function inbox(){if(!SO)return;SV.textContent="";
   var list=el("div","slist"),fr=SO.friends.slice().sort(function(a,b){return(rowState(b).at||0)-(rowState(a).at||0)});
   if(!fr.length){var e=el("div","wnone");e.appendChild(el("b","","Noch keine Freunde"));e.appendChild(el("p","","Suche oben rechts nach Benutzernamen und schick eine Anfrage."));list.appendChild(e)}
   fr.forEach(function(uid){var s=rowState(uid),r=el("div","srowi"+(s.unread?" un":"")),main=el("button","smain");main.type="button";main.appendChild(avEl(uid,50));var t=el("div","sti");
-    var nm=el("b","",uinfo(uid).name);if(demoUser(uid)){nm.appendChild(el("span","stest","Test"))}t.appendChild(nm);
-    var st=el("small","sstat");var ic=el("span","sic");ic.innerHTML=stIcon(s);st.appendChild(ic);var lb=el("span","",TYP[uid]?"schreibt gerade …":s.txt);lb.style.color=s.unread?s.col:"";if(s.unread)lb.style.fontWeight="800";st.appendChild(lb);
-    if(s.at){st.appendChild(document.createTextNode(" · "+ago(s.at)))}t.appendChild(st);main.appendChild(t);
+    var nm=el("b","",uinfo(uid).name);if(demoUser(uid)){nm.appendChild(el("span","stest","Test"))}var sr=streak(uid);if(sr>1){var sb=el("span","sser");sb.innerHTML=hangerSvg();sb.appendChild(document.createTextNode(String(sr)));sb.title=tr("Outfit-Serie: # Tage").replace("#",sr);nm.appendChild(sb)}t.appendChild(nm);
+    var st=el("small","sstat"+(s.unread?" un":""));if(TYP[uid])st.appendChild(el("span","typing","schreibt gerade …"));else{var pv=el("span","spv");pv.textContent=s.line;st.appendChild(pv);
+      if(s.state){st.appendChild(el("span","sstate",s.state))}if(s.at)st.appendChild(el("span","sago",ago(s.at)))}t.appendChild(st);main.appendChild(t);
     main.onclick=function(){if(s.flashes)viewFlashes(uid);else openChat(uid)};r.appendChild(main);
-    var cb=el("button","sicon sm");cb.type="button";cb.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>';cb.setAttribute("aria-label",tr("Chat öffnen"));cb.onclick=function(){openChat(uid)};r.appendChild(cb);
+    if(s.unread){var dot=el("span","sdot");dot.setAttribute("aria-label",tr("Neu"));r.appendChild(dot)}
+    else{var cb=el("button","sicon sm");cb.type="button";cb.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>';cb.setAttribute("aria-label",tr("Chat öffnen"));cb.onclick=function(){openChat(uid)};r.appendChild(cb)}
     list.appendChild(r)});SV.appendChild(list);
   var note=el("p","fine snote","Test-Modus: Lina, Jay, Sami und die anderen sind Test-Freunde und antworten automatisch. Echte Freunde kommen, sobald der Server verbunden ist.");SV.appendChild(note);badge()}
 function live(s){return Date.now()-s.at<864e5}
@@ -2259,8 +2324,8 @@ function chPaint(first){var uid=OPEN;if(!uid)return;var o=overlay("schat"),c=cha
 function dayLabel(t){var d=new Date(t),n=new Date();if(d.toDateString()===n.toDateString())return tr("Heute");n.setDate(n.getDate()-1);if(d.toDateString()===n.toDateString())return tr("Gestern");return d.toLocaleDateString(LC[li()],{weekday:"long",day:"numeric",month:"long"})}
 function msgEl(uid,m){var mine=m.from==="me",w=el("div","cm "+(mine?"me":"them")+(m.saved?" saved":"")),tm=new Date(m.at).toLocaleTimeString(LC[li()],{hour:"2-digit",minute:"2-digit"});
   if(m.kind==="text")w.appendChild(document.createTextNode(m.text));
-  else if(m.kind==="flash"){w.classList.add("fl");var col=m.mtype==="video"?FC.video:FC.photo,s={icon:mine?"arrow":"sq",fill:!m.opened,col:col},ic=el("span","sic");ic.innerHTML=stIcon(s);w.appendChild(ic);
-    w.appendChild(el("span","",mine?(m.opened?"Flash geöffnet":"Flash zugestellt"):(m.opened?(m.saved?"Gespeicherter Flash · tippen":"Flash angesehen"):"Neuer Flash · zum Ansehen tippen")));w.style.setProperty("--fc",col);
+  else if(m.kind==="flash"){w.classList.add("fl");if(!mine&&!m.opened)w.classList.add("new");var ic=el("span","sic");ic.innerHTML=m.mtype==="video"?'<svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';w.appendChild(ic);
+    w.appendChild(el("span","",mine?(m.opened?"Flash gesehen":"Flash gesendet"):(m.opened?(m.saved?"Gespeicherter Flash · tippen":"Flash angesehen"):"Neuer Flash · zum Ansehen tippen")));
     if(!mine&&(!m.opened||m.saved))w.onclick=function(){viewFlashes(uid,m.id)}}
   else if(m.kind==="image"){w.classList.add("img");var im=document.createElement("img");im.alt="";mediaGet(m.media).then(function(u){if(u)im.src=u});w.appendChild(im);im.onclick=function(){viewSingle(m)}}
   else if(m.kind==="outfit"){w.classList.add("ofit");w.appendChild(el("b","",m.title||"Mein Outfit"));var g=el("div","ofg");(m.items||[]).forEach(function(x){var i=document.createElement("img");i.src=x.img;i.alt="";g.appendChild(i)});w.appendChild(g);if(m.wx)w.appendChild(el("small","",m.wx));w.appendChild(el("p","",m.text||"Passt das?"))}
@@ -2347,7 +2412,7 @@ function openEditor2(src){camStop();var o=overlay("fedit");o.className="sover da
   tool('<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14c1 1.5 2.3 2 4 2s3-.5 4-2"/><circle cx="9" cy="10" r=".8"/><circle cx="15" cy="10" r=".8"/></svg>',"Emoji",emojiSheet);
   var tb=tool('<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>',"Timer",function(b){var i=(TIMERS.indexOf(ED.timer)+1)%TIMERS.length;ED.timer=TIMERS[i];tl.textContent=ED.timer?ED.timer+"s":"∞"});var tl=el("span","tlab","5s");tb.appendChild(tl);
   tool('<svg viewBox="0 0 24 24"><path d="M9 14l-4 4M15 4l5 5-9 9-5-5z"/></svg>',"Rückgängig",function(){if(ED.strokes.length){ED.strokes.pop();redraw()}});top.appendChild(tools);o.appendChild(top);
-  var pal=el("div","epal hidden");pal.id="epal";["#ffffff","#111111","#E0275F","#7B4DFF","#1596C8","#2ecc71","#f1c40f","#ff7a00"].forEach(function(c){var b=el("button");b.type="button";b.style.background=c;b.setAttribute("aria-label",c);b.onclick=function(){ED.color=c;Array.prototype.forEach.call(pal.children,function(x){x.classList.toggle("on",x===b)})};if(c==="#ffffff")b.classList.add("on");pal.appendChild(b)});o.appendChild(pal);
+  var pal=el("div","epal hidden");pal.id="epal";["#ffffff","#111111","#E0275F","#3b2a55","#c8a27a","#2e6b3a","#f1c40f","#9aa0a6"].forEach(function(c){var b=el("button");b.type="button";b.style.background=c;b.setAttribute("aria-label",c);b.onclick=function(){ED.color=c;Array.prototype.forEach.call(pal.children,function(x){x.classList.toggle("on",x===b)})};if(c==="#ffffff")b.classList.add("on");pal.appendChild(b)});o.appendChild(pal);
   var fr=el("div","efil noswipe");FILT.forEach(function(f,i){var b=el("button","",f[0]);b.type="button";b.setAttribute("aria-pressed",String(i===0));b.onclick=function(){ED.filter=i;med.style.filter=f[1];Array.prototype.forEach.call(fr.children,function(x,j){x.setAttribute("aria-pressed",String(j===i))})};fr.appendChild(b)});o.appendChild(fr);
   var trash=el("div","etrash hidden");trash.id="etrash";trash.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/></svg>';o.appendChild(trash);
   var bot=el("div","ebot");var sto=el("button","cpill");sto.type="button";sto.appendChild(el("span","","Meine Story"));sto.onclick=function(){edFinish(function(f){postStory(f);edDone()})};
@@ -2385,7 +2450,7 @@ function overlayCanvas(W,H){var c=document.createElement("canvas");c.width=W;c.h
   ED.stickers.forEach(function(s){g.font=Math.round(56*s.k*k)+"px system-ui,Apple Color Emoji,Segoe UI Emoji";g.textAlign="center";g.textBaseline="middle";g.fillText(s.e,s.x*W,s.y*H)});
   ED.texts.forEach(function(t){if(!t.txt||!t.txt.trim())return;var y=t.y*H,fs=Math.round((t.style===0?22:34)*k);g.font=(t.style===0?"600 ":"800 ")+fs+"px system-ui";g.textAlign="center";g.textBaseline="middle";
     var lines=t.txt.trim().split("\n");if(t.style===0){g.fillStyle="rgba(0,0,0,.55)";g.fillRect(0,y-fs*.95,W,fs*(1.2*lines.length+.7))}
-    lines.forEach(function(l,i){var yy=y+i*fs*1.2;if(t.style===2){var w=g.measureText(l).width;g.fillStyle="#E0275F";g.fillRect(W/2-w/2-fs*.4,yy-fs*.7,w+fs*.8,fs*1.4);g.fillStyle="#fff"}else{g.fillStyle="#fff";if(t.style===1){g.lineWidth=fs*.12;g.strokeStyle="rgba(0,0,0,.45)";g.strokeText(l,W/2,yy)}}g.fillText(l,W/2,yy)})});return c}
+    lines.forEach(function(l,i){var yy=y+i*fs*1.2;if(t.style===2){var w=g.measureText(l).width;g.fillStyle="#ffffff";g.fillRect(W/2-w/2-fs*.4,yy-fs*.7,w+fs*.8,fs*1.4);g.fillStyle="#111"}else{g.fillStyle="#fff";if(t.style===1){g.lineWidth=fs*.12;g.strokeStyle="rgba(0,0,0,.45)";g.strokeText(l,W/2,yy)}}g.fillText(l,W/2,yy)})});return c}
 function edFinish(cb){var src=ED.src,st=$("estage").getBoundingClientRect(),W=1080,H=Math.round(W*st.height/st.width);
   if(src.type==="photo"){var im=new Image();im.onload=function(){var c=document.createElement("canvas");c.width=W;c.height=H;var g=c.getContext("2d");g.fillStyle="#000";g.fillRect(0,0,W,H);
       var s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;g.filter=FILT[ED.filter][1]||"none";g.drawImage(im,(W-w)/2,(H-h)/2,w,h);g.filter="none";g.drawImage(overlayCanvas(W,H),0,0);
