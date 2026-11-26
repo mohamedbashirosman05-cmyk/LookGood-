@@ -1,0 +1,3 @@
+Version mit Figur-Assistent (Hauttöne, Frisuren, Bart …) und Flash & Chat.
+Ab 26.11.2026 ist die Haupt-App wieder die einfache Figur (Mann/Frau) aus Tag 1, plus Korrekturen.
+Diese Version liegt vollständig in Git: git show db3e384:LookGood.html > LookGood-assistent-flash.html

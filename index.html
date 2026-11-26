@@ -280,6 +280,26 @@ h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spaci
 .wends{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:-4px}
 .wedfoot{flex:none;padding-top:8px}
 @media (max-width:360px){.wd{grid-template-columns:54px minmax(0,1fr) 54px}.wcb{font-size:.58rem}.wcb svg{width:21px;height:21px}}
+.gopts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gopts button{min-height:50px;padding:0 12px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);font-weight:600;cursor:pointer}
+.gopts button:last-child:nth-child(odd){grid-column:1/-1}
+.gopts button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.gopts.one{grid-template-columns:1fr;margin-top:2px}
+.gopts.one button{color:var(--muted)}
+.gopts.one button[aria-pressed="true"]{color:var(--accent-ink)}
+.datef{position:relative;min-height:52px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);display:flex;align-items:center;padding-inline:16px 50px;font-size:1rem;cursor:pointer}
+.datef:focus-within{outline:3px solid var(--focus);outline-offset:2px}
+.datef svg{position:absolute;inset-inline-end:14px;top:50%;width:22px;height:22px;margin-top:-11px;fill:none;stroke:var(--muted);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+#oBirthF input{position:absolute;inset:0;width:100%;height:100%;min-height:0;margin:0;padding:0;border:0;border-radius:16px;opacity:0;cursor:pointer;-webkit-appearance:none;appearance:none;background:transparent}
+#opanel .fl input{min-height:52px;padding:0 16px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);font-size:1rem}
+.fid{display:grid;place-items:center;padding:6px 0 0}
+.fid svg{width:78px;height:78px;fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;animation:fidp 1s ease-in-out infinite}
+.fid.ok svg{stroke:#2fa84f;animation:none}
+@keyframes fidp{50%{transform:scale(.9);opacity:.6}}
+.fidt{text-align:center;margin:0;font-weight:700}
+.gacc{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:0 14px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);cursor:pointer;font-weight:600;text-align:start;overflow:hidden}
+.gacc .gi{flex:none;width:34px;height:34px;border-radius:50%;background:var(--line);display:grid;place-items:center;font-weight:800}
+.gm{text-align:center;font-weight:600;margin:0;word-break:break-all}
 </style>
 </head>
 <body>
@@ -353,13 +373,16 @@ h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spaci
 <section id="onb" class="screen hidden" aria-label="Über dich">
   <div class="wrap">
     <div class="ohead"><button class="back" id="oback" type="button" aria-label="Zurück"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button><div class="prog"><i id="pbar"></i></div></div>
-    <div class="step" data-s="0"><h2>Wie heißt du?</h2><p class="sub">So spricht dich dein Stylist an.</p>
+    <div class="step" data-s="0"><h2>Wie sollen wir dich nennen?</h2><p class="sub">So spricht dich dein Stylist an.</p>
+      <label>Spitzname<input id="oNick" type="text" autocomplete="nickname" maxlength="20" placeholder="zum Beispiel Momo"></label></div>
+    <div class="step hidden" data-s="1"><h2>Wie heißt du?</h2>
       <label>Vorname<input id="oFirst" type="text" autocomplete="given-name" maxlength="30"></label>
       <label>Nachname<input id="oLast" type="text" autocomplete="family-name" maxlength="40"></label></div>
-    <div class="step hidden" data-s="1"><h2>Wann hast du Geburtstag?</h2><p class="sub">Daraus berechnen wir dein Alter.</p>
-      <input id="oBirth" type="date" min="1920-01-01" aria-label="Geburtsdatum">
+    <div class="step hidden" data-s="2"><h2>Wann hast du Geburtstag?</h2>
+      <div class="datef" id="oBirthF"><span id="oBirthT"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg><input id="oBirth" type="date" min="1920-01-01" aria-label="Geburtsdatum"></div>
       <h3 style="margin-top:14px">Geschlecht</h3>
-      <div class="opts" id="oGender"><button type="button" data-v="Männlich">Männlich</button><button type="button" data-v="Weiblich">Weiblich</button><button type="button" data-v="Andere">Andere</button><button type="button" data-v="Keine Angabe">Keine Angabe</button></div></div>
+      <div class="gopts" id="oGender"><button type="button" data-v="Männlich">Männlich</button><button type="button" data-v="Weiblich">Weiblich</button><button type="button" data-v="Trans Mann">Trans Mann</button><button type="button" data-v="Trans Frau">Trans Frau</button><button type="button" data-v="Nicht-binär">Nicht-binär</button></div>
+      <div class="gopts one"><button type="button" data-v="Keine Angabe">Keine Angabe</button></div></div>
         <p class="err" id="oerr" role="alert"></p>
     <div class="foot"><button class="btn primary" id="onext" type="button">Weiter</button></div>
   </div>
@@ -436,6 +459,29 @@ var toast=$("toast"),tt;
 function say(m){toast.textContent=tr(m);toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show")},2600)}
 
 var D={
+"Wie sollen wir dich nennen?":"What should we call you?|Comment doit-on t'appeler ?|¿Cómo te llamamos?|Como te devemos chamar?|بماذا نناديك؟|हम आपको किस नाम से बुलाएँ?|我们该怎么称呼你？",
+"Spitzname":"Nickname|Surnom|Apodo|Alcunha|اللقب|उपनाम|昵称",
+"zum Beispiel Momo":"for example Momo|par exemple Momo|por ejemplo Momo|por exemplo Momo|مثلاً Momo|जैसे Momo|例如 Momo",
+"Gib deinen Spitznamen ein.":"Enter your nickname.|Saisis ton surnom.|Escribe tu apodo.|Escreve a tua alcunha.|أدخل لقبك.|अपना उपनाम लिखें।|请输入你的昵称。",
+"Nicht-binär":"Non-binary|Non binaire|No binario|Não binário|غير ثنائي|नॉन-बाइनरी|非二元",
+"Trans Mann":"Trans man|Homme trans|Hombre trans|Homem trans|رجل عابر|ट्रांस पुरुष|跨性别男性",
+"Trans Frau":"Trans woman|Femme trans|Mujer trans|Mulher trans|امرأة عابرة|ट्रांस महिला|跨性别女性",
+"Mit Face ID fortfahren":"Continue with Face ID|Continuer avec Face ID|Continuar con Face ID|Continuar com Face ID|المتابعة باستخدام Face ID|Face ID से जारी रखें|使用面容 ID 继续",
+"Mit Passwort fortfahren":"Continue with password|Continuer avec le mot de passe|Continuar con contraseña|Continuar com palavra-passe|المتابعة بكلمة المرور|पासवर्ड से जारी रखें|使用密码继续",
+"Apple-ID-Passwort":"Apple ID password|Mot de passe de l'identifiant Apple|Contraseña del ID de Apple|Palavra-passe do ID Apple|كلمة سر Apple ID|Apple ID पासवर्ड|Apple ID 密码",
+"Konto auswählen":"Choose an account|Choisir un compte|Elige una cuenta|Escolhe uma conta|اختر حساباً|खाता चुनें|选择账号",
+"weiter zu Look Good":"to continue to Look Good|pour continuer vers Look Good|para continuar a Look Good|para continuar para Look Good|للمتابعة إلى Look Good|Look Good पर जारी रखने के लिए|以继续使用 Look Good",
+"Anderes Konto verwenden":"Use another account|Utiliser un autre compte|Usar otra cuenta|Usar outra conta|استخدام حساب آخر|दूसरा खाता इस्तेमाल करें|使用其他账号",
+"Du hast schon ein Konto":"You already have an account|Tu as déjà un compte|Ya tienes una cuenta|Já tens uma conta|لديك حساب بالفعل|आपका खाता पहले से है|你已经有账号了",
+"Damit wurde schon ein Konto erstellt. Pro Apple-ID, E-Mail-Adresse und Telefonnummer gibt es nur ein Konto.":"An account was already created with this. There is only one account per Apple ID, email address and phone number.|Un compte a déjà été créé avec cet identifiant. Il n'existe qu'un seul compte par identifiant Apple, adresse e-mail et numéro de téléphone.|Ya se creó una cuenta con esto. Solo hay una cuenta por ID de Apple, correo electrónico y número de teléfono.|Já foi criada uma conta com isto. Só existe uma conta por ID Apple, endereço de e-mail e número de telefone.|تم إنشاء حساب بهذا من قبل. يوجد حساب واحد فقط لكل Apple ID وبريد إلكتروني ورقم هاتف.|इससे पहले ही एक खाता बनाया जा चुका है। हर Apple ID, ईमेल पते और फ़ोन नंबर पर सिर्फ़ एक खाता होता है।|已经用它创建过账号。每个 Apple ID、邮箱地址和手机号只能有一个账号。",
+"Dieses Konto nutzt # zum Anmelden.":"This account signs in with #.|Ce compte se connecte avec #.|Esta cuenta inicia sesión con #.|Esta conta inicia sessão com #.|هذا الحساب يسجّل الدخول عبر #.|यह खाता # से साइन इन करता है।|此账号使用 # 登录。",
+"Diese E-Mail gehört schon zu einem anderen Konto.":"This email already belongs to another account.|Cette adresse e-mail appartient déjà à un autre compte.|Este correo ya pertenece a otra cuenta.|Este e-mail já pertence a outra conta.|هذا البريد الإلكتروني مرتبط بحساب آخر.|यह ईमेल पहले से किसी दूसरे खाते का है।|该邮箱已属于另一个账号。",
+"Konto wird geladen …":"Loading account …|Chargement du compte …|Cargando cuenta …|A carregar conta …|جارٍ تحميل الحساب …|खाता लोड हो रहा है …|正在加载账号 …",
+"Passwort festlegen":"Set password|Définir un mot de passe|Crear contraseña|Definir palavra-passe|تعيين كلمة المرور|पासवर्ड सेट करें|设置密码",
+"Das aktuelle Passwort ist falsch.":"The current password is wrong.|Le mot de passe actuel est incorrect.|La contraseña actual es incorrecta.|A palavra-passe atual está errada.|كلمة المرور الحالية غير صحيحة.|मौजूदा पासवर्ड गलत है।|当前密码不正确。",
+"Freunde und Nachrichten":"Friends and messages|Amis et messages|Amigos y mensajes|Amigos e mensagens|الأصدقاء والرسائل|दोस्त और संदेश|好友和消息",
+"Hier findest du bald deine Freunde.":"Your friends will be here soon.|Tes amis seront bientôt ici.|Pronto encontrarás aquí a tus amigos.|Em breve vais encontrar aqui os teus amigos.|ستجد أصدقاءك هنا قريباً.|जल्द ही यहाँ आपके दोस्त होंगे।|你的好友很快会出现在这里。",
+"Abgemeldet. Deine Daten bleiben gespeichert.":"Logged out. Your data stays saved.|Déconnecté. Tes données restent enregistrées.|Sesión cerrada. Tus datos siguen guardados.|Sessão terminada. Os teus dados ficam guardados.|تم تسجيل الخروج. بياناتك تبقى محفوظة.|लॉग आउट हो गया। आपका डेटा सेव रहता है।|已退出登录。你的数据会保留。",
 "Überspringen":"Skip|Passer|Omitir|Pular|تخطي|छोड़ें|跳过",
 "oder mit Telefonnummer":"or with phone number|ou avec un numéro de téléphone|o con número de teléfono|ou com número de telefone|أو برقم الهاتف|या फ़ोन नंबर से|或使用手机号",
 "Telefonnummer":"Phone number|Numéro de téléphone|Número de teléfono|Número de telefone|رقم الهاتف|फ़ोन नंबर|手机号",
@@ -840,7 +886,7 @@ var logo=$("logo"),n=0;
 ["LOOK","GOOD"].forEach(function(w){var r=el("span","row");r.setAttribute("aria-hidden","true");
   w.split("").forEach(function(c){var s=el("span","ch"+(c==="O"?" o":""),c);s.style.setProperty("--i",n++);r.appendChild(s)});logo.appendChild(r)});
 var splash=$("splash"),login=$("login"),app=$("app"),welcome=$("welcome"),done=false;
-function finish(){if(done)return;done=true;if(prof.session&&prof.done)goHome();else welcome.classList.remove("hidden");splash.classList.add("out");setTimeout(function(){splash.classList.add("hidden")},550)}
+function finish(){if(done)return;done=true;if(prof.session&&prof.done)goHome();else if(prof.session&&prof.uid){paintProf();startOnb()}else welcome.classList.remove("hidden");splash.classList.add("out");setTimeout(function(){splash.classList.add("hidden")},550)}
 setTimeout(finish,matchMedia("(prefers-reduced-motion: reduce)").matches?900:2900);
 $("skip").onclick=finish;
 
@@ -852,37 +898,103 @@ CC.forEach(function(c){var o=document.createElement("option");o.value=c[1];o.tex
 var astep="am";
 function showA(id){astep=id;["am","ae","ac","ap"].forEach(function(x){$(x).classList.toggle("hidden",x!==id)});$("login").scrollTop=0}
 function pwh(x){return"h"+hash("lg|"+x)}
-function known(a){var x=prof.acc;return!!(x&&x.t===a.t&&x.id===a.id)}
-function auth(a,label,apply){
-  if(!known(a)){prof=Object.assign({},DEF,{lang:prof.lang,theme:prof.theme});prof.acc=a}
-  else if(a.pw)prof.acc.pw=a.pw;
-  if(apply)apply();prof.login=label;prof.session=true;saveProf();paintProf();
-  clearInterval(cTimer);login.classList.add("hidden");
-  if(prof.done){goHome();say(mode==="signup"?"Du hast schon ein Konto. Willkommen zurück!":"Willkommen zurück")}else startOnb()}
+/* ===== Konten =====
+   Pro Apple-ID, Google-/E-Mail-Adresse und Telefonnummer gibt es genau ein Konto (Liste lg_ids: Anmeldeweg -> Konto).
+   Prototyp ohne Server: alle Konten liegen auf diesem Gerät. Beim Abmelden und beim Kontowechsel wird das Konto
+   komplett gesichert (Profil, Einstellungen, Städte, Figur, Outfit, Looks, KI-Chat, Kleidung mit Fotos) und beim
+   Anmelden genau so wiederhergestellt. Mit dem Server wandert genau das in die Datenbank. */
+var DK=["lg_prof","lg_cities","lg_avatar","lg_outfit","lg_looks","lg_aichat"];
+function idk(a){return a.t==="phone"?"tel:"+a.id:a.t==="apple"?"apple:"+a.id:"mail:"+String(a.id).toLowerCase()}
+function IDS(){return ls("lg_ids")||{}}
+function owner(a){return IDS()[idk(a)]||null}
+function regId(k,uid){var m=IDS();m[k]=uid;ls("lg_ids",m)}
+function unregId(k){var m=IDS();delete m[k];ls("lg_ids",m)}
+function unregUid(uid){var m=IDS();Object.keys(m).forEach(function(k){if(m[k]===uid)delete m[k]});ls("lg_ids",m)}
+function newUid(){return"u"+Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function profOf(uid){if(uid&&uid===prof.uid)return prof;try{return JSON.parse(ls("lg_a_"+uid).data.lg_prof)}catch(e){return null}}
+function vdb(){return new Promise(function(res){try{var r=indexedDB.open("lookgood_vault",1);r.onupgradeneeded=function(){r.result.createObjectStore("v")};r.onsuccess=function(){res(r.result)};r.onerror=function(){res(null)}}catch(e){res(null)}})}
+function vDo(m,fn){return vdb().then(function(db){if(!db)return null;return new Promise(function(res){try{var t=db.transaction("v",m),q=fn(t.objectStore("v"));t.oncomplete=function(){db.close();res(q&&q.result!==undefined?q.result:true)};t.onerror=t.onabort=function(){db.close();res(null)}}catch(e){res(null)}})})}
+function stash(){if(!prof.uid)return Promise.resolve();var uid=prof.uid,d={};saveProf();
+  DK.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)d[k]=v});
+  try{localStorage.setItem("lg_a_"+uid,JSON.stringify({data:d,at:Date.now()}))}catch(e){}
+  return idbDo("readonly",function(st){return st.getAll()}).then(function(items){return vDo("readwrite",function(st){return st.put(items||[],uid)})})}
+function wipe(){DK.forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});return idbDo("readwrite",function(st){return st.clear()})}
+function unstash(uid){var r=ls("lg_a_"+uid)||{};return wipe().then(function(){var d=r.data||{};Object.keys(d).forEach(function(k){try{localStorage.setItem(k,d[k])}catch(e){}});
+  return vDo("readonly",function(st){return st.get(uid)})}).then(function(items){return idbDo("readwrite",function(st){(items||[]).forEach(function(it){st.put(it)});return null})})}
+function dropAcc(uid){unregUid(uid);try{localStorage.removeItem("lg_a_"+uid)}catch(e){}return vDo("readwrite",function(st){return st.delete(uid)})}
+function enter(){clearInterval(cTimer);login.classList.add("hidden");closeO();if(prof.done){goHome();say("Willkommen zurück")}else startOnb()}
+/* Anmelden: gehört der Anmeldeweg schon zu einem Konto, wird genau dieses Konto geöffnet, sonst ein neues erstellt. */
+function auth(a,label,apply){var uid=owner(a);
+  if(!uid)return create(a,label,apply);
+  if(uid===prof.uid){if(apply)apply();prof.login=label;prof.session=true;saveProf();paintProf();return enter()}
+  say("Konto wird geladen …");
+  stash().then(function(){return unstash(uid)}).then(function(){prof=Object.assign({},DEF,ls("lg_prof")||{});if(apply)apply();prof.login=label;prof.session=true;saveProf();location.reload()})}
+function create(a,label,apply){
+  var mk=function(){prof=Object.assign({},DEF,{lang:prof.lang,theme:prof.theme});prof.uid=newUid();prof.acc={t:a.t,id:a.id};if(a.pw)prof.pw=a.pw;
+    regId(idk(a),prof.uid);if(apply)apply();if(prof.email)regId("mail:"+prof.email.toLowerCase(),prof.uid);prof.login=label;prof.session=true;saveProf()};
+  if(!prof.uid){mk();paintProf();return enter()}
+  say("Konto wird geladen …");
+  (prof.done?stash():dropAcc(prof.uid)).then(wipe).then(function(){mk();location.reload()})}
 function osheet(build){var P=$("opanel");P.textContent="";build(P);
   var c=el("button","link","Abbrechen");c.type="button";c.onclick=closeO;P.appendChild(c);$("osheet").classList.remove("hidden")}
 function closeO(){$("osheet").classList.add("hidden")}
 $("osheet").addEventListener("click",function(e){if(e.target===this)closeO()});
 function noAcc(go){osheet(function(P){P.appendChild(el("h3","","Kein Konto gefunden"));P.appendChild(el("p","fine","Mit diesen Daten gibt es noch kein Konto. Möchtest du eins erstellen?"));
   var b=el("button","btn primary","Konto erstellen");b.type="button";b.onclick=function(){closeO();var ast=astep;showAuth("signup");if(ast==="ae")openMail();go()};P.appendChild(b)})}
+function hasAcc(go){osheet(function(P){P.appendChild(el("h3","","Du hast schon ein Konto"));P.appendChild(el("p","fine","Damit wurde schon ein Konto erstellt. Pro Apple-ID, E-Mail-Adresse und Telefonnummer gibt es nur ein Konto."));
+  var b=el("button","btn primary","Anmelden");b.type="button";b.onclick=function(){closeO();var ast=astep;showAuth("login");if(ast==="ae")openMail();if(go)go()};P.appendChild(b)})}
 /* Apple / Google: Systemfenster wie auf dem Handy */
-function provider(p){
-  var a={t:p.toLowerCase(),id:p.toLowerCase()};
-  if(mode==="login"&&!known(a))return noAcc(function(){provider(p)});
-  osheet(function(P){var box=el("div","sysbox"),lg=el("div","lg");
-    if(p==="Apple"){lg.innerHTML=document.querySelector(".btn.apple svg").outerHTML;lg.style.background="#000";lg.style.color="#fff";lg.firstChild.style.cssText="width:34px;height:34px;fill:#fff;stroke:none"}
-    else{lg.innerHTML='<span class="g" style="font-size:2.2rem">G</span>';lg.style.background="#fff";lg.style.border="1.5px solid var(--line)"}
-    box.appendChild(lg);box.appendChild(el("h3","",p==="Apple"?"Mit Apple anmelden":"Mit Google anmelden"));
-    box.appendChild(el("p","fine",p==="Apple"?"„Look Good“ möchte deine Apple-ID zum Anmelden verwenden.":"Google teilt deinen Namen, deine E-Mail-Adresse und dein Profilbild mit Look Good."));P.appendChild(box);
-    var b=el("button","btn primary"+(p==="Apple"?" apple":""),"Fortfahren");b.type="button";
-    b.onclick=function(){b.disabled=true;b.textContent="";b.appendChild(el("span","spin"));setTimeout(function(){closeO();auth(a,p)},900)};P.appendChild(b)})}
+var FID='<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 20v-8a6 6 0 0 1 6-6h8M44 6h8a6 6 0 0 1 6 6v8M58 44v8a6 6 0 0 1-6 6h-8M20 58h-8a6 6 0 0 1-6-6v-8M22 23v6M42 23v6M33 23v13h-3M23 43c5 5 13 5 18 0"/></svg>',
+    FOK='<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26"/><path d="M20 33l8 8 16-17"/></svg>';
+function sysHead(P,p,title,text){var box=el("div","sysbox"),lg=el("div","lg");
+  if(p==="Apple"){lg.innerHTML=document.querySelector(".btn.apple svg").outerHTML;lg.style.background="#000";lg.style.color="#fff";lg.firstChild.style.cssText="width:34px;height:34px;fill:#fff;stroke:none"}
+  else{lg.innerHTML='<span class="g" style="font-size:2.2rem">G</span>';lg.style.background="#fff";lg.style.border="1.5px solid var(--line)"}
+  box.appendChild(lg);box.appendChild(el("h3","",title));if(text)box.appendChild(el("p","fine",text));P.appendChild(box)}
+function provider(p){if(p==="Google")gPick();else appleSheet()}
+/* Apple: die Apple-ID dieses Geräts, bestätigt mit Face ID oder Passwort */
+var AID={t:"apple",id:"device"};
+function appleSheet(){
+  if(mode==="login"&&!owner(AID))return noAcc(appleSheet);
+  if(mode==="signup"&&owner(AID))return hasAcc(appleSheet);
+  osheet(function(P){sysHead(P,"Apple",ts(mode==="signup","Mit Apple registrieren","Mit Apple anmelden"),"„Look Good“ möchte deine Apple-ID zum Anmelden verwenden.");
+    var f=el("div","fid hidden"),ft=el("p","fidt hidden");f.innerHTML=FID;P.appendChild(f);P.appendChild(ft);
+    var pw=el("label","fl hidden"),inp=el("input");inp.type="password";inp.autocomplete="current-password";pw.appendChild(el("small","","Apple-ID-Passwort"));pw.appendChild(inp);
+    var er=el("p","err"),b=el("button","btn apple","Mit Face ID fortfahren"),pwb=el("button","link","Mit Passwort fortfahren");b.type=pwb.type="button";
+    var ok=function(){closeO();auth(AID,"Apple")};
+    b.onclick=function(){
+      if(!pw.classList.contains("hidden")){if(!inp.value){er.textContent=tr("Gib dein Passwort ein.");return}b.disabled=true;b.textContent="";b.appendChild(el("span","spin"));setTimeout(ok,800);return}
+      b.classList.add("hidden");pwb.classList.add("hidden");f.classList.remove("hidden");ft.classList.remove("hidden");ft.textContent="Face ID";
+      setTimeout(function(){f.classList.add("ok");f.innerHTML=FOK;ft.textContent=tr("Fertig");setTimeout(ok,700)},1500)};
+    pwb.onclick=function(){pw.classList.remove("hidden");pwb.classList.add("hidden");b.textContent=tr(mode==="signup"?"Weiter":"Anmelden");setTimeout(function(){inp.focus()},50)};
+    inp.addEventListener("keydown",function(e){if(e.key==="Enter")b.click()});
+    P.appendChild(pw);P.appendChild(er);P.appendChild(b);P.appendChild(pwb)})}
+/* Google: Konto auswählen (jede Google-Adresse = genau ein Konto) */
+function gList(){return ls("lg_gacc")||[]}
+function gPick(){osheet(function(P){sysHead(P,"Google","Konto auswählen","weiter zu Look Good");
+  var L=gList();L.forEach(function(m){var r=el("button","gacc");r.type="button";r.appendChild(el("span","gi",m.charAt(0).toUpperCase()));var t=el("span");t.textContent=m;r.appendChild(t);r.onclick=function(){gGo(m)};P.appendChild(r)});
+  var l=el("label","fl"),i=el("input");l.appendChild(el("small","",L.length?"Anderes Konto verwenden":"E-Mail-Adresse"));i.type="email";i.inputMode="email";i.autocomplete="email";i.placeholder="name@gmail.com";l.appendChild(i);P.appendChild(l);
+  var er=el("p","err"),b=el("button","btn primary","Weiter");b.type="button";P.appendChild(er);
+  b.onclick=function(){var m=i.value.trim().toLowerCase();if(!mailOk(m)){er.textContent=tr("Gib eine gültige E-Mail-Adresse ein.");return}gGo(m)};
+  i.addEventListener("keydown",function(e){if(e.key==="Enter")b.click()});P.appendChild(b)})}
+function gGo(m){var a={t:"google",id:m};
+  if(mode==="login"&&!owner(a))return noAcc(function(){gConsent(m)});
+  if(mode==="signup"&&owner(a))return hasAcc(function(){gConsent(m)});
+  gConsent(m)}
+function gConsent(m){var a={t:"google",id:m};
+  osheet(function(P){sysHead(P,"Google",ts(mode==="signup","Mit Google registrieren","Mit Google anmelden"),"Google teilt deinen Namen, deine E-Mail-Adresse und dein Profilbild mit Look Good.");
+    var g=el("p","gm");g.textContent=m;P.appendChild(g);
+    var b=el("button","btn primary","Fortfahren");b.type="button";
+    b.onclick=function(){b.disabled=true;b.textContent="";b.appendChild(el("span","spin"));
+      setTimeout(function(){var L=gList().filter(function(x){return x!==m});L.unshift(m);ls("lg_gacc",L.slice(0,5));closeO();auth(a,"Google",function(){if(!prof.email)prof.email=m})},900)};
+    P.appendChild(b)})}
 document.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){provider(b.dataset.go)}});
 /* Telefonnummer + SMS-Code */
 function submitPhone(){
   var d=$("tel").value.replace(/\D/g,"").replace(/^0+/,""),cc=$("cc").value;
   if(d.length<6||d.length>14){$("err").textContent=tr("Gib eine gültige Telefonnummer ein.");return false}
   $("err").textContent="";var a={t:"phone",id:cc+d};
-  if(mode==="login"&&!known(a)){noAcc(submitPhone);return false}
+  if(mode==="login"&&!owner(a)){noAcc(submitPhone);return false}
+  if(mode==="signup"&&owner(a)){hasAcc(submitPhone);return false}
   sendCode({sms:true,to:cc+" "+d,ok:function(){auth(a,"Telefonnummer",function(){prof.phone=d;prof.cc=cc})}});return true}
 $("pgo").onclick=submitPhone;
 $("tel").addEventListener("keydown",function(e){if(e.key==="Enter")submitPhone()});
@@ -902,21 +1014,23 @@ function submitMail(){
   var m=mailIn(),pw=$("pw").value,E=$("eerr"),a={t:"email",id:m,pw:pwh(pw)};
   if(!mailOk(m)){E.textContent=tr("Gib eine gültige E-Mail-Adresse ein.");return}
   if(mode==="signup"){
-    if(known(a)){E.textContent=tr("Diese E-Mail ist schon registriert. Melde dich an.");return}
+    if(owner(a)){E.textContent="";hasAcc(null);return}
     if(!pwStrong(pw)){E.textContent=tr(PWMSG);return}
     E.textContent="";sendCode({sms:false,to:m,ok:function(){auth(a,"E-Mail",function(){prof.email=m})}});return}
   if(!pw){E.textContent=tr("Gib dein Passwort ein.");return}
-  if(!known(a)){E.textContent="";noAcc(submitMail);return}
-  if(prof.acc.pw!==a.pw){E.textContent=tr("E-Mail oder Passwort ist falsch.");return}
+  var uid=owner(a);if(!uid){E.textContent="";noAcc(submitMail);return}
+  var p=profOf(uid);
+  if(!p||!p.pw){E.textContent=tr("Dieses Konto nutzt # zum Anmelden.").replace("#",tr(p&&p.login||"Google"));return}
+  if(p.pw!==a.pw){E.textContent=tr("E-Mail oder Passwort ist falsch.");return}
   E.textContent="";auth(a,"E-Mail")}
 $("ego").onclick=submitMail;
 ["email","pw"].forEach(function(i){$(i).addEventListener("keydown",function(e){if(e.key==="Enter")submitMail()})});
 $("eForgot").onclick=function(){var m=mailIn(),a={t:"email",id:m};
   if(!mailOk(m)){$("eerr").textContent=tr("Gib eine gültige E-Mail-Adresse ein.");return}
-  if(!known(a)){noAcc(openMail);return}
+  if(!owner(a)){noAcc(openMail);return}
   sendCode({sms:false,to:m,ok:function(){$("npw").value="";rules("npw","nrules");$("perr").textContent="";showA("ap")}})};
 function setPw(){var v=$("npw").value;if(!pwStrong(v)){$("perr").textContent=tr(PWMSG);return}
-  var m=mailIn();auth({t:"email",id:m,pw:pwh(v)},"E-Mail",function(){prof.email=m});say("Passwort gespeichert")}
+  var m=mailIn(),h=pwh(v);auth({t:"email",id:m},"E-Mail",function(){if(!prof.email)prof.email=m;prof.pw=h});say("Passwort gespeichert")}
 $("pset").onclick=setPw;$("npw").addEventListener("keydown",function(e){if(e.key==="Enter")setPw()});
 /* 6-stelliger Code */
 var code="",cTimer,cLeft=0,cCtx=null,smsT;
@@ -953,10 +1067,13 @@ sheet.addEventListener("click",function(e){if(e.target===sheet)closeSheet()});
 
 /* Profil */
 function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
-var DEF={name:"",last:"",user:"",photo:"",email:"",ai:"Mo",loc:true,theme:"",login:"",phone:"",birth:"",gender:"",vis:"Alle",nW:true,nF:true,lang:"Deutsch",done:false};
+var DEF={name:"",last:"",nick:"",user:"",photo:"",email:"",ai:"Mo",loc:true,theme:"",login:"",phone:"",birth:"",gender:"",vis:"Alle",nW:true,nF:true,lang:"Deutsch",done:false};
 var prof=Object.assign({},DEF,ls("lg_prof")||{});
 function saveProf(){ls("lg_prof",prof)}
 if(prof.done&&!prof.acc&&prof.login){prof.acc=prof.login==="Telefonnummer"?{t:"phone",id:"+49"+prof.phone}:{t:String(prof.login).toLowerCase(),id:String(prof.login).toLowerCase()};if(prof.phone&&!prof.cc)prof.cc="+49";saveProf()}
+if(prof.acc&&!prof.uid){prof.uid=newUid();if(prof.acc.pw&&!prof.pw)prof.pw=prof.acc.pw;regId(idk(prof.acc),prof.uid);if(prof.email)regId("mail:"+prof.email.toLowerCase(),prof.uid);saveProf()}
+var GEN=["Männlich","Weiblich","Trans Mann","Trans Frau","Nicht-binär"];
+function fem(){return prof.gender==="Weiblich"||prof.gender==="Trans Frau"}
 if(prof.theme)document.documentElement.setAttribute("data-theme",prof.theme);
 function info(title,text){panel.textContent="";panel.appendChild(el("h3","",title));if(text)panel.appendChild(el("p","fine",text));var c=el("button","link","Schließen");c.type="button";c.onclick=closeSheet;panel.appendChild(c);sheet.classList.remove("hidden")}
 function menu(title,text,items){
@@ -986,27 +1103,37 @@ function pwStrong(p){return p.length>=8&&/[a-z]/.test(p)&&/[A-Z]/.test(p)&&/\d/.
 var PWMSG="Mindestens 8 Zeichen mit Groß- und Kleinbuchstaben, Zahl und Sonderzeichen.";
 function editProfile(){
   form("Profil bearbeiten",[
+    {id:"nick",label:"Spitzname",val:prof.nick,ac:"nickname",ph:"zum Beispiel Momo"},
     {id:"name",label:"Vorname",val:prof.name,ac:"given-name"},
     {id:"last",label:"Nachname",val:prof.last,ac:"family-name"},
     {id:"user",label:"Benutzername",val:prof.user,ph:"zum Beispiel mia.styles"},
     {id:"birth",label:"Geburtsdatum",type:"date",val:prof.birth},
-    {id:"gender",label:"Geschlecht",opts:["Männlich","Weiblich","Andere","Keine Angabe"],val:prof.gender}],
+    {id:"gender",label:"Geschlecht",opts:GEN.concat("Keine Angabe"),val:prof.gender}],
   "Speichern",function(v){
+    if(!v.nick)return"Gib deinen Spitznamen ein.";
     if(!v.name)return"Gib deinen Vornamen ein.";
     if(!v.last)return"Gib deinen Nachnamen ein.";
     if(!v.birth)return"Wähle dein Geburtsdatum.";
     var a=age(v.birth);if(isNaN(a)||a>110)return"Bitte prüfe dein Geburtsdatum.";if(a<13)return"Du musst mindestens 13 Jahre alt sein.";
     if(!v.gender)return"Bitte wähle eine Option.";
-    prof.name=v.name;prof.last=v.last;prof.user=v.user.replace(/^@/,"").replace(/[^\w.]/g,"");prof.birth=v.birth;prof.gender=v.gender;
+    prof.nick=v.nick.slice(0,20);prof.name=v.name;prof.last=v.last;prof.user=v.user.replace(/^@/,"").replace(/[^\w.]/g,"");prof.birth=v.birth;prof.gender=v.gender;
     saveProf();paintProf();say("Profil gespeichert");return""})}
 function loginSheet(){
   menu("Login-Daten",(prof.login?tr("Angemeldet mit")+" "+tr(prof.login)+(prof.phone?" ("+(prof.cc||"+49")+" "+prof.phone+"). ":". "):"")+(prof.email?tr("E-Mail:")+" "+prof.email+".":tr("Noch keine E-Mail hinterlegt.")),[
-    {t:prof.email?"E-Mail ändern":"E-Mail hinzufügen",fn:emailSheet},{t:"Passwort ändern",fn:pwSheet},{t:"Passwort vergessen?",fn:forgotSheet}])}
+    {t:prof.email?"E-Mail ändern":"E-Mail hinzufügen",fn:emailSheet},{t:prof.pw?"Passwort ändern":"Passwort festlegen",fn:pwSheet},{t:"Passwort vergessen?",fn:forgotSheet}])}
 function emailSheet(){form("E-Mail",[{id:"e",label:"E-Mail-Adresse",type:"email",val:prof.email,ph:"du@beispiel.de",ac:"email"}],"Speichern",function(v){
-  if(!mailOk(v.e))return"Gib eine gültige E-Mail-Adresse ein.";prof.email=v.e;saveProf();paintProf();say("E-Mail gespeichert");return""})}
-function pwSheet(){form("Passwort ändern",[{id:"o",label:"Aktuelles Passwort",type:"password",ac:"current-password"},{id:"n",label:"Neues Passwort",type:"password",ac:"new-password"},{id:"r",label:"Neues Passwort wiederholen",type:"password",ac:"new-password"}],"Ändern",function(v){
-  if(!v.o)return"Gib dein aktuelles Passwort ein.";if(!pwStrong(v.n))return PWMSG;if(v.n!==v.r)return"Die Passwörter stimmen nicht überein.";
-  say("Passwort geprüft. Gespeichert wird erst mit dem Server.");return""},"Prototyp: Ohne Server wird noch nichts gespeichert.")}
+  var e=v.e.toLowerCase();if(!mailOk(e))return"Gib eine gültige E-Mail-Adresse ein.";
+  var o=IDS()["mail:"+e];if(o&&o!==prof.uid)return"Diese E-Mail gehört schon zu einem anderen Konto.";
+  var old=(prof.email||"").toLowerCase(),keep=prof.acc&&prof.acc.t==="google"&&String(prof.acc.id).toLowerCase()===old;
+  if(old&&old!==e&&!keep)unregId("mail:"+old);if(prof.acc&&prof.acc.t==="email")prof.acc.id=e;
+  if(prof.uid)regId("mail:"+e,prof.uid);prof.email=e;saveProf();paintProf();say("E-Mail gespeichert");return""})}
+function pwSheet(){var has=!!prof.pw,f=[];
+  if(has)f.push({id:"o",label:"Aktuelles Passwort",type:"password",ac:"current-password"});
+  f.push({id:"n",label:"Neues Passwort",type:"password",ac:"new-password"},{id:"r",label:"Neues Passwort wiederholen",type:"password",ac:"new-password"});
+  form(has?"Passwort ändern":"Passwort festlegen",f,has?"Ändern":"Speichern",function(v){
+  if(has){if(!v.o)return"Gib dein aktuelles Passwort ein.";if(pwh(v.o)!==prof.pw)return"Das aktuelle Passwort ist falsch."}
+  if(!pwStrong(v.n))return PWMSG;if(v.n!==v.r)return"Die Passwörter stimmen nicht überein.";
+  prof.pw=pwh(v.n);saveProf();say("Passwort gespeichert");return""})}
 function forgotSheet(){form("Passwort vergessen",[{id:"e",label:"E-Mail-Adresse",type:"email",val:prof.email,ph:"du@beispiel.de"}],"Code senden",function(v){
   if(!mailOk(v.e))return"Gib eine gültige E-Mail-Adresse ein.";
   setTimeout(function(){form("Code eingeben",[{id:"c",label:"6-stelliger Code",ph:"123456"},{id:"n",label:"Neues Passwort",type:"password",ac:"new-password"}],"Passwort setzen",function(w){
@@ -1025,7 +1152,7 @@ globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c
 var SETS=[
  ["Konto",[{i:"key",t:"Login-Daten",s:"E-Mail, Passwort, Anmeldung",go:loginSheet},{i:"eye",t:"Wer sieht dein Profil",s:function(){return prof.vis},go:function(){choose("Wer sieht dein Profil","vis",["Alle","Nur Freunde","Niemand"])}}]],
  ["KI",[{i:"chat",t:"Chat mit Mo oder Sarah",s:"Persönliche Stilberatung",seg:"ai",o:["Mo","Sarah"]},{i:"clock",t:"Chat-Verlauf",s:"Vergangene Chats mit der KI",go:function(){info("Chat-Verlauf","Noch keine Chats mit der KI. Hier erscheinen später deine Gespräche.")}}]],
- ["Benachrichtigungen",[{i:"bell",t:"Tägliche Wetter-Nachricht",s:"Morgens ein kurzer Hinweis",sw:"nW"},{i:"bell",t:"Freunde und Snaps",s:"Wenn dir jemand schreibt",sw:"nF"}]],
+ ["Benachrichtigungen",[{i:"bell",t:"Tägliche Wetter-Nachricht",s:"Morgens ein kurzer Hinweis",sw:"nW"},{i:"bell",t:"Freunde und Nachrichten",s:"Wenn dir jemand schreibt",sw:"nF"}]],
  ["Datenschutz",[{i:"pin",t:"Standort für die KI",s:"Die KI darf deine Stadt für Vorschläge nutzen",sw:"loc"}]],
  ["App",[{i:"moon",t:"Erscheinungsbild",s:"Hell oder dunkel",seg:"theme",o:["Hell","Dunkel"],v:["light","dark"]},{i:"globe",t:"Sprache",s:function(){return prof.lang},go:function(){choose("Sprache","lang",LN,function(){applyLang()})}}]]];
 function renderSets(){
@@ -1046,10 +1173,10 @@ function renderSets(){
     H.appendChild(L)})}
 function paintProf(){
   $("avatar").setAttribute("aria-label",tr("Profil öffnen"));
-  var ini=prof.name?prof.name.charAt(0).toUpperCase():tr("Du");
+  var nm=prof.nick||prof.name,ini=nm?nm.charAt(0).toUpperCase():tr("Du");
   [$("avatar"),$("big")].forEach(function(x){x.style.backgroundImage=prof.photo?"url("+prof.photo+")":""});
   $("avatar").textContent=prof.photo?"":ini;$("bigtxt").textContent=prof.photo?"":ini;
-  $("pname").textContent=prof.name||tr("Dein Name");$("puser").textContent=prof.user?"@"+prof.user:"@"+tr("benutzername");
+  $("pname").textContent=prof.nick||prof.name||tr("Dein Name");$("puser").textContent=prof.user?"@"+prof.user:"@"+tr("benutzername");
   $("pinfo").textContent=prof.phone?(prof.cc||"+49")+" "+prof.phone:(prof.email||(prof.login?tr("Angemeldet mit")+" "+tr(prof.login):""));
   chatHead();renderSets()}
 $("avatar").onclick=function(){paintProf();$("profile").classList.remove("hidden");$("profile").scrollTop=0};
@@ -1058,13 +1185,14 @@ $("pen").onclick=function(){$("pfile").click()};
 $("pfile").onchange=function(e){var f=e.target.files[0];e.target.value="";if(!f)return;
   var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,300/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);prof.photo=c.toDataURL("image/jpeg",.85);saveProf();paintProf()};im.src=r.result};r.readAsDataURL(f)};
 $("pedit").onclick=editProfile;
-$("pout").onclick=function(){prof.session=false;saveProf();$("profile").classList.add("hidden");app.classList.add("hidden");welcome.classList.remove("hidden");$("tel").value=""};
-$("pdel").onclick=function(){menu("Konto löschen?","Dein Profil und deine Einstellungen werden von diesem Gerät gelöscht. Das kann nicht rückgängig gemacht werden.",[{t:"Endgültig löschen",fn:function(){try{["lg_prof","lg_cities","lg_avatar","lg_outfit","lg_looks"].forEach(function(k){localStorage.removeItem(k)});indexedDB.deleteDatabase("lookgood")}catch(e){}setTimeout(function(){location.reload()},150)}}])};
+$("pout").onclick=function(){prof.session=false;saveProf();stash();say("Abgemeldet. Deine Daten bleiben gespeichert.");$("pw").value="";$("profile").classList.add("hidden");app.classList.add("hidden");welcome.classList.remove("hidden");$("tel").value=""};
+$("pdel").onclick=function(){menu("Konto löschen?","Dein Profil und deine Einstellungen werden von diesem Gerät gelöscht. Das kann nicht rückgängig gemacht werden.",[{t:"Endgültig löschen",fn:function(){var u=prof.uid,m=(prof.email||"").toLowerCase();ls("lg_gacc",gList().filter(function(x){return x!==m}));
+  (u?dropAcc(u):Promise.resolve()).then(wipe).then(function(){try{localStorage.removeItem("lg_prof")}catch(e){}setTimeout(function(){location.reload()},150)})}}])};
 paintProf();
 
 /* Tabs mit Wischen */
 var KEYS=["home","wardrobe","friends","chat"],cur="home";
-var TXT={wardrobe:["Garderobe","Hier landen bald deine Kleidungsstücke."],friends:["Freunde","Hier findest du bald deine Freunde und Snaps."],chat:["AI","Hier sprichst du bald mit deinem Stylisten."]};
+var TXT={wardrobe:["Garderobe","Hier landen bald deine Kleidungsstücke."],friends:["Freunde","Hier findest du bald deine Freunde."],chat:["AI","Hier sprichst du bald mit deinem Stylisten."]};
 function emptyViews(){["friends"].forEach(function(k){var s=$("v-"+k);if(!s){s=el("section","view hidden");s.id="v-"+k;$("views").appendChild(s)}s.textContent="";var e=el("div","empty");e.appendChild(el("h2","",TXT[k][0]));e.appendChild(el("p","",TXT[k][1]));s.appendChild(e)})}emptyViews();
 function showTab(k){cur=k;app.classList.toggle("home",k==="home");
   KEYS.forEach(function(t){$("v-"+t).classList.toggle("hidden",t!==k);$("t-"+t).setAttribute("aria-selected",String(t===k))});$("views").scrollTop=0;chatTab(k);wdTab(k)}
@@ -1090,20 +1218,25 @@ $("wLogin").onclick=function(){showAuth("login")};
 $("swMode").onclick=function(){showAuth(mode==="signup"?"login":"signup")};
 $("aback").onclick=function(){if(astep==="am"){login.classList.add("hidden");welcome.classList.remove("hidden")}else{clearInterval(cTimer);hideSms();showA(astep==="ac"&&cCtx&&!cCtx.sms?"ae":"am")}};
 var onb=$("onb");
-function startOnb(){onb.classList.remove("hidden");showStep(0)}
+function startOnb(){onb.classList.remove("hidden");$("oNick").value=prof.nick||"";$("oFirst").value=prof.name||"";$("oLast").value=prof.last||"";showStep(0)}
 function showStep(i){step=i;
   document.querySelectorAll("#onb .step").forEach(function(x){x.classList.toggle("hidden",+x.dataset.s!==i)});
-  $("pbar").style.width=(i+1)*50+"%";$("oerr").textContent="";$("onext").textContent=tr(i===1?"Los geht’s":"Weiter");
-  if(i===1)$("oBirth").max=new Date().toISOString().slice(0,10)}
-document.querySelectorAll("#oGender button").forEach(function(b){b.onclick=function(){ob.gender=b.dataset.v;document.querySelectorAll("#oGender button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))})}});
+  $("pbar").style.width=Math.round((i+1)/3*100)+"%";$("oerr").textContent="";$("onext").textContent=tr(i===2?"Los geht’s":"Weiter");
+  if(i===2){$("oBirth").max=new Date().toISOString().slice(0,10);paintBirth()}}
+document.querySelectorAll("#onb [data-v]").forEach(function(b){b.onclick=function(){ob.gender=b.dataset.v;document.querySelectorAll("#onb [data-v]").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))})}});
+/* Geburtstag: Feld ist leer, bis ein Datum gewählt ist; Tippen öffnet die Datumsauswahl */
+function paintBirth(){var v=$("oBirth").value;$("oBirthT").textContent=v?new Date(v+"T12:00:00").toLocaleDateString(LC[li()],{day:"numeric",month:"long",year:"numeric"}):""}
+["input","change"].forEach(function(t){$("oBirth").addEventListener(t,paintBirth)});
+$("oBirth").addEventListener("click",function(){var i=$("oBirth");if(matchMedia("(pointer:fine)").matches&&i.showPicker)try{i.showPicker()}catch(e){}});
 function age(v){var b=new Date(v),n=new Date(),a=n.getFullYear()-b.getFullYear(),m=n.getMonth()-b.getMonth();if(m<0||(m===0&&n.getDate()<b.getDate()))a--;return a}
 function oerr(t){$("oerr").textContent=tr(t);return false}
 function valid(i){
-  if(i===0){var f=$("oFirst").value.trim(),l=$("oLast").value.trim();if(!f)return oerr("Gib deinen Vornamen ein.");if(!l)return oerr("Gib deinen Nachnamen ein.");prof.name=f;prof.last=l;return true}
+  if(i===0){var n=$("oNick").value.trim();if(!n)return oerr("Gib deinen Spitznamen ein.");prof.nick=n;return true}
+  if(i===1){var f=$("oFirst").value.trim(),l=$("oLast").value.trim();if(!f)return oerr("Gib deinen Vornamen ein.");if(!l)return oerr("Gib deinen Nachnamen ein.");prof.name=f;prof.last=l;return true}
   var b=$("oBirth").value;if(!b)return oerr("Wähle dein Geburtsdatum.");var a=age(b);
   if(isNaN(a)||a>110)return oerr("Bitte prüfe dein Geburtsdatum.");if(a<13)return oerr("Du musst mindestens 13 Jahre alt sein.");
   if(!ob.gender)return oerr("Bitte wähle eine Option.");prof.birth=b;prof.gender=ob.gender;return true}
-function nextStep(){if(!valid(step))return;saveProf();if(step<1)showStep(1);else{prof.done=true;saveProf();paintProf();goHome()}}
+function nextStep(){if(!valid(step))return;saveProf();if(step<2)showStep(step+1);else{prof.done=true;saveProf();paintProf();goHome()}}
 $("onext").onclick=nextStep;
 $("oback").onclick=function(){if(step>0)showStep(step-1);else{onb.classList.add("hidden");showAuth(mode)}};
 onb.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT")nextStep()});
@@ -1248,7 +1381,7 @@ function citySheet(){
   sheet.classList.remove("hidden");setTimeout(function(){inp.focus()},50)}
 $("pick").onclick=citySheet;
 /* ===== Sprachen anwenden ===== */
-var SKIP={eTitle:1,eSub:1,cSub:1,cRe:1,cgo:1,ego:1,pgo:1,smsApp:1,smsTxt:1,hTitle:1,hSub:1,tApple:1,tGoogle:1,swText:1,swMode:1,avatar:1,bigtxt:1,pname:1,puser:1,pinfo:1,onext:1,toast:1,cName:1,cTemp:1,cCond:1,cReg:1,wnote:1};
+var SKIP={oBirthT:1,eTitle:1,eSub:1,cSub:1,cRe:1,cgo:1,ego:1,pgo:1,smsApp:1,smsTxt:1,hTitle:1,hSub:1,tApple:1,tGoogle:1,swText:1,swMode:1,avatar:1,bigtxt:1,pname:1,puser:1,pinfo:1,onext:1,toast:1,cName:1,cTemp:1,cCond:1,cReg:1,wnote:1};
 var ST=[];
 (function(){
   var skipSel="#logo,.logo,.brand,#sets,#tips,#hours,#days,#cities,#cPills,#panel,#v-wardrobe,#v-friends";
@@ -1270,10 +1403,12 @@ function applyLang(){
 var AI_URL=/^https?:$/.test(location.protocol)?"/api/chat":"";
 var GREET="Hi, ich bin #. Wie kann ich dir helfen?";
 var AV={Mo:"👦",Sarah:"👧",Panda:"🐼",Fuchs:"🦊",Hase:"🐰"};
-var msgs=$("msgs"),cin=$("cin"),H=[],pend=null,busy=false;
+var msgs=$("msgs"),cin=$("cin"),H=ls("lg_aichat")||[],pend=null,busy=false;
+function saveChat(){ls("lg_aichat",H.slice(-60).map(function(m){return{role:m.role,content:m.content.filter(function(p){return p.type==="text"})}}))}
 function skin(){return prof.skin||prof.ai||"Mo"}
 function aiName(){return prof.ai==="Sarah"?"Sarah":"Mo"}
-function chatHead(){if(!AV)return;$("cav").textContent=AV[skin()];$("cnm").textContent=aiName();if(!H.length){msgs.textContent="";bub("ai",tr(GREET).replace("#",aiName()))}}
+function chatHead(){if(!AV)return;$("cav").textContent=AV[skin()];$("cnm").textContent=aiName();if(!H.length||!msgs.firstChild){msgs.textContent="";bub("ai",tr(GREET).replace("#",aiName()));
+  H.forEach(function(m){var t=m.content.map(function(p){return p.text||""}).join("");bub(m.role==="user"?"me":"ai",t==="(photo)"?"📷":t)})}}
 function bub(cls,txt,im){var b=el("div","m "+cls);
   if(im){var i=document.createElement("img");i.src=im;i.alt="";b.appendChild(i)}
   if(txt)b.appendChild(document.createTextNode(txt));msgs.appendChild(b);msgs.scrollTop=msgs.scrollHeight;return b}
@@ -1288,7 +1423,7 @@ function sys(){
   +"MIRROR THE PERSON right from their first message: same language, same tone, same slang, same length. If they say 'bro', 'digga', 'wallah', 'girl', 'girly', 'babe', answer in that vibe (e.g. 'Bro, ...'). If they write formally or are older, answer politely and calmly. If they write in lowercase without punctuation, you can too. Never mock, never overdo it, never sound fake. "
   +"OUTFIT HELP: before you suggest an outfit, first ask ONE short question about their day (where they go, what they do, which vibe), unless they already told you. Then give a concrete outfit in 1-2 sentences that fits their day AND the weather below. Be specific (colours, pieces, shoes), not generic. "
   +"You know fashion, colours, fits, occasions, care and shopping very well, and you can chat about anything else too, always short. Remember what the person tells you in this chat (style, sizes, budget, routine) and use it. If they send a photo, react like a friend: say concretely what works and what you would change, in 1-2 sentences. "
-  +"Person: "+(prof.name||"unknown")+(prof.birth?", "+age(prof.birth)+" years old":"")+(prof.gender&&prof.gender!=="Keine Angabe"?", "+({"Männlich":"male","Weiblich":"female","Andere":"other"}[prof.gender]||prof.gender):"")+". App language: "+LN[li()]+". "
+  +"Person: "+(prof.name||"unknown")+(prof.nick?" (likes to be called "+prof.nick+")":"")+(prof.birth?", "+age(prof.birth)+" years old":"")+(prof.gender&&prof.gender!=="Keine Angabe"?", "+({"Männlich":"male","Weiblich":"female","Trans Mann":"trans man","Trans Frau":"trans woman","Nicht-binär":"non-binary","Andere":"other"}[prof.gender]||prof.gender):"")+". App language: "+LN[li()]+". "
   +"Local time: "+d.toLocaleString("de-DE",{weekday:"long",hour:"2-digit",minute:"2-digit"})+". "
   +wdForAI()+" "+(prof.loc&&c&&LW?"Weather where they are (use it for every outfit idea, do not recite it unless useful): "+LW+".":"You do not know their location or weather; if it matters for an outfit, ask what the weather is like.")}
 function ask(){
@@ -1303,7 +1438,7 @@ function send(txt){
   var parts=[];if(im)parts.push({type:"image",source:{type:"base64",media_type:"image/jpeg",data:im.split(",")[1]}});
   parts.push({type:"text",text:txt||"(photo)"});H.push({role:"user",content:parts});
   busy=true;var tb=bub("ai typing","…");
-  ask().then(function(a){tb.remove();busy=false;H.push({role:"assistant",content:[{type:"text",text:a}]});bub("ai",a)})
+  ask().then(function(a){tb.remove();busy=false;H.push({role:"assistant",content:[{type:"text",text:a}]});saveChat();bub("ai",a)})
   .catch(function(e){tb.remove();busy=false;H.pop();bub("ai",tr(AI_URL?"Die KI ist gerade nicht erreichbar. Versuch es gleich noch mal.":"Ich bin gerade nicht verbunden. Öffne die App über deinen Link, dann kann ich dir antworten."))})}
 /* Foto */
 function clrImg(){pend=null;$("cpre").classList.add("hidden")}
@@ -1505,8 +1640,8 @@ var SKINC=["#f6dcc8","#efc9a9","#e3b48c","#d19f76","#c08a63","#a26c45","#8a5634"
  BRD=[["none","Kein Bart"],["stubble","Stoppeln"],["short","Kurzer Bart"],["full","Vollbart"]],
  PAL=["#111111","#ffffff","#8c8c8c","#3a3a3c","#1f2a44","#2f5fb3","#8fb8e8","#a3242f","#e0275f","#f2b8c6","#6b3fa0","#2e6b3a","#6b7a3a","#c8b08a","#7a4a2a","#e8c23a","#e8772e","#f3ead8"];
 var WD={items:[],fit:ls("lg_outfit")||{},looks:ls("lg_looks")||[],av:ls("lg_avatar"),loaded:false,edit:false,draft:null,tab:"body"};
-function defAv(){var f=prof.gender==="Weiblich";return{sex:f?"f":"m",height:f?168:178,build:.5,shoulders:.5,legs:.5,skin:"#c08a63",eyes:"#5b3a1e",eyeSize:.5,eyeTilt:.5,nose:.5,lips:.5,jaw:.5,brows:.5,hair:f?"long":"short",hairColor:"#2b1d15",beard:"none"}}
-function curAv(){var f=prof.fig?prof.fig==="f":prof.gender==="Weiblich";return{sex:f?"f":"m"}}
+function defAv(){var f=fem();return{sex:f?"f":"m",height:f?168:178,build:.5,shoulders:.5,legs:.5,skin:"#c08a63",eyes:"#5b3a1e",eyeSize:.5,eyeTilt:.5,nose:.5,lips:.5,jaw:.5,brows:.5,hair:f?"long":"short",hairColor:"#2b1d15",beard:"none"}}
+function curAv(){var f=prof.fig?prof.fig==="f":fem();return{sex:f?"f":"m"}}
 /* Speicher für Fotos: IndexedDB (viel Platz), sonst nur im Speicher */
 var IDB=null;
 function idb(){return new Promise(function(res){if(IDB)return res(IDB);try{var r=indexedDB.open("lookgood",1);r.onupgradeneeded=function(){r.result.createObjectStore("items",{keyPath:"id"})};r.onsuccess=function(){IDB=r.result;res(IDB)};r.onerror=function(){res(null)}}catch(e){res(null)}})}
