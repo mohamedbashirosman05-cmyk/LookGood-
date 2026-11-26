@@ -2113,17 +2113,17 @@ wdBuild();wdLoad().then(function(){wdOutfit()});
    Später ersetzt ein Server genau diese Funktionen (soSend, soFriends …); die Oberfläche bleibt gleich. */
 var FC={photo:"#E0275F",video:"#7B4DFF",chat:"#1596C8"};
 var DEMO=[
- {id:"u_lina",user:"lina.style",name:"Lina",av:"🦊",bg:"#ffb38a"},{id:"u_jay",user:"jay.k",name:"Jay",av:"🐼",bg:"#b9c2ff"},
- {id:"u_sami",user:"sami_",name:"Sami",av:"🐰",bg:"#9fe3cf"},{id:"u_nora",user:"nora.fit",name:"Nora",av:"🦊",bg:"#ffd27a"},
- {id:"u_elif",user:"elif.daily",name:"Elif",av:"🐼",bg:"#f3b6d2"},{id:"u_ben",user:"ben.outfits",name:"Ben",av:"🐰",bg:"#c6e59b"},
- {id:"u_maya",user:"maya.looks",name:"Maya",av:"🐰",bg:"#d7c4ff"},{id:"u_tom",user:"tom_street",name:"Tom",av:"🐼",bg:"#a9dcf5"}];
+ {id:"u_lina",user:"lina.style",name:"Lina",bg:"#ffb38a"},{id:"u_jay",user:"jay.k",name:"Jay",bg:"#b9c2ff"},
+ {id:"u_sami",user:"sami_",name:"Sami",bg:"#9fe3cf"},{id:"u_nora",user:"nora.fit",name:"Nora",bg:"#ffd27a"},
+ {id:"u_elif",user:"elif.daily",name:"Elif",bg:"#f3b6d2"},{id:"u_ben",user:"ben.outfits",name:"Ben",bg:"#c6e59b"},
+ {id:"u_maya",user:"maya.looks",name:"Maya",bg:"#d7c4ff"},{id:"u_tom",user:"tom_street",name:"Tom",bg:"#a9dcf5"}];
 var REPLIES={u_lina:["Haha 😂","Sieht richtig gut aus!","Die Farbe steht dir","Wo bist du gerade?","Schick mehr davon"],u_jay:["Bro 🔥","Krass, wo hast du das her?","Heute wird’s kalt, nimm ’ne Jacke","Safe, sieht clean aus","Lass später treffen"],
  u_sami:["Nice!","Passt perfekt zum Wetter","Hab grad dasselbe an 😄","Top","Sieht gemütlich aus"],u_nora:["Sportlich, gefällt mir","Love it 💛","Gehst du heute trainieren?","Mega Look","Ich will das auch"],
  u_elif:["Hallo!","Süß 😍","Danke!","Wie geht’s dir?"],u_ben:["Yo!","Sauber","Gefällt mir"],u_maya:["Hey :)","Hübsch!","Gute Wahl"],u_tom:["Yo","Stark","Respekt"]};
 var SO=null;
 function soSave(){ls("lg_social",SO)}
 function demoUser(id){return DEMO.filter(function(u){return u.id===id})[0]||null}
-function uinfo(id){if(id==="me")return{id:"me",user:prof.user||"",name:prof.nick||prof.name||tr("Du"),av:null,photo:prof.photo,bg:"#eadff5"};return demoUser(id)||{id:id,user:"",name:"?",av:"🙂",bg:"#ddd"}}
+function uinfo(id){if(id==="me")return{id:"me",user:prof.user||"",name:prof.nick||prof.name||tr("Du"),av:null,photo:prof.photo,bg:"#eadff5"};return demoUser(id)||{id:id,user:"",name:"?",bg:"#ddd"}}
 var SOP=null;
 function soInit(){if(SOP)return SOP;SO=ls("lg_social");if(SO&&SO.v===1){SOP=Promise.resolve();return SOP}
   SOP=soSeed();return SOP}
@@ -2165,7 +2165,8 @@ function unreadCount(){return SO?SO.friends.filter(function(u){return rowState(u
 function badge(){var t=$("t-friends");if(!t)return;var b=t.querySelector(".tbadge");var n=unreadCount();if(!b){b=el("span","tbadge");t.appendChild(b)}b.textContent=n>9?"9+":String(n);b.classList.toggle("hidden",!n)}
 /* ---- Avatare ---- */
 function avEl(id,sz,ring){var u=uinfo(id),d=el("span","sav"+(ring?" ring "+ring:""));d.style.setProperty("--s",(sz||48)+"px");var i=el("span","savi");
-  if(u.photo){i.style.backgroundImage="url("+u.photo+")";i.classList.add("ph")}else if(u.av){i.textContent=u.av;i.style.background=u.bg}else{i.textContent=(u.name||"?").charAt(0).toUpperCase();i.style.background=u.bg}
+  /* Profilbild der Person; ohne Bild der erste Buchstabe des Namens. Tiere gibt es nur für die KI. */
+  if(u.photo){i.style.backgroundImage="url("+u.photo+")";i.classList.add("ph")}else{i.textContent=(u.name||"?").charAt(0).toUpperCase();i.style.background=u.bg}
   d.appendChild(i);return d}
 /* ---- Benachrichtigung oben (wie eine echte Push-Nachricht) ---- */
 var NBT=null;

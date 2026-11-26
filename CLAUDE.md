@@ -3,6 +3,8 @@
 Read this file first. It describes what exists, how it is built, what is deliberately NOT built yet, and how to work with the owner.
 
 ## 1. How to work with the owner
+- **After every change, send the owner the updated `LookGood.html`** (SendUserFile, display attach) **and** the GitHub download link `https://github.com/mohamedbashirosman05-cmyk/LookGood-/blob/claude/wardrobe-feature-planning-m0w8o1/LookGood.html`. Always, without being asked.
+- **Profile pictures of people** = their own photo; without a photo the first letter of their name. **Animals (Panda, Fuchs, Hase) are only for the AI's picture**, never for people.
 - The owner is a non-programmer and writes in **German** (often dictated, informal). Reply in German, short and plain. No jargon without explanation.
 - He wants **short answers, concrete results, and things that actually run**. Test in a real browser (Playwright) before saying something works. Never claim a feature works if you did not run it.
 - Do not rebuild or restyle things that are already approved (see section 3). Change only what he asks.
@@ -45,7 +47,7 @@ Keep `server/index.html` an exact copy of `LookGood.html` (`cp LookGood.html ser
 - Source of the wardrobe code lives inside LookGood.html (search "Garderobe: 3D-Figur" and "Garderobe: Bedienung").
 
 ## 4c. Flash & Chat (built 26 Nov 2026, owner's spec "Flash-System")
-- **Demo mode until a real server exists.** Everything is stored on the device: `lg_social` (friends, requests, blocked, chats, stories, seen state) and media blobs in IndexedDB `lookgood` v2, store `media`. Eight **test friends** (Lina, Jay, Sami, Nora, Elif, Ben, Maya, Tom; marked "Test") reply automatically (`bot()`), mark your flashes as opened, sometimes send a Flash back, accept requests after 4 s; Nora sends a Flash ~25 s after first start. The data functions (`soInit`, `sendTo`, `chat`, `acceptReq` …) are the seam to replace with a real backend later.
+- **Demo mode until a real server exists.** Everything is stored on the device: `lg_social` (friends, requests, blocked, chats, stories, seen state) and media blobs in IndexedDB `lookgood` v2, store `media`. Eight **test friends** (Lina, Jay, Sami, Nora, Elif, Ben, Maya, Tom; marked "Test"; avatar = first letter, never animals) reply automatically (`bot()`), mark your flashes as opened, sometimes send a Flash back, accept requests after 4 s; Nora sends a Flash ~25 s after first start. The data functions (`soInit`, `sendTo`, `chat`, `acceptReq` …) are the seam to replace with a real backend later.
 - **Flash camera** (`openCam`): live camera via getUserMedia (front/back, torch / front screen-flash), tap = photo, hold = video up to 10 s (MediaRecorder, sound if mic allowed), gallery; fallback buttons to the phone camera if live camera is unavailable (e.g. inside some apps).
 - **Editor** (`openEditor2`): text bar (drag up/down, tap to cycle 3 styles, drag to trash), emoji stickers (drag, pinch/scroll to resize), drawing (8 colours, undo), 7 filters, timer 3/5/10 s/∞. Photos are flattened to JPEG; videos keep an overlay PNG + filter.
 - **Send**: to friends and/or "Meine Story" (24 h). **Viewer** (`player`): progress bars, tap right/left = next/previous, hold = pause, swipe down = close, story reply field (reply appears quoted in chat), "Im Chat speichern", my story shows "Angesehen von …".
