@@ -460,6 +460,8 @@ var toast=$("toast"),tt;
 function say(m){toast.textContent=tr(m);toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show")},2600)}
 
 var D={
+"Keine Verbindung zum Server. Versuch es gleich noch mal.":"No connection to the server. Please try again in a moment.|Pas de connexion au serveur. Réessaie dans un instant.|Sin conexión con el servidor. Inténtalo de nuevo en un momento.|Sem ligação ao servidor. Tenta de novo daqui a pouco.|لا يوجد اتصال بالخادم. حاول مرة أخرى بعد قليل.|सर्वर से कनेक्शन नहीं है। थोड़ी देर में फिर कोशिश करें।|无法连接服务器，请稍后再试。",
+"Zu viele Versuche. Warte kurz und versuch es noch mal.":"Too many attempts. Wait a moment and try again.|Trop de tentatives. Attends un peu et réessaie.|Demasiados intentos. Espera un momento y vuelve a intentarlo.|Demasiadas tentativas. Espera um pouco e tenta de novo.|محاولات كثيرة. انتظر قليلاً وحاول مرة أخرى.|बहुत ज़्यादा कोशिशें। थोड़ा रुककर फिर कोशिश करें।|尝试次数过多，请稍等后再试。",
 "Eigene Angabe":"Custom|Personnalisé|Personalizado|Personalizado|مخصص|अपना विवरण|自定义",
 "Dein Geschlecht":"Your gender|Ton genre|Tu género|O teu género|جنسك|आपका जेंडर|你的性别",
 "Beschreibe dein Geschlecht.":"Describe your gender.|Décris ton genre.|Describe tu género.|Descreve o teu género.|صِف جنسك.|अपना जेंडर लिखें।|请描述你的性别。",
@@ -927,8 +929,75 @@ function unstash(uid){var r=ls("lg_a_"+uid)||{};return wipe().then(function(){va
   return vDo("readonly",function(st){return st.get(uid)})}).then(function(items){return idbDo("readwrite",function(st){(items||[]).forEach(function(it){st.put(it)});return null})})}
 function dropAcc(uid){unregUid(uid);try{localStorage.removeItem("lg_a_"+uid)}catch(e){}return vDo("readwrite",function(st){return st.delete(uid)})}
 function enter(){clearInterval(cTimer);login.classList.add("hidden");closeO();if(prof.done){goHome();say("Willkommen zurück")}else startOnb()}
+/* ===== Server: echte Konten + Datenbank =====
+   Wird die App über den eigenen Server geöffnet und hat er eine Datenbank, liegen Konten und alle Daten dort:
+   Profil, Einstellungen, Städte, Figur, Outfit, Looks, KI-Chat und Kleidung mit Fotos. Das Gerät hält nur eine Kopie
+   und schickt Änderungen alle paar Sekunden an den Server. Ohne Server bleibt alles wie oben auf dem Gerät. */
+var SRV=null,SYNC_OFF=false,rcode="";
+function api(p,m,b){var t=ls("lg_tok"),h={"Content-Type":"application/json"};if(t)h.Authorization="Bearer "+t;
+  return fetch(p,{method:m||"GET",headers:h,body:b?JSON.stringify(b):undefined}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){j.status=r.status;return j})})}
+function offline(){say("Keine Verbindung zum Server. Versuch es gleich noch mal.")}
+function devId(){var d=ls("lg_dev");if(!d){d="d"+Date.now().toString(36)+Math.random().toString(36).slice(2,12);ls("lg_dev",d)}return d}
+function aBody(a){return a.t==="apple"?{method:"apple",devId:devId()}:a.t==="google"?{method:"google",email:a.id}:a.t==="email"?{method:"email",email:a.id}:{method:"phone",phone:a.id}}
+/* Gibt es für diesen Anmeldeweg schon ein Konto? (Server oder Gerät) */
+function chk(a,cb){if(!SRV){var u=owner(a),p=u&&profOf(u);return cb({exists:!!u,login:p&&p.login,hasPw:!!(p&&p.pw)})}
+  api("/api/auth/check","POST",aBody(a)).then(function(j){if(j.status!==200)return j.status===429?slow():offline();cb(j)}).catch(offline)}
+function slow(){say("Zu viele Versuche. Warte kurz und versuch es noch mal.")}
+function sig(v){return v==null?"":v.length+":"+hash(v)}
+function dataNow(){var d={};DK.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)d[k]=v});return d}
+function itemSigs(L){var o={};(L||[]).forEach(function(it){o[it.id]=sig(JSON.stringify(it))});return o}
+/* Nach dem Anmelden: Daten vom Server auf das Gerät holen und die App neu starten */
+function srvIn(p,label,apply){SYNC_OFF=true;ls("lg_tok",p.token);var keep={lang:prof.lang,theme:prof.theme,langSet:prof.langSet};
+  return wipe().then(function(){var d=p.data||{};Object.keys(d).forEach(function(k){try{localStorage.setItem(k,d[k])}catch(e){}});
+    return idbDo("readwrite",function(st){(p.items||[]).forEach(function(it){st.put(it)});return null})}).then(function(){
+    var saved=ls("lg_prof");prof=Object.assign({},DEF,saved?{}:keep,saved||{});prof.uid=p.uid;if(apply)apply();prof.login=label||prof.login;prof.pw=p.hasPw?"srv":"";prof.session=true;
+    ls("lg_sync",{ver:p.ver,data:sig(JSON.stringify(dataNow())),items:itemSigs(p.items)});saveProf();location.reload()})}
+function srvAuth(a,label,apply,x){var b=Object.assign(aBody(a),{mode:mode},x||{});
+  return api("/api/auth","POST",b).then(function(j){
+    if(j.status===200){say("Konto wird geladen …");return srvIn(j,label,apply)}
+    codeReset();
+    if(j.error==="exists")return hasAcc(null);
+    if(j.error==="no_account")return noAcc(null);
+    if(j.error==="bad_code")return codeBad();
+    if(j.error==="wrong_password"){$("eerr").textContent=tr("E-Mail oder Passwort ist falsch.");return}
+    if(j.error==="uses_other"){$("eerr").textContent=tr("Dieses Konto nutzt # zum Anmelden.").replace("#",tr(j.login||"Google"));return}
+    if(j.error==="weak_password"){$("eerr").textContent=tr(PWMSG);return}
+    if(j.status===429)return slow();
+    offline()}).catch(function(){codeReset();offline()})}
+function codeReset(){var g=$("cgo");g.disabled=false;g.textContent=tr("Bestätigen")}
+function codeBad(){codeReset();showA("ac");$("cerr").textContent=tr("Der Code ist falsch. Versuch es noch mal.");var O=$("otp");O.classList.remove("bad");void O.offsetWidth;O.classList.add("bad");boxes().forEach(function(b){b.value=""});boxes()[0].focus()}
+function codeNote(c,sms){notify(sms?"Nachrichten":"Mail",tr("# ist dein LOOK GOOD Code. Teile ihn mit niemandem.").replace("#",c))}
+/* Code anfordern. Ohne E-Mail-/SMS-Dienst auf dem Server kommt der Code (Testbetrieb) als Nachricht in der App. */
+function srvCode(body,sms,cb){api("/api/auth/code","POST",body).then(function(j){if(j.status===429)return slow();if(j.status!==200)return offline();
+  if(j.dev){if(cb)cb(j.dev);setTimeout(function(){codeNote(j.dev,sms)},400)}}).catch(offline)}
+/* Änderungen hochladen: Daten + Kleidung (nur was sich geändert hat) */
+var pushing=false;
+function push(){if(!SRV||SYNC_OFF||pushing||!ls("lg_tok")||!prof.session)return Promise.resolve();
+  var S=ls("lg_sync")||{},d=dataNow(),ds=sig(JSON.stringify(d)),jobs=[];S.items=S.items||{};pushing=true;
+  if(ds!==S.data)jobs.push(api("/api/me/data","PUT",{data:d}).then(function(j){if(j.status===200){S.ver=j.ver;S.data=ds}else if(j.status===401)lost()}));
+  jobs.push(idbDo("readonly",function(st){return st.getAll()}).then(function(L){var now=itemSigs(L),seen={},js=[];
+    (L||[]).forEach(function(it){seen[it.id]=1;if(now[it.id]!==S.items[it.id])js.push(api("/api/me/items/"+encodeURIComponent(it.id),"PUT",{item:it}).then(function(j){if(j.status===200)S.items[it.id]=now[it.id]}))});
+    Object.keys(S.items).forEach(function(id){if(!seen[id])js.push(api("/api/me/items/"+encodeURIComponent(id),"DELETE").then(function(j){if(j.status===200)delete S.items[id]}))});
+    return Promise.all(js)}));
+  return Promise.all(jobs).catch(function(){}).then(function(){if(!SYNC_OFF)ls("lg_sync",S);pushing=false})}
+setInterval(push,3000);
+document.addEventListener("visibilitychange",function(){if(document.hidden)push()});
+function lost(){SYNC_OFF=true;try{localStorage.removeItem("lg_tok")}catch(e){}prof.session=false;saveProf();location.reload()}
+/* Abmelden / Konto löschen mit Server: erst alles hochladen, dann das Gerät leeren */
+function srvOut(del){var go=function(){SYNC_OFF=true;var keep={lang:prof.lang,theme:prof.theme,langSet:prof.langSet};
+    return wipe().then(function(){try{localStorage.removeItem("lg_tok");localStorage.removeItem("lg_sync")}catch(e){}prof=Object.assign({},DEF,keep);saveProf();setTimeout(function(){location.reload()},del?150:900)})};
+  if(del)return api("/api/me","DELETE").then(function(j){if(j.status!==200&&j.status!==401)return offline();go()}).catch(offline);
+  pushing=false;return push().then(function(){return api("/api/auth/logout","POST")}).catch(function(){}).then(go)}
+/* Beim Start: Server da? Dann neueste Daten holen (z. B. Änderungen vom anderen Handy) */
+function srvStart(){if(!/^https?:$/.test(location.protocol))return;
+  fetch("/api/health").then(function(r){return r.json()}).then(function(h){if(!h||!h.db)return;SRV=h;
+    if(prof.session&&!ls("lg_tok")){prof.session=false;saveProf();return location.reload()}
+    if(!ls("lg_tok"))return;
+    api("/api/me").then(function(p){if(p.status===401)return lost();if(p.status!==200)return;
+      var S=ls("lg_sync")||{};if(p.ver>(S.ver||0)){p.token=ls("lg_tok");srvIn(p,prof.login)}})}).catch(function(){})}
+srvStart();
 /* Anmelden: gehört der Anmeldeweg schon zu einem Konto, wird genau dieses Konto geöffnet, sonst ein neues erstellt. */
-function auth(a,label,apply){var uid=owner(a);
+function auth(a,label,apply,x){if(SRV)return srvAuth(a,label,apply,x);var uid=owner(a);
   if(!uid)return create(a,label,apply);
   if(uid===prof.uid){if(apply)apply();prof.login=label;prof.session=true;saveProf();paintProf();return enter()}
   say("Konto wird geladen …");
@@ -944,7 +1013,7 @@ function osheet(build){var P=$("opanel");P.textContent="";build(P);
 function closeO(){$("osheet").classList.add("hidden")}
 $("osheet").addEventListener("click",function(e){if(e.target===this)closeO()});
 function noAcc(go){osheet(function(P){P.appendChild(el("h3","","Kein Konto gefunden"));P.appendChild(el("p","fine","Mit diesen Daten gibt es noch kein Konto. Möchtest du eins erstellen?"));
-  var b=el("button","btn primary","Konto erstellen");b.type="button";b.onclick=function(){closeO();var ast=astep;showAuth("signup");if(ast==="ae")openMail();go()};P.appendChild(b)})}
+  var b=el("button","btn primary","Konto erstellen");b.type="button";b.onclick=function(){closeO();var ast=astep;showAuth("signup");if(ast==="ae")openMail();if(go)go()};P.appendChild(b)})}
 function hasAcc(go){osheet(function(P){P.appendChild(el("h3","","Du hast schon ein Konto"));P.appendChild(el("p","fine","Damit wurde schon ein Konto erstellt. Pro Apple-ID, E-Mail-Adresse und Telefonnummer gibt es nur ein Konto."));
   var b=el("button","btn primary","Anmelden");b.type="button";b.onclick=function(){closeO();var ast=astep;showAuth("login");if(ast==="ae")openMail();if(go)go()};P.appendChild(b)})}
 /* Apple / Google: Systemfenster wie auf dem Handy */
@@ -957,21 +1026,21 @@ function sysHead(P,p,title,text){var box=el("div","sysbox"),lg=el("div","lg");
 function provider(p){if(p==="Google")gPick();else appleSheet()}
 /* Apple: die Apple-ID dieses Geräts, bestätigt mit Face ID oder Passwort */
 var AID={t:"apple",id:"device"};
-function appleSheet(){
-  if(mode==="login"&&!owner(AID))return noAcc(appleSheet);
-  if(mode==="signup"&&owner(AID))return hasAcc(appleSheet);
+function appleSheet(){var A=SRV?{t:"apple",id:devId()}:AID;chk(A,function(c){
+  if(mode==="login"&&!c.exists)return noAcc(appleSheet);
+  if(mode==="signup"&&c.exists)return hasAcc(appleSheet);
   osheet(function(P){sysHead(P,"Apple",ts(mode==="signup","Mit Apple registrieren","Mit Apple anmelden"),"„Look Good“ möchte deine Apple-ID zum Anmelden verwenden.");
     var f=el("div","fid hidden"),ft=el("p","fidt hidden");f.innerHTML=FID;P.appendChild(f);P.appendChild(ft);
     var pw=el("label","fl hidden"),inp=el("input");inp.type="password";inp.autocomplete="current-password";pw.appendChild(el("small","","Apple-ID-Passwort"));pw.appendChild(inp);
     var er=el("p","err"),b=el("button","btn apple","Mit Face ID fortfahren"),pwb=el("button","link","Mit Passwort fortfahren");b.type=pwb.type="button";
-    var ok=function(){closeO();auth(AID,"Apple")};
+    var ok=function(){closeO();auth(A,"Apple")};
     b.onclick=function(){
       if(!pw.classList.contains("hidden")){if(!inp.value){er.textContent=tr("Gib dein Passwort ein.");return}b.disabled=true;b.textContent="";b.appendChild(el("span","spin"));setTimeout(ok,800);return}
       b.classList.add("hidden");pwb.classList.add("hidden");f.classList.remove("hidden");ft.classList.remove("hidden");ft.textContent="Face ID";
       setTimeout(function(){f.classList.add("ok");f.innerHTML=FOK;ft.textContent=tr("Fertig");setTimeout(ok,700)},1500)};
     pwb.onclick=function(){pw.classList.remove("hidden");pwb.classList.add("hidden");b.textContent=tr(mode==="signup"?"Weiter":"Anmelden");setTimeout(function(){inp.focus()},50)};
     inp.addEventListener("keydown",function(e){if(e.key==="Enter")b.click()});
-    P.appendChild(pw);P.appendChild(er);P.appendChild(b);P.appendChild(pwb)})}
+    P.appendChild(pw);P.appendChild(er);P.appendChild(b);P.appendChild(pwb)})})}
 /* Google: Konto auswählen (jede Google-Adresse = genau ein Konto) */
 function gList(){return ls("lg_gacc")||[]}
 function gPick(){osheet(function(P){sysHead(P,"Google","Konto auswählen","weiter zu Look Good");
@@ -980,10 +1049,10 @@ function gPick(){osheet(function(P){sysHead(P,"Google","Konto auswählen","weite
   var er=el("p","err"),b=el("button","btn primary","Weiter");b.type="button";P.appendChild(er);
   b.onclick=function(){var m=i.value.trim().toLowerCase();if(!mailOk(m)){er.textContent=tr("Gib eine gültige E-Mail-Adresse ein.");return}gGo(m)};
   i.addEventListener("keydown",function(e){if(e.key==="Enter")b.click()});P.appendChild(b)})}
-function gGo(m){var a={t:"google",id:m};
-  if(mode==="login"&&!owner(a))return noAcc(function(){gConsent(m)});
-  if(mode==="signup"&&owner(a))return hasAcc(function(){gConsent(m)});
-  gConsent(m)}
+function gGo(m){var a={t:"google",id:m};chk(a,function(c){
+  if(mode==="login"&&!c.exists)return noAcc(function(){gConsent(m)});
+  if(mode==="signup"&&c.exists)return hasAcc(function(){gConsent(m)});
+  gConsent(m)})}
 function gConsent(m){var a={t:"google",id:m};
   osheet(function(P){sysHead(P,"Google",ts(mode==="signup","Mit Google registrieren","Mit Google anmelden"),"Google teilt deinen Namen, deine E-Mail-Adresse und dein Profilbild mit Look Good.");
     var g=el("p","gm");g.textContent=m;P.appendChild(g);
@@ -997,9 +1066,10 @@ function submitPhone(){
   var d=$("tel").value.replace(/\D/g,"").replace(/^0+/,""),cc=$("cc").value;
   if(d.length<6||d.length>14){$("err").textContent=tr("Gib eine gültige Telefonnummer ein.");return false}
   $("err").textContent="";var a={t:"phone",id:cc+d};
-  if(mode==="login"&&!owner(a)){noAcc(submitPhone);return false}
-  if(mode==="signup"&&owner(a)){hasAcc(submitPhone);return false}
-  sendCode({sms:true,to:cc+" "+d,ok:function(){auth(a,"Telefonnummer",function(){prof.phone=d;prof.cc=cc})}});return true}
+  chk(a,function(c){
+  if(mode==="login"&&!c.exists)return noAcc(submitPhone);
+  if(mode==="signup"&&c.exists)return hasAcc(submitPhone);
+  sendCode({sms:true,to:cc+" "+d,a:aBody(a),ok:function(v){auth(a,"Telefonnummer",function(){prof.phone=d;prof.cc=cc},{code:v})}})});return true}
 $("pgo").onclick=submitPhone;
 $("tel").addEventListener("keydown",function(e){if(e.key==="Enter")submitPhone()});
 /* E-Mail + Passwort */
@@ -1018,10 +1088,11 @@ function submitMail(){
   var m=mailIn(),pw=$("pw").value,E=$("eerr"),a={t:"email",id:m,pw:pwh(pw)};
   if(!mailOk(m)){E.textContent=tr("Gib eine gültige E-Mail-Adresse ein.");return}
   if(mode==="signup"){
-    if(owner(a)){E.textContent="";hasAcc(null);return}
     if(!pwStrong(pw)){E.textContent=tr(PWMSG);return}
-    E.textContent="";sendCode({sms:false,to:m,ok:function(){auth(a,"E-Mail",function(){prof.email=m})}});return}
+    return chk(a,function(c){if(c.exists){E.textContent="";return hasAcc(null)}
+      E.textContent="";sendCode({sms:false,to:m,a:aBody(a),ok:function(v){auth(a,"E-Mail",function(){prof.email=m},{password:pw,code:v})}})})}
   if(!pw){E.textContent=tr("Gib dein Passwort ein.");return}
+  if(SRV){E.textContent="";return auth(a,"E-Mail",function(){if(!prof.email)prof.email=m},{password:pw})}
   var uid=owner(a);if(!uid){E.textContent="";noAcc(submitMail);return}
   var p=profOf(uid);
   if(!p||!p.pw){E.textContent=tr("Dieses Konto nutzt # zum Anmelden.").replace("#",tr(p&&p.login||"Google"));return}
@@ -1031,9 +1102,11 @@ $("ego").onclick=submitMail;
 ["email","pw"].forEach(function(i){$(i).addEventListener("keydown",function(e){if(e.key==="Enter")submitMail()})});
 $("eForgot").onclick=function(){var m=mailIn(),a={t:"email",id:m};
   if(!mailOk(m)){$("eerr").textContent=tr("Gib eine gültige E-Mail-Adresse ein.");return}
-  if(!owner(a)){noAcc(openMail);return}
-  sendCode({sms:false,to:m,ok:function(){$("npw").value="";rules("npw","nrules");$("perr").textContent="";showA("ap")}})};
+  chk(a,function(c){if(!c.exists)return noAcc(openMail);
+  sendCode({sms:false,to:m,a:aBody(a),ok:function(v){rcode=v;codeReset();$("npw").value="";rules("npw","nrules");$("perr").textContent="";showA("ap")}})})};
 function setPw(){var v=$("npw").value;if(!pwStrong(v)){$("perr").textContent=tr(PWMSG);return}
+  if(SRV)return api("/api/auth/reset","POST",{email:mailIn(),code:rcode,password:v}).then(function(j){if(j.status===200){say("Passwort gespeichert");return srvIn(j,"E-Mail")}
+    if(j.error==="bad_code")return codeBad();if(j.status===429)return slow();offline()}).catch(offline);
   var m=mailIn(),h=pwh(v);auth({t:"email",id:m},"E-Mail",function(){if(!prof.email)prof.email=m;prof.pw=h});say("Passwort gespeichert")}
 $("pset").onclick=setPw;$("npw").addEventListener("keydown",function(e){if(e.key==="Enter")setPw()});
 /* 6-stelliger Code */
@@ -1046,19 +1119,19 @@ function buildOtp(){var O=$("otp");O.textContent="";
       if(d.length>1){fillCode(d);return}x.value=d;if(d&&i<5)boxes()[i+1].focus();if(boxes().every(function(b){return b.value}))verify()});
     x.addEventListener("keydown",function(e){if(e.key==="Backspace"&&!x.value&&i>0)boxes()[i-1].focus();if(e.key==="Enter")verify()})})}
 function fillCode(d){var B=boxes();d=d.replace(/\D/g,"").slice(0,6);B.forEach(function(b,i){b.value=d[i]||""});B[Math.min(d.length,5)].focus();if(d.length===6)verify()}
-function sendCode(ctx){cCtx=ctx;code=String(Math.floor(100000+Math.random()*900000));
+function sendCode(ctx){cCtx=ctx;code=SRV?"":String(Math.floor(100000+Math.random()*900000));if(SRV)srvCode(ctx.a,ctx.sms,function(c){code=c});
   $("cSub").textContent=tr("Wir haben dir einen 6-stelligen Code an # geschickt.").replace("#","\u2066"+ctx.to+"\u2069");
   buildOtp();$("cerr").textContent="";$("cgo").disabled=false;$("cgo").textContent=tr("Bestätigen");showA("ac");setTimeout(function(){boxes()[0].focus()},50);
-  setTimeout(function(){notify(ctx.sms?"Nachrichten":"Mail",tr("# ist dein LOOK GOOD Code. Teile ihn mit niemandem.").replace("#",code))},1400);
+  if(!SRV)setTimeout(function(){codeNote(code,ctx.sms)},1400);
   cLeft=30;paintRe();clearInterval(cTimer);cTimer=setInterval(function(){cLeft--;paintRe();if(cLeft<=0)clearInterval(cTimer)},1000)}
 function paintRe(){var b=$("cRe");b.disabled=cLeft>0;b.style.opacity=cLeft>0?.55:1;
   b.textContent=cLeft>0?tr("Code erneut senden in #").replace("#","0:"+String(cLeft).padStart(2,"0")):tr("Code erneut senden")}
 $("cRe").onclick=function(){if(cLeft>0||!cCtx)return;sendCode(cCtx);say("Neuer Code ist unterwegs.")};
 function verify(){var v=boxes().map(function(b){return b.value}).join(""),g=$("cgo");
   if(v.length<6){$("cerr").textContent=tr("Der Code hat 6 Ziffern.");return}
-  if(v!==code){$("cerr").textContent=tr("Der Code ist falsch. Versuch es noch mal.");var O=$("otp");O.classList.remove("bad");void O.offsetWidth;O.classList.add("bad");boxes().forEach(function(b){b.value=""});boxes()[0].focus();return}
+  if(!SRV&&v!==code){$("cerr").textContent=tr("Der Code ist falsch. Versuch es noch mal.");var O=$("otp");O.classList.remove("bad");void O.offsetWidth;O.classList.add("bad");boxes().forEach(function(b){b.value=""});boxes()[0].focus();return}
   $("cerr").textContent="";g.disabled=true;g.textContent="";g.appendChild(el("span","spin"));g.appendChild(document.createTextNode(tr("Wird geprüft …")));
-  hideSms();setTimeout(function(){cCtx.ok()},700)}
+  hideSms();setTimeout(function(){cCtx.ok(v)},SRV?0:700)}
 $("cgo").onclick=verify;
 function notify(app,txt){$("smsApp").textContent=tr(app);$("smsTxt").textContent=txt;$("sms").classList.add("show");clearTimeout(smsT);smsT=setTimeout(hideSms,7000)}
 function hideSms(){$("sms").classList.remove("show")}
@@ -1129,6 +1202,9 @@ function loginSheet(){
     {t:prof.email?"E-Mail ändern":"E-Mail hinzufügen",fn:emailSheet},{t:prof.pw?"Passwort ändern":"Passwort festlegen",fn:pwSheet},{t:"Passwort vergessen?",fn:forgotSheet}])}
 function emailSheet(){form("E-Mail",[{id:"e",label:"E-Mail-Adresse",type:"email",val:prof.email,ph:"du@beispiel.de",ac:"email"}],"Speichern",function(v){
   var e=v.e.toLowerCase();if(!mailOk(e))return"Gib eine gültige E-Mail-Adresse ein.";
+  if(SRV){srvCode({method:"email",email:e},false);setTimeout(function(){form("Code eingeben",[{id:"c",label:"6-stelliger Code"}],"Bestätigen",function(w){
+    api("/api/me/email","POST",{email:e,code:w.c}).then(function(j){if(j.status===200){prof.email=e;saveProf();paintProf();return say("E-Mail gespeichert")}
+      say(j.error==="exists"?"Diese E-Mail gehört schon zu einem anderen Konto.":j.error==="bad_code"?"Der Code ist falsch. Versuch es noch mal.":"Keine Verbindung zum Server. Versuch es gleich noch mal.")}).catch(offline);return""},tr("Wir haben dir einen 6-stelligen Code an # geschickt.").replace("#",e))},0);return""}
   var o=IDS()["mail:"+e];if(o&&o!==prof.uid)return"Diese E-Mail gehört schon zu einem anderen Konto.";
   var old=(prof.email||"").toLowerCase(),keep=prof.acc&&prof.acc.t==="google"&&String(prof.acc.id).toLowerCase()===old;
   if(old&&old!==e&&!keep)unregId("mail:"+old);if(prof.acc&&prof.acc.t==="email")prof.acc.id=e;
@@ -1137,11 +1213,17 @@ function pwSheet(){var has=!!prof.pw,f=[];
   if(has)f.push({id:"o",label:"Aktuelles Passwort",type:"password",ac:"current-password"});
   f.push({id:"n",label:"Neues Passwort",type:"password",ac:"new-password"},{id:"r",label:"Neues Passwort wiederholen",type:"password",ac:"new-password"});
   form(has?"Passwort ändern":"Passwort festlegen",f,has?"Ändern":"Speichern",function(v){
-  if(has){if(!v.o)return"Gib dein aktuelles Passwort ein.";if(pwh(v.o)!==prof.pw)return"Das aktuelle Passwort ist falsch."}
+  if(has){if(!v.o)return"Gib dein aktuelles Passwort ein.";if(!SRV&&pwh(v.o)!==prof.pw)return"Das aktuelle Passwort ist falsch."}
   if(!pwStrong(v.n))return PWMSG;if(v.n!==v.r)return"Die Passwörter stimmen nicht überein.";
+  if(SRV){api("/api/me/password","PUT",{old:v.o||"",password:v.n}).then(function(j){if(j.status===200){prof.pw="srv";saveProf();return say("Passwort gespeichert")}
+    say(j.error==="wrong_password"?"Das aktuelle Passwort ist falsch.":"Keine Verbindung zum Server. Versuch es gleich noch mal.")}).catch(offline);return""}
   prof.pw=pwh(v.n);saveProf();say("Passwort gespeichert");return""})}
 function forgotSheet(){form("Passwort vergessen",[{id:"e",label:"E-Mail-Adresse",type:"email",val:prof.email,ph:"du@beispiel.de"}],"Code senden",function(v){
   if(!mailOk(v.e))return"Gib eine gültige E-Mail-Adresse ein.";
+  if(SRV){var fe=v.e.toLowerCase();srvCode({method:"email",email:fe},false);setTimeout(function(){form("Code eingeben",[{id:"c",label:"6-stelliger Code"},{id:"n",label:"Neues Passwort",type:"password",ac:"new-password"}],"Passwort setzen",function(w){
+    if(!/^\d{6}$/.test(w.c))return"Der Code hat 6 Ziffern.";if(!pwStrong(w.n))return PWMSG;
+    api("/api/auth/reset","POST",{email:fe,code:w.c,password:w.n}).then(function(j){if(j.status===200){say("Passwort gespeichert");return srvIn(j,prof.login)}
+      say(j.error==="bad_code"?"Der Code ist falsch. Versuch es noch mal.":j.error==="no_account"?"Kein Konto gefunden":"Keine Verbindung zum Server. Versuch es gleich noch mal.")}).catch(offline);return""})},0);return""}
   setTimeout(function(){form("Code eingeben",[{id:"c",label:"6-stelliger Code",ph:"123456"},{id:"n",label:"Neues Passwort",type:"password",ac:"new-password"}],"Passwort setzen",function(w){
     if(!/^\d{6}$/.test(w.c))return"Der Code hat 6 Ziffern.";if(!pwStrong(w.n))return PWMSG;
     say("Fertig. Zurücksetzen klappt erst mit dem Server.");return""},"Prototyp: Es wird noch keine E-Mail verschickt.")},0);return""},tr("Wir schicken dir einen Code per E-Mail.")+" "+tr("Prototyp: Es wird noch keine E-Mail verschickt."))}
@@ -1191,8 +1273,8 @@ $("pen").onclick=function(){$("pfile").click()};
 $("pfile").onchange=function(e){var f=e.target.files[0];e.target.value="";if(!f)return;
   var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,300/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);prof.photo=c.toDataURL("image/jpeg",.85);saveProf();paintProf()};im.src=r.result};r.readAsDataURL(f)};
 $("pedit").onclick=editProfile;
-$("pout").onclick=function(){prof.session=false;saveProf();stash();say("Abgemeldet. Deine Daten bleiben gespeichert.");$("pw").value="";$("profile").classList.add("hidden");app.classList.add("hidden");welcome.classList.remove("hidden");$("tel").value=""};
-$("pdel").onclick=function(){menu("Konto löschen?","Dein Profil und deine Einstellungen werden von diesem Gerät gelöscht. Das kann nicht rückgängig gemacht werden.",[{t:"Endgültig löschen",fn:function(){var u=prof.uid,m=(prof.email||"").toLowerCase();ls("lg_gacc",gList().filter(function(x){return x!==m}));
+$("pout").onclick=function(){if(SRV){say("Abgemeldet. Deine Daten bleiben gespeichert.");$("profile").classList.add("hidden");return srvOut()}prof.session=false;saveProf();stash();say("Abgemeldet. Deine Daten bleiben gespeichert.");$("pw").value="";$("profile").classList.add("hidden");app.classList.add("hidden");welcome.classList.remove("hidden");$("tel").value=""};
+$("pdel").onclick=function(){menu("Konto löschen?","Dein Profil und deine Einstellungen werden von diesem Gerät gelöscht. Das kann nicht rückgängig gemacht werden.",[{t:"Endgültig löschen",fn:function(){if(SRV)return srvOut(true);var u=prof.uid,m=(prof.email||"").toLowerCase();ls("lg_gacc",gList().filter(function(x){return x!==m}));
   (u?dropAcc(u):Promise.resolve()).then(wipe).then(function(){try{localStorage.removeItem("lg_prof")}catch(e){}setTimeout(function(){location.reload()},150)})}}])};
 paintProf();
 
