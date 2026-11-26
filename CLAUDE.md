@@ -3,7 +3,7 @@
 Read this file first. It describes what exists, how it is built, what is deliberately NOT built yet, and how to work with the owner.
 
 ## 1. How to work with the owner
-- **After every change, send the owner the updated `LookGood.html`** (SendUserFile, display attach) **and** the GitHub download link `https://github.com/mohamedbashirosman05-cmyk/LookGood-/blob/claude/wardrobe-feature-planning-m0w8o1/LookGood.html`. Always, without being asked.
+- **After every change, send the owner the updated `LookGood.html`** (SendUserFile, display attach) **and** the GitHub download link `https://github.com/mohamedbashirosman05-cmyk/LookGood-/blob/claude/wardrobe-feature-planning-m0w8o1/LookGood.html`. Always, without being asked. Also republish the online view (Artifact `https://claude.ai/artifact/XDcLByMdaw4Mtk8vMtL5zx`, file `dist/look-good-app-online.html` = LookGood.html without doctype/html/head/body tags) and send `dist/LookGood.zip` (the 10 MB HTML may be too big for the file card).
 - **Profile pictures of people** = their own photo; without a photo the first letter of their name. **Animals (Panda, Fuchs, Hase) are only for the AI's picture**, never for people.
 - The owner is a non-programmer and writes in **German** (often dictated, informal). Reply in German, short and plain. No jargon without explanation.
 - He wants **short answers, concrete results, and things that actually run**. Test in a real browser (Playwright) before saying something works. Never claim a feature works if you did not run it.
