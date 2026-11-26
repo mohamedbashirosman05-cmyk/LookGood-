@@ -302,6 +302,143 @@ h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spaci
 .cdot{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.45);pointer-events:none}
 .wsw.wbig button{width:38px;height:38px}
 .wsw button.same{background-image:linear-gradient(135deg,transparent 45%,rgba(255,255,255,.85) 46% 54%,transparent 55%)!important}
+/* Leiste unten: Flash-Knopf in der Mitte, Zähler am Chat */
+.tab{position:relative}
+.tab.flash{flex:0 0 74px}
+.tab.flash .fb{width:56px;height:56px;border-radius:50%;background:linear-gradient(140deg,#E0275F,#7B4DFF);color:#fff;display:grid;place-items:center;margin-top:-22px;box-shadow:0 8px 22px rgba(123,77,255,.35);border:4px solid var(--bg)}
+.tab.flash .fb svg{width:26px;height:26px;stroke:#fff}
+.tab.flash span{color:var(--ink)}
+.tbadge{position:absolute;top:8px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#E0275F;color:#fff;font-size:.66rem;font-weight:800;display:grid;place-items:center;line-height:1}
+/* Inbox */
+.social{gap:12px}
+.shead{display:flex;align-items:center;gap:10px}.shead h2{flex:1;font-size:1.7rem}
+.sicon{position:relative;width:42px;height:42px;border-radius:50%;border:0;background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none}
+.sicon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sicon.sm{width:38px;height:38px;background:var(--bg)}
+.sicon .dot{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;border-radius:9px;background:#E0275F;color:#fff;font-size:.66rem;font-weight:800;display:grid;place-items:center;padding:0 4px}
+.scard{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:6px}.scard p{margin:0;color:var(--muted);font-size:.88rem}
+.srow{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 6px;scrollbar-width:none}
+.stb{flex:none;display:flex;flex-direction:column;align-items:center;gap:5px;border:0;background:none;cursor:pointer;width:72px;color:var(--ink)}
+.stb small{font-size:.72rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:72px}
+.sav{position:relative;display:inline-grid;place-items:center;width:var(--s);height:var(--s);flex:none;border-radius:50%}
+.savi{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;font-size:calc(var(--s)*.52);font-weight:800;color:#2a2238;background-size:cover;background-position:center;overflow:hidden}
+.sav.ring{padding:3px}.sav.ring .savi{border:2.5px solid var(--bg)}
+.sav.ring.new{background:conic-gradient(#E0275F,#7B4DFF,#1596C8,#E0275F)}
+.sav.ring.seen{background:var(--line)}
+.splus{position:absolute;right:-2px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:#1596C8;color:#fff;font-weight:800;display:grid;place-items:center;border:2.5px solid var(--bg);font-size:.9rem}
+.sreq{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:10px}
+.sti{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;text-align:start}
+.sti b{display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35}.sti small{display:block;color:var(--muted);font-size:.8rem;line-height:1.45;padding-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sreq .sti small{white-space:normal}
+.sti small.typing{color:#1596C8;font-weight:700}
+.stest{font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 5px}
+.sbtn{flex:none;min-height:36px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;font-size:.82rem;cursor:pointer}
+.sbtn.on{background:#1596C8;border-color:#1596C8;color:#fff}
+.slist{display:flex;flex-direction:column;gap:2px}
+.srowi{display:flex;align-items:center;gap:8px;padding:6px 4px;border-radius:16px}
+.smain{flex:1;min-width:0;display:flex;align-items:center;gap:12px;border:0;background:none;color:var(--ink);cursor:pointer;padding:4px;text-align:start}
+.srowi.un{background:color-mix(in srgb,var(--card) 70%,transparent)}
+.sstat{display:flex!important;align-items:center;gap:6px}.sic{display:inline-grid;width:14px;height:14px;flex:none}.sic svg{width:14px;height:14px}
+.snote{text-align:center;margin-top:6px}
+/* Overlays: Freunde, Chat, Kamera, Bearbeiten, Ansehen */
+.sover{position:absolute;inset:0;z-index:9;background:var(--bg);display:flex;flex-direction:column;animation:slide .22s}
+.sover.dark{background:#07060a;color:#fff;animation:fadein .18s}
+@keyframes fadein{from{opacity:0}}
+.otop{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 8px;border-bottom:1px solid var(--line)}.otop>b{flex:1;font-size:1.15rem}
+.sinput{margin:12px 14px 4px;min-height:48px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:0 14px;font-size:1rem}
+#sfr .slist{padding:8px 14px 20px;overflow-y:auto}
+#sfr .wlab,#fsend .wlab{margin:12px 4px 4px}
+/* Chat-Fenster */
+.clist{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.cday{align-self:center;font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:8px 0 2px}
+.cm{max-width:80%;padding:9px 13px;border-radius:18px;line-height:1.38;overflow-wrap:anywhere;position:relative;display:flex;flex-direction:column;gap:3px;user-select:none;-webkit-user-select:none}
+.cm.them{align-self:flex-start;background:var(--card);border:1.5px solid var(--line);border-end-start-radius:6px}
+.cm.me{align-self:flex-end;background:#1596C8;color:#fff;border-end-end-radius:6px}
+.cm.saved{box-shadow:0 0 0 2px #f1c40f inset}
+.cmeta{font-size:.66rem;opacity:.7;align-self:flex-end}
+.cm.fl{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px;background:var(--card);color:var(--ink);border:1.5px solid var(--fc);font-weight:700;cursor:pointer}
+.cm.fl .cmeta{flex-basis:100%;text-align:end}
+.cm.img{padding:4px;background:var(--card);border:1.5px solid var(--line)}.cm.img img{display:block;max-width:220px;max-height:280px;border-radius:14px;cursor:zoom-in}.cm.img .cmeta{color:var(--muted);padding:0 6px 2px}
+.cm.ofit{background:var(--card);color:var(--ink);border:1.5px solid var(--line);gap:6px;min-width:200px}.cm.me.ofit{border-color:#1596C8}
+.ofg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.ofg img{width:100%;aspect-ratio:1;object-fit:contain;background:var(--bg);border-radius:10px}
+.cm.ofit p{margin:0;font-weight:700}.cm.ofit small{color:var(--muted)}
+.cm.voice{flex-direction:row;align-items:center;gap:8px;flex-wrap:wrap}
+.vplay{width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.25);color:inherit;display:grid;place-items:center;cursor:pointer}.cm.them .vplay{background:var(--bg)}
+.vplay svg{width:16px;height:16px;fill:currentColor}
+.vbars{display:flex;align-items:center;gap:2px;height:24px;width:110px}.vbars i{flex:1;background:currentColor;opacity:.6;border-radius:2px}
+.cm.voice .cmeta{flex-basis:100%;text-align:end}
+.quote{display:flex;align-items:center;gap:8px;border-inline-start:3px solid #E0275F;padding-inline-start:8px;opacity:.9}.quote img{width:34px;height:48px;object-fit:cover;border-radius:6px}.quote small{font-size:.72rem}
+.cm.typing{flex-direction:row;gap:4px;padding:12px 14px}.cm.typing i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:tdot 1s infinite}.cm.typing i:nth-child(2){animation-delay:.15s}.cm.typing i:nth-child(3){animation-delay:.3s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+.cempty{text-align:center;margin:auto}
+.cbar2{display:flex;align-items:center;gap:6px;padding:8px 10px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--bg)}
+.cround{width:42px;height:42px;border-radius:50%;border:0;background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none}
+.cround svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.cround.cam{background:linear-gradient(140deg,#E0275F,#7B4DFF);color:#fff}
+.cround.send{background:#1596C8;color:#fff}.cround.mic.rec{background:#E0275F;color:#fff;transform:scale(1.15)}
+.cin2{flex:1;min-width:0;min-height:44px;border-radius:22px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:0 14px;font-size:1rem}
+/* Kamera */
+#fcam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+video.mirror{transform:scaleX(-1)}
+.fflash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .15s}.fflash.on{opacity:.95}.fflash.blink{opacity:.6;transition:none}
+.ctop{position:absolute;top:0;left:0;right:0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 0;z-index:3}
+.ccol{display:flex;flex-direction:column;gap:10px}
+.cglass{position:relative;width:44px;height:44px;border-radius:50%;border:0;background:rgba(20,20,28,.42);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;display:grid;place-items:center;cursor:pointer}
+.cglass svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.cglass.on{background:#fff;color:#111}
+.cto{align-self:center;background:rgba(20,20,28,.5);padding:8px 14px;border-radius:999px;font-weight:700;font-size:.86rem}
+.cbot{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:34px;padding:0 20px calc(26px + env(safe-area-inset-bottom,0px));z-index:3}
+.shut{width:84px;height:84px;border-radius:50%;border:0;background:none;padding:0;cursor:pointer;touch-action:none}
+.shut svg{width:100%;height:100%;transform:rotate(-90deg)}.sring{fill:rgba(255,255,255,.12);stroke:#fff;stroke-width:7}
+.sprog{fill:none;stroke:#7B4DFF;stroke-width:7;stroke-dasharray:277;stroke-dashoffset:277}.shut.rec .sring{fill:rgba(224,39,95,.5)}
+.chint{position:absolute;bottom:calc(6px + env(safe-area-inset-bottom,0px));font-size:.72rem;opacity:.75}
+.cbot .cglass:first-child{position:absolute;left:24px}
+.cfall{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:30px;text-align:center;z-index:2;background:#121018}
+.cfall p{color:#d9d4e6;max-width:30ch;line-height:1.4}.cfall .btn{max-width:280px;background:#1f1a2b;color:#fff;border-color:#3a3150}
+/* Bearbeiten */
+.estage{position:absolute;inset:0;overflow:hidden;background:#000}
+.emed{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.edraw{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+.elay{position:absolute;inset:0;pointer-events:none}
+.etext{position:absolute;left:0;right:0;transform:translateY(-50%);pointer-events:auto;text-align:center;color:#fff;outline:0;min-height:1.4em;padding:6px 14px;touch-action:none;white-space:pre-wrap;overflow-wrap:anywhere}
+.etext.s0{background:rgba(0,0,0,.55);font-weight:600;font-size:1.05rem}
+.etext.s1{font-weight:800;font-size:1.7rem;text-shadow:0 2px 6px rgba(0,0,0,.5)}
+.etext.s2{font-weight:800;font-size:1.5rem;left:50%;right:auto;transform:translate(-50%,-50%);background:#E0275F;border-radius:10px;width:max-content;max-width:90%}
+.estk{position:absolute;font-size:56px;line-height:1;pointer-events:auto;touch-action:none;cursor:grab;user-select:none}
+.tools .cglass{width:46px;height:46px}.tlab{position:absolute;bottom:-4px;right:-4px;background:#7B4DFF;color:#fff;font-size:.6rem;font-weight:800;border-radius:8px;padding:1px 4px}
+.epal{position:absolute;right:68px;top:calc(130px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:8px;z-index:3}
+.epal button{width:28px;height:28px;border-radius:50%;border:3px solid rgba(255,255,255,.7);cursor:pointer}.epal button.on{transform:scale(1.25);border-color:#fff}
+.efil{position:absolute;left:0;right:0;bottom:calc(84px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;overflow-x:auto;padding:0 14px;z-index:3;scrollbar-width:none}
+.efil button{flex:none;border:0;border-radius:999px;padding:8px 14px;background:rgba(20,20,28,.5);color:#fff;font-weight:700;font-size:.8rem;cursor:pointer;backdrop-filter:blur(8px)}
+.efil button[aria-pressed=true]{background:#fff;color:#111}
+.etrash{position:absolute;left:50%;bottom:calc(140px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:56px;height:56px;border-radius:50%;background:rgba(20,20,28,.6);display:grid;place-items:center;z-index:4;transition:transform .15s,background .15s}
+.etrash.hot{transform:translateX(-50%) scale(1.25);background:#E0275F}.etrash svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:2}
+.ebot{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:10px;padding:0 14px calc(18px + env(safe-area-inset-bottom,0px));z-index:3}
+.cpill{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border-radius:999px;border:0;background:rgba(255,255,255,.92);color:#111;font-weight:800;cursor:pointer}
+.cpill.main{background:#7B4DFF;color:#fff}.cpill svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.cpill:disabled{opacity:.4}
+.egrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.egrid button{font-size:1.7rem;border:0;background:var(--card);border-radius:12px;aspect-ratio:1;cursor:pointer}
+/* Senden an */
+#fsend .slist{flex:1;overflow-y:auto;padding:8px 14px}
+.spick{display:flex;align-items:center;gap:12px;padding:8px 4px;cursor:pointer}.spick input{width:24px;height:24px;accent-color:#7B4DFF}
+.sendbar{display:flex;align-items:center;gap:10px;padding:10px 14px calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line)}
+.sendbar span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;color:var(--muted)}.sendbar.on span{color:var(--ink)}
+/* Ansehen */
+.fview{touch-action:none}
+.vstage{position:absolute;inset:0;display:grid;place-items:center;background:#000}
+.vstage img,.vstage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.vstage .vov{object-fit:fill;pointer-events:none}
+.vbars2{position:absolute;top:calc(8px + env(safe-area-inset-top,0px));left:10px;right:10px;display:flex;gap:4px;z-index:3}
+.vbars2 i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.35);overflow:hidden}.vbars2 i b{display:block;height:100%;width:0;background:#fff}
+.vhead{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));left:12px;right:60px;display:flex;align-items:center;gap:10px;z-index:3;text-shadow:0 1px 4px rgba(0,0,0,.5)}.vhead small{color:rgba(255,255,255,.8)}
+.vx{position:absolute!important;top:calc(16px + env(safe-area-inset-top,0px));right:12px;z-index:4}
+.vfoot{position:absolute;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;justify-content:center;z-index:3;flex-wrap:wrap}
+.vreply{flex:1;min-height:46px;border-radius:23px;border:1.5px solid rgba(255,255,255,.5);background:rgba(0,0,0,.35);color:#fff;padding:0 16px;font-size:1rem}
+.vviews{background:rgba(0,0,0,.5);padding:8px 12px;border-radius:12px}
+/* Push-Benachrichtigung */
+.nbar{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));transform:translate(-50%,-180%);width:calc(100% - 20px);max-width:420px;z-index:40;display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:18px;padding:10px 12px;box-shadow:0 10px 30px rgba(0,0,0,.2);transition:transform .35s cubic-bezier(.2,.9,.3,1.1);cursor:pointer;color:var(--ink)}
+.nbar.show{transform:translate(-50%,0)}.nbt{display:flex;flex-direction:column;min-width:0}.nbt span{font-weight:700;font-size:.88rem}
+.oatfield{display:flex;align-items:center;gap:4px;min-height:52px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);padding:0 16px}.oatfield b{color:var(--muted)}.oatfield input{flex:1;border:0!important;background:none!important;outline:0;min-height:48px;padding:0!important;font-size:1rem}
+@media (prefers-reduced-motion:reduce){.sover,.nbar{animation:none;transition:none}}
 </style>
 </head>
 <body>
@@ -378,7 +515,10 @@ h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spaci
     <div class="step" data-s="0"><h2>Wie heißt du?</h2><p class="sub">So spricht dich dein Stylist an.</p>
       <label>Vorname<input id="oFirst" type="text" autocomplete="given-name" maxlength="30"></label>
       <label>Nachname<input id="oLast" type="text" autocomplete="family-name" maxlength="40"></label></div>
-    <div class="step hidden" data-s="1"><h2>Wann hast du Geburtstag?</h2><p class="sub">Daraus berechnen wir dein Alter.</p>
+    <div class="step hidden" data-s="1"><h2>Wie finden dich Freunde?</h2><p class="sub">Dein Benutzername ist einzigartig. Deinen Spitznamen sehen deine Freunde im Chat.</p>
+      <label>Benutzername<span class="oatfield"><b>@</b><input id="oUser" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="20" aria-label="Benutzername"></span></label>
+      <label>Spitzname (freiwillig)<input id="oNick" type="text" maxlength="24" placeholder="zum Beispiel Momo"></label></div>
+    <div class="step hidden" data-s="2"><h2>Wann hast du Geburtstag?</h2><p class="sub">Daraus berechnen wir dein Alter.</p>
       <input id="oBirth" type="date" min="1920-01-01" aria-label="Geburtsdatum">
       <h3 style="margin-top:14px">Geschlecht</h3>
       <div class="opts" id="oGender"><button type="button" data-v="Männlich">Männlich</button><button type="button" data-v="Weiblich">Weiblich</button><button type="button" data-v="Andere">Andere</button><button type="button" data-v="Keine Angabe">Keine Angabe</button></div></div>
@@ -430,9 +570,10 @@ h3.sh{margin:12px 4px 4px;font-size:.76rem;text-transform:uppercase;letter-spaci
   <nav class="tabs" role="tablist" aria-label="Hauptmenü">
     <button class="tab" id="t-home" role="tab" type="button"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Home</button>
     <button class="tab" id="t-wardrobe" role="tab" type="button"><svg viewBox="0 0 24 24"><path d="M12 7a2.5 2.5 0 1 0-2.5-2.5M12 7v2l9 6a1.5 1.5 0 0 1-.8 2.7H3.8A1.5 1.5 0 0 1 3 15l9-6"/></svg>Garderobe</button>
-    <button class="tab" id="t-friends" role="tab" type="button"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3-6 6.5-6s6 2 6.5 6M16 4.8a3.5 3.5 0 0 1 0 6.4M18 14.3c2 .7 3.2 2.5 3.5 5.7"/></svg>Freunde</button>
+    <button class="tab flash" id="t-flash" type="button" aria-label="Flash"><span class="fb"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span>Flash</span></button>
+    <button class="tab" id="t-friends" role="tab" type="button"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8"/></svg>Chat</button>
     <button class="tab" id="t-chat" role="tab" type="button"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg>AI</button>
-      </nav>
+  </nav>
   <div id="profile" class="screen hidden" role="dialog" aria-label="Profil">
     <div class="pwrap">
       <div class="ptop"><button class="back" id="pback" type="button" aria-label="Zurück"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button></div>
@@ -926,7 +1067,122 @@ var D={
 "Etwas länger":"A bit longer|Un peu plus longs|Algo más largas|Um pouco mais longas|أطول قليلًا|थोड़ी लंबी|稍长",
 "Lang":"Long|Longs|Largas|Longas|طويلة|लंबी|长",
 "Sehr lang":"Very long|Très longs|Muy largas|Muito longas|طويلة جدًا|बहुत लंबी|很长",
-"Figur speichern":"Save avatar|Enregistrer l'avatar|Guardar avatar|Guardar avatar|حفظ الشخصية|अवतार सेव करें|保存形象"
+"Figur speichern":"Save avatar|Enregistrer l'avatar|Guardar avatar|Guardar avatar|حفظ الشخصية|अवतार सेव करें|保存形象",
+"Ablehnen":"Decline|Refuser|Rechazar|Recusar|رفض|अस्वीकार करें|拒绝",
+"Abend":"Evening|Soir|Noche|Noite|مساء|शाम|傍晚",
+"An":"To|À|Para|Para|إلى|को|发给",
+"An # Freunde gesendet":"Sent to # friends|Envoyé à # amis|Enviado a # amigos|Enviado para # amigos|أُرسل إلى # أصدقاء|# दोस्तों को भेजा|已发送给 # 位好友",
+"An wen?":"Send to whom?|À qui ?|¿A quién?|Para quem?|إلى من؟|किसे भेजें?|发给谁？",
+"Anfrage gesendet":"Request sent|Demande envoyée|Solicitud enviada|Pedido enviado|تم إرسال الطلب|अनुरोध भेजा|已发送请求",
+"Anfragen":"Requests|Demandes|Solicitudes|Pedidos|الطلبات|अनुरोध|好友请求",
+"Angesehen":"Viewed|Vu|Visto|Visto|تمت المشاهدة|देखा गया|已查看",
+"Angesehen von":"Viewed by|Vu par|Visto por|Visto por|شاهدها|इन्होंने देखा|查看者",
+"Annehmen":"Accept|Accepter|Aceptar|Aceitar|قبول|स्वीकार करें|接受",
+"Antwort auf deine Story":"Reply to your story|Réponse à ta story|Respuesta a tu historia|Resposta à tua story|رد على قصتك|आपकी स्टोरी का जवाब|回复了你的快拍",
+"Antwort auf eine Story":"Reply to a story|Réponse à une story|Respuesta a una historia|Resposta a uma story|رد على قصة|एक स्टोरी का जवाब|回复了快拍",
+"Antwort gesendet":"Reply sent|Réponse envoyée|Respuesta enviada|Resposta enviada|تم إرسال الرد|जवाब भेजा|已发送回复",
+"Antworten im Chat":"Reply in chat|Répondre dans le chat|Responder en el chat|Responder no chat|الرد في الدردشة|चैट में जवाब दें|在聊天中回复",
+"Antworten …":"Reply …|Répondre …|Responder …|Responder …|رد …|जवाब दें …|回复 …",
+"Befreundet":"Friends|Amis|Amigos|Amigos|أصدقاء|दोस्त|已是好友",
+"Benutzername suchen":"Search username|Rechercher un nom d'utilisateur|Buscar usuario|Procurar nome de utilizador|ابحث عن اسم مستخدم|यूज़रनेम खोजें|搜索用户名",
+"Benutzername wählen":"Choose username|Choisir un nom d'utilisateur|Elegir usuario|Escolher nome de utilizador|اختر اسم المستخدم|यूज़रनेम चुनें|选择用户名",
+"Blitz":"Flash light|Flash|Flash|Flash|الفلاش|फ़्लैश लाइट|闪光灯",
+"Blockieren":"Block|Bloquer|Bloquear|Bloquear|حظر|ब्लॉक करें|屏蔽",
+"Blockiert":"Blocked|Bloqués|Bloqueados|Bloqueados|المحظورون|ब्लॉक किए गए|已屏蔽",
+"Chat":"Chat|Chat|Chat|Chat|الدردشة|चैट|聊天",
+"Chat öffnen":"Open chat|Ouvrir le chat|Abrir chat|Abrir chat|فتح الدردشة|चैट खोलें|打开聊天",
+"Damit dich Freunde finden und dir Flashes schicken können.":"So friends can find you and send you Flashes.|Pour que tes amis te trouvent et t'envoient des Flashs.|Para que tus amigos te encuentren y te envíen Flashes.|Para os amigos te encontrarem e te enviarem Flashes.|حتى يجدك أصدقاؤك ويرسلوا لك فلاشات.|ताकि दोस्त आपको ढूँढ सकें और फ़्लैश भेज सकें।|这样好友就能找到你并给你发 Flash。",
+"Die Live-Kamera ist hier nicht verfügbar. Nimm ein Foto oder Video mit der Kamera deines Handys auf.":"The live camera isn't available here. Take a photo or video with your phone's camera.|La caméra en direct n'est pas disponible ici. Prends une photo ou une vidéo avec l'appareil de ton téléphone.|La cámara en vivo no está disponible aquí. Haz una foto o un vídeo con la cámara de tu móvil.|A câmara ao vivo não está disponível aqui. Tira uma foto ou grava um vídeo com a câmara do telemóvel.|الكاميرا المباشرة غير متاحة هنا. التقط صورة أو فيديو بكاميرا هاتفك.|लाइव कैमरा यहाँ उपलब्ध नहीं है। अपने फ़ोन के कैमरे से फ़ोटो या वीडियो लें।|此处无法使用实时相机，请用手机相机拍照或录像。",
+"Dieser Benutzername ist schon vergeben.":"This username is already taken.|Ce nom d'utilisateur est déjà pris.|Este usuario ya está en uso.|Este nome de utilizador já existe.|اسم المستخدم هذا مأخوذ بالفعل.|यह यूज़रनेम पहले से लिया गया है।|该用户名已被占用。",
+"Emoji":"Emoji|Émoji|Emoji|Emoji|إيموجي|इमोजी|表情",
+"Empfangen":"Received|Reçu|Recibido|Recebido|تم الاستلام|मिला|已接收",
+"Flash":"Flash|Flash|Flash|Flash|فلاش|फ़्लैश|Flash",
+"Flash angesehen":"Flash viewed|Flash vu|Flash visto|Flash visto|تمت مشاهدة الفلاش|फ़्लैश देखा गया|已查看 Flash",
+"Flash geöffnet":"Flash opened|Flash ouvert|Flash abierto|Flash aberto|تم فتح الفلاش|फ़्लैश खोला गया|Flash 已打开",
+"Flash senden":"Send Flash|Envoyer un Flash|Enviar Flash|Enviar Flash|إرسال فلاش|फ़्लैश भेजें|发送 Flash",
+"Flash zugestellt":"Flash delivered|Flash livré|Flash entregado|Flash entregue|تم تسليم الفلاش|फ़्लैश पहुँचा|Flash 已送达",
+"Foto aus der Galerie":"Photo from gallery|Photo de la galerie|Foto de la galería|Foto da galeria|صورة من المعرض|गैलरी से फ़ोटो|相册中的照片",
+"Freigeben":"Unblock|Débloquer|Desbloquear|Desbloquear|إلغاء الحظر|अनब्लॉक करें|取消屏蔽",
+"Freund entfernen":"Remove friend|Retirer l'ami|Eliminar amigo|Remover amigo|إزالة الصديق|दोस्त हटाएँ|删除好友",
+"Freunde finden":"Find friends|Trouver des amis|Buscar amigos|Encontrar amigos|ابحث عن أصدقاء|दोस्त ढूँढें|查找好友",
+"Für deine Story":"For your story|Pour ta story|Para tu historia|Para a tua story|لقصتك|आपकी स्टोरी के लिए|发到你的快拍",
+"Gelesen":"Read|Lu|Leído|Lido|تمت القراءة|पढ़ा गया|已读",
+"Gerade eben":"Just now|À l'instant|Ahora mismo|Agora mesmo|الآن|अभी-अभी|刚刚",
+"Gespeicherter Flash · tippen":"Saved Flash · tap|Flash enregistré · touche|Flash guardado · toca|Flash guardado · toca|فلاش محفوظ · اضغط|सेव किया फ़्लैश · टैप करें|已保存的 Flash · 点击",
+"Geöffnet":"Opened|Ouvert|Abierto|Aberto|تم الفتح|खोला गया|已打开",
+"Hinzufügen":"Add|Ajouter|Añadir|Adicionar|إضافة|जोड़ें|添加",
+"Ihr seid jetzt befreundet":"You're now friends|Vous êtes maintenant amis|Ahora sois amigos|Agora são amigos|أصبحتما صديقين|अब आप दोस्त हैं|你们现在是好友了",
+"Im Chat speichern":"Save in chat|Enregistrer dans le chat|Guardar en el chat|Guardar no chat|حفظ في الدردشة|चैट में सेव करें|保存到聊天",
+"Kamera wechseln":"Switch camera|Changer de caméra|Cambiar cámara|Trocar câmara|تبديل الكاميرا|कैमरा बदलें|切换相机",
+"Kein Zugriff auf das Mikrofon.":"No access to the microphone.|Pas d'accès au micro.|Sin acceso al micrófono.|Sem acesso ao microfone.|لا يوجد وصول إلى الميكروفون.|माइक्रोफ़ोन की अनुमति नहीं है।|无法使用麦克风。",
+"Kopieren":"Copy|Copier|Copiar|Copiar|نسخ|कॉपी करें|复制",
+"Kopiert":"Copied|Copié|Copiado|Copiado|تم النسخ|कॉपी हो गया|已复制",
+"Kühl":"Cool|Froid|Frío|Frio|بارد|ठंडा|冷色",
+"Lebendig":"Vivid|Vif|Vívido|Vivo|حيوي|चटकीला|鲜艳",
+"Mehr senden":"Send more|Envoyer plus|Enviar más|Enviar mais|إرسال المزيد|और भेजें|发送更多",
+"Mein Outfit für heute":"My outfit for today|Ma tenue du jour|Mi outfit de hoy|O meu outfit de hoje|إطلالتي لليوم|आज का मेरा आउटफ़िट|我今天的穿搭",
+"Meine Freunde":"My friends|Mes amis|Mis amigos|Os meus amigos|أصدقائي|मेरे दोस्त|我的好友",
+"Meine Story":"My story|Ma story|Mi historia|A minha story|قصتي|मेरी स्टोरी|我的快拍",
+"Nach dem Lesen löschen":"Delete after reading|Supprimer après lecture|Borrar después de leer|Apagar depois de ler|الحذف بعد القراءة|पढ़ने के बाद हटाएँ|阅后删除",
+"Nachricht":"Message|Message|Mensaje|Mensagem|رسالة|संदेश|消息",
+"Nachricht senden":"Send a message|Envoyer un message|Enviar mensaje|Enviar mensagem|إرسال رسالة|संदेश भेजें|发送消息",
+"Nachrichten behalten":"Keep messages|Garder les messages|Conservar mensajes|Manter mensagens|الاحتفاظ بالرسائل|संदेश रखें|保留消息",
+"Nachrichten bleiben im Chat":"Messages stay in the chat|Les messages restent dans le chat|Los mensajes se quedan en el chat|As mensagens ficam no chat|تبقى الرسائل في الدردشة|संदेश चैट में रहते हैं|消息保留在聊天中",
+"Nachrichten bleiben im Chat.":"Messages stay in the chat.|Les messages restent dans le chat.|Los mensajes se quedan en el chat.|As mensagens ficam no chat.|تبقى الرسائل في الدردشة.|संदेश चैट में रहते हैं।|消息保留在聊天中。",
+"Nachrichten werden nach dem Lesen gelöscht":"Messages are deleted after reading|Les messages sont supprimés après lecture|Los mensajes se borran después de leerlos|As mensagens são apagadas depois de lidas|تُحذف الرسائل بعد قراءتها|पढ़ने के बाद संदेश हट जाते हैं|消息阅后即删",
+"Nachrichten werden nach dem Lesen gelöscht (außer gespeicherte).":"Messages are deleted after reading (except saved ones).|Les messages sont supprimés après lecture (sauf ceux enregistrés).|Los mensajes se borran después de leerlos (salvo los guardados).|As mensagens são apagadas depois de lidas (exceto as guardadas).|تُحذف الرسائل بعد قراءتها (باستثناء المحفوظة).|पढ़ने के बाद संदेश हट जाते हैं (सेव किए हुए छोड़कर)।|消息阅后即删（已保存的除外）。",
+"Neuer Chat":"New chat|Nouveau message|Nuevo chat|Nova mensagem|دردشة جديدة|नया चैट|新消息",
+"Neuer Flash":"New Flash|Nouveau Flash|Nuevo Flash|Novo Flash|فلاش جديد|नया फ़्लैश|新 Flash",
+"Neuer Flash · zum Ansehen tippen":"New Flash · tap to view|Nouveau Flash · touche pour voir|Nuevo Flash · toca para ver|Novo Flash · toca para ver|فلاش جديد · اضغط للمشاهدة|नया फ़्लैश · देखने के लिए टैप करें|新 Flash · 点击查看",
+"Nicht mehr speichern":"Unsave|Ne plus enregistrer|Dejar de guardar|Deixar de guardar|إلغاء الحفظ|सेव हटाएँ|取消保存",
+"Nicht mehr verfügbar.":"No longer available.|Plus disponible.|Ya no está disponible.|Já não está disponível.|لم يعد متاحًا.|अब उपलब्ध नहीं है।|已不可用。",
+"Niemand mit diesem Namen gefunden.":"No one found with this name.|Personne trouvé avec ce nom.|No se encontró a nadie con ese nombre.|Ninguém encontrado com este nome.|لم يتم العثور على أحد بهذا الاسم.|इस नाम से कोई नहीं मिला।|没有找到这个名字的用户。",
+"Noch keine Freunde":"No friends yet|Pas encore d'amis|Aún no tienes amigos|Ainda sem amigos|لا يوجد أصدقاء بعد|अभी कोई दोस्त नहीं|还没有好友",
+"Noch niemand hat sie angesehen":"Nobody has viewed it yet|Personne ne l'a encore vue|Nadie la ha visto todavía|Ainda ninguém a viu|لم يشاهدها أحد بعد|अभी तक किसी ने नहीं देखी|还没有人看过",
+"Normal":"Normal|Normal|Normal|Normal|عادي|सामान्य|原图",
+"Outfit an Freunde schicken":"Send outfit to friends|Envoyer la tenue à des amis|Enviar outfit a amigos|Enviar outfit a amigos|أرسل الإطلالة للأصدقاء|आउटफ़िट दोस्तों को भेजें|把穿搭发给好友",
+"Outfit geschickt":"Outfit sent|Tenue envoyée|Outfit enviado|Outfit enviado|تم إرسال الإطلالة|आउटफ़िट भेजा|穿搭已发送",
+"Outfit teilen":"Share outfit|Partager la tenue|Compartir outfit|Partilhar outfit|مشاركة الإطلالة|आउटफ़िट शेयर करें|分享穿搭",
+"Passt das?":"Does this work?|Ça va ensemble ?|¿Queda bien?|Fica bem?|هل يناسب؟|ये ठीक है?|这样搭可以吗？",
+"Rückgängig":"Undo|Annuler|Deshacer|Desfazer|تراجع|पहले जैसा करें|撤销",
+"S/W":"B/W|N/B|B/N|P/B|أبيض وأسود|श्वेत-श्याम|黑白",
+"Sag Hallo oder schick einen Flash!":"Say hi or send a Flash!|Dis bonjour ou envoie un Flash !|¡Saluda o envía un Flash!|Diz olá ou envia um Flash!|قل مرحبًا أو أرسل فلاشًا!|हाय कहें या फ़्लैश भेजें!|打个招呼或发个 Flash 吧！",
+"Senden an":"Send to|Envoyer à|Enviar a|Enviar para|إرسال إلى|इन्हें भेजें|发送给",
+"Spitzname (freiwillig)":"Nickname (optional)|Surnom (facultatif)|Apodo (opcional)|Alcunha (opcional)|اللقب (اختياري)|उपनाम (वैकल्पिक)|昵称（可选）",
+"Sprachnachricht: gedrückt halten":"Voice message: press and hold|Message vocal : maintenir appuyé|Mensaje de voz: mantén pulsado|Mensagem de voz: mantém premido|رسالة صوتية: اضغط مطولًا|वॉइस मैसेज: दबाकर रखें|语音消息：按住说话",
+"Sprachnachrichten werden hier nicht unterstützt.":"Voice messages aren't supported here.|Les messages vocaux ne sont pas pris en charge ici.|Los mensajes de voz no son compatibles aquí.|As mensagens de voz não são suportadas aqui.|الرسائل الصوتية غير مدعومة هنا.|यहाँ वॉइस मैसेज समर्थित नहीं हैं।|此处不支持语音消息。",
+"Suche oben rechts nach Benutzernamen und schick eine Anfrage.":"Search for usernames at the top right and send a request.|Recherche des noms d'utilisateur en haut à droite et envoie une demande.|Busca usuarios arriba a la derecha y envía una solicitud.|Procura nomes de utilizador no canto superior direito e envia um pedido.|ابحث عن أسماء المستخدمين في الأعلى يمينًا وأرسل طلبًا.|ऊपर दाईं ओर यूज़रनेम खोजें और अनुरोध भेजें।|在右上角搜索用户名并发送请求。",
+"Test":"Test|Test|Prueba|Teste|تجربة|टेस्ट|测试",
+"Text":"Text|Texte|Texto|Texto|نص|टेक्स्ट|文字",
+"Timer":"Timer|Minuteur|Temporizador|Temporizador|المؤقت|टाइमर|计时",
+"Tippe, um zu chatten":"Tap to chat|Touche pour discuter|Toca para chatear|Toca para conversar|اضغط للدردشة|चैट करने के लिए टैप करें|点击聊天",
+"Tippen: Foto · Halten: Video":"Tap: photo · Hold: video|Toucher : photo · Maintenir : vidéo|Toca: foto · Mantén: vídeo|Toca: foto · Mantém: vídeo|اضغط: صورة · اضغط مطولًا: فيديو|टैप: फ़ोटो · दबाए रखें: वीडियो|轻点：拍照 · 按住：录像",
+"Tippen: Foto. Gedrückt halten: Video.":"Tap: photo. Hold: video.|Toucher : photo. Maintenir : vidéo.|Toca: foto. Mantén pulsado: vídeo.|Toca: foto. Mantém premido: vídeo.|اضغط: صورة. اضغط مطولًا: فيديو.|टैप: फ़ोटो। दबाए रखें: वीडियो।|轻点拍照，按住录像。",
+"Verwerfen":"Discard|Supprimer|Descartar|Descartar|تجاهل|हटाएँ|放弃",
+"Video aufnehmen":"Record video|Filmer une vidéo|Grabar vídeo|Gravar vídeo|تسجيل فيديو|वीडियो रिकॉर्ड करें|录像",
+"Video wird hier nicht unterstützt. Tippe für ein Foto.":"Video isn't supported here. Tap for a photo.|La vidéo n'est pas prise en charge ici. Touche pour une photo.|El vídeo no es compatible aquí. Toca para hacer una foto.|O vídeo não é suportado aqui. Toca para tirar uma foto.|الفيديو غير مدعوم هنا. اضغط لالتقاط صورة.|यहाँ वीडियो समर्थित नहीं है। फ़ोटो के लिए टैप करें।|此处不支持录像，轻点拍照。",
+"Vintage":"Vintage|Vintage|Vintage|Vintage|عتيق|विंटेज|复古",
+"Vorschläge":"Suggestions|Suggestions|Sugerencias|Sugestões|اقتراحات|सुझाव|推荐",
+"Wähle deinen Benutzernamen":"Choose your username|Choisis ton nom d'utilisateur|Elige tu usuario|Escolhe o teu nome de utilizador|اختر اسم المستخدم الخاص بك|अपना यूज़रनेम चुनें|选择你的用户名",
+"Zeichnen":"Draw|Dessiner|Dibujar|Desenhar|رسم|ड्रॉ करें|画笔",
+"Zieh dir in der Garderobe zuerst etwas an.":"Put something on in the wardrobe first.|Enfile d'abord quelque chose dans la garde-robe.|Primero ponte algo en el armario.|Veste primeiro algo no guarda-roupa.|ارتدِ شيئًا في الخزانة أولًا.|पहले वॉर्डरोब में कुछ पहनें।|先在衣橱里穿上点什么。",
+"Zu deiner Story hinzugefügt":"Added to your story|Ajouté à ta story|Añadido a tu historia|Adicionado à tua story|أُضيف إلى قصتك|आपकी स्टोरी में जोड़ा गया|已添加到你的快拍",
+"Zugestellt":"Delivered|Livré|Entregado|Entregue|تم التسليم|पहुँचा|已送达",
+"hat deine Anfrage angenommen":"accepted your request|a accepté ta demande|aceptó tu solicitud|aceitou o teu pedido|قبل طلبك|ने आपका अनुरोध स्वीकार किया|接受了你的好友请求",
+"hat dir einen Flash geschickt":"sent you a Flash|t'a envoyé un Flash|te ha enviado un Flash|enviou-te um Flash|أرسل لك فلاشًا|ने आपको फ़्लैश भेजा|给你发了一个 Flash",
+"hat dir geschrieben":"sent you a message|t'a écrit|te ha escrito|escreveu-te|أرسل لك رسالة|ने आपको लिखा|给你发了消息",
+"möchte mit dir befreundet sein":"wants to be your friend|veut être ton ami|quiere ser tu amigo|quer ser teu amigo|يريد أن يكون صديقك|आपका दोस्त बनना चाहता है|想加你为好友",
+"vor # Min.":"# min ago|il y a # min|hace # min|há # min|قبل # د|# मिनट पहले|# 分钟前",
+"vor # Std.":"# h ago|il y a # h|hace # h|há # h|قبل # س|# घंटे पहले|# 小时前",
+"zum Beispiel Momo":"for example Momo|par exemple Momo|por ejemplo Momo|por exemplo Momo|مثلًا مومو|जैसे मोमो|例如 Momo",
+"zum Beispiel mo.style":"for example mo.style|par exemple mo.style|por ejemplo mo.style|por exemplo mo.style|مثلًا mo.style|जैसे mo.style|例如 mo.style",
+"Wie finden dich Freunde?":"How do friends find you?|Comment tes amis te trouvent-ils ?|¿Cómo te encuentran tus amigos?|Como te encontram os amigos?|كيف يجدك أصدقاؤك؟|दोस्त आपको कैसे ढूँढें?|好友如何找到你？",
+"Dein Benutzername ist einzigartig. Deinen Spitznamen sehen deine Freunde im Chat.":"Your username is unique. Your friends see your nickname in the chat.|Ton nom d'utilisateur est unique. Tes amis voient ton surnom dans le chat.|Tu usuario es único. Tus amigos ven tu apodo en el chat.|O teu nome de utilizador é único. Os amigos veem a tua alcunha no chat.|اسم المستخدم الخاص بك فريد. يرى أصدقاؤك لقبك في الدردشة.|आपका यूज़रनेम अनोखा है। दोस्त चैट में आपका उपनाम देखते हैं।|你的用户名是唯一的，好友会在聊天中看到你的昵称。",
+"3 bis 20 Zeichen: kleine Buchstaben, Zahlen, Punkt oder Unterstrich. Beginnt mit einem Buchstaben.":"3 to 20 characters: lowercase letters, numbers, dot or underscore. Starts with a letter.|3 à 20 caractères : minuscules, chiffres, point ou tiret bas. Commence par une lettre.|De 3 a 20 caracteres: minúsculas, números, punto o guion bajo. Empieza por una letra.|3 a 20 caracteres: minúsculas, números, ponto ou sublinhado. Começa com uma letra.|من 3 إلى 20 حرفًا: أحرف صغيرة وأرقام ونقطة أو شرطة سفلية. يبدأ بحرف.|3 से 20 अक्षर: छोटे अक्षर, अंक, बिंदु या अंडरस्कोर। अक्षर से शुरू हो।|3 到 20 个字符：小写字母、数字、点或下划线，须以字母开头。",
+"Test-Modus: Lina, Jay, Sami und die anderen sind Test-Freunde und antworten automatisch. Echte Freunde kommen, sobald der Server verbunden ist.":"Test mode: Lina, Jay, Sami and the others are test friends and reply automatically. Real friends come once the server is connected.|Mode test : Lina, Jay, Sami et les autres sont des amis de test qui répondent automatiquement. Les vrais amis arrivent dès que le serveur est connecté.|Modo de prueba: Lina, Jay, Sami y los demás son amigos de prueba y responden solos. Los amigos reales llegarán cuando el servidor esté conectado.|Modo de teste: Lina, Jay, Sami e os outros são amigos de teste e respondem automaticamente. Os amigos reais chegam quando o servidor estiver ligado.|وضع التجربة: لينا وجاي وسامي والآخرون أصدقاء تجريبيون ويردون تلقائيًا. يأتي الأصدقاء الحقيقيون عند ربط الخادم.|टेस्ट मोड: लीना, जे, सामी और बाकी टेस्ट दोस्त हैं और अपने-आप जवाब देते हैं। सर्वर जुड़ते ही असली दोस्त आएँगे।|测试模式：Lina、Jay、Sami 等是测试好友，会自动回复。连接服务器后才会有真实好友。",
+"24 Stunden für alle deine Freunde":"24 hours for all your friends|24 heures pour tous tes amis|24 horas para todos tus amigos|24 horas para todos os teus amigos|24 ساعة لكل أصدقائك|24 घंटे सभी दोस्तों के लिए|24 小时，对所有好友可见",
+"schreibt gerade …":"typing …|écrit …|escribiendo …|a escrever …|يكتب الآن …|लिख रहा है …|正在输入 …",
+"Gestern":"Yesterday|Hier|Ayer|Ontem|أمس|कल|昨天"
 };
 for(var k in D)D[k]=D[k].split("|");
 
@@ -1159,15 +1415,15 @@ $("pfile").onchange=function(e){var f=e.target.files[0];e.target.value="";if(!f)
   var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,300/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);prof.photo=c.toDataURL("image/jpeg",.85);saveProf();paintProf()};im.src=r.result};r.readAsDataURL(f)};
 $("pedit").onclick=editProfile;
 $("pout").onclick=function(){prof.session=false;saveProf();$("profile").classList.add("hidden");app.classList.add("hidden");welcome.classList.remove("hidden");$("tel").value=""};
-$("pdel").onclick=function(){menu("Konto löschen?","Dein Profil und deine Einstellungen werden von diesem Gerät gelöscht. Das kann nicht rückgängig gemacht werden.",[{t:"Endgültig löschen",fn:function(){try{["lg_prof","lg_cities","lg_avatar","lg_outfit","lg_looks"].forEach(function(k){localStorage.removeItem(k)});indexedDB.deleteDatabase("lookgood")}catch(e){}setTimeout(function(){location.reload()},150)}}])};
+$("pdel").onclick=function(){menu("Konto löschen?","Dein Profil und deine Einstellungen werden von diesem Gerät gelöscht. Das kann nicht rückgängig gemacht werden.",[{t:"Endgültig löschen",fn:function(){try{["lg_prof","lg_cities","lg_avatar","lg_avatar2","lg_outfit","lg_looks","lg_social"].forEach(function(k){localStorage.removeItem(k)});indexedDB.deleteDatabase("lookgood")}catch(e){}setTimeout(function(){location.reload()},150)}}])};
 paintProf();
 
 /* Tabs mit Wischen */
 var KEYS=["home","wardrobe","friends","chat"],cur="home";
 var TXT={wardrobe:["Garderobe","Hier landen bald deine Kleidungsstücke."],friends:["Freunde","Hier findest du bald deine Freunde und Snaps."],chat:["AI","Hier sprichst du bald mit deinem Stylisten."]};
-function emptyViews(){["friends"].forEach(function(k){var s=$("v-"+k);if(!s){s=el("section","view hidden");s.id="v-"+k;$("views").appendChild(s)}s.textContent="";var e=el("div","empty");e.appendChild(el("h2","",TXT[k][0]));e.appendChild(el("p","",TXT[k][1]));s.appendChild(e)})}emptyViews();
+function emptyViews(){[].forEach(function(k){var s=$("v-"+k);if(!s){s=el("section","view hidden");s.id="v-"+k;$("views").appendChild(s)}s.textContent="";var e=el("div","empty");e.appendChild(el("h2","",TXT[k][0]));e.appendChild(el("p","",TXT[k][1]));s.appendChild(e)})}emptyViews();
 function showTab(k){cur=k;app.classList.toggle("home",k==="home");
-  KEYS.forEach(function(t){$("v-"+t).classList.toggle("hidden",t!==k);$("t-"+t).setAttribute("aria-selected",String(t===k))});$("views").scrollTop=0;chatTab(k);wdTab(k)}
+  KEYS.forEach(function(t){$("v-"+t).classList.toggle("hidden",t!==k);$("t-"+t).setAttribute("aria-selected",String(t===k))});$("views").scrollTop=0;chatTab(k);wdTab(k);socTab(k)}
 KEYS.forEach(function(k){$("t-"+k).onclick=function(){showTab(k)}});
 var tx=0,ty=0;
 app.addEventListener("touchstart",function(e){tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
@@ -1193,17 +1449,19 @@ var onb=$("onb");
 function startOnb(){onb.classList.remove("hidden");showStep(0)}
 function showStep(i){step=i;
   document.querySelectorAll("#onb .step").forEach(function(x){x.classList.toggle("hidden",+x.dataset.s!==i)});
-  $("pbar").style.width=(i+1)*50+"%";$("oerr").textContent="";$("onext").textContent=tr(i===1?"Los geht’s":"Weiter");
-  if(i===1)$("oBirth").max=new Date().toISOString().slice(0,10)}
+  $("pbar").style.width=Math.round((i+1)/3*100)+"%";$("oerr").textContent="";$("onext").textContent=tr(i===2?"Los geht’s":"Weiter");
+  if(i===1&&!$("oUser").value&&prof.name){$("oUser").placeholder=(prof.name.toLowerCase().normalize("NFD").replace(/[^a-z]/g,"")||"mo")+".style"}
+  if(i===2)$("oBirth").max=new Date().toISOString().slice(0,10)}
 document.querySelectorAll("#oGender button").forEach(function(b){b.onclick=function(){ob.gender=b.dataset.v;document.querySelectorAll("#oGender button").forEach(function(x){x.setAttribute("aria-pressed",String(x===b))})}});
 function age(v){var b=new Date(v),n=new Date(),a=n.getFullYear()-b.getFullYear(),m=n.getMonth()-b.getMonth();if(m<0||(m===0&&n.getDate()<b.getDate()))a--;return a}
 function oerr(t){$("oerr").textContent=tr(t);return false}
 function valid(i){
   if(i===0){var f=$("oFirst").value.trim(),l=$("oLast").value.trim();if(!f)return oerr("Gib deinen Vornamen ein.");if(!l)return oerr("Gib deinen Nachnamen ein.");prof.name=f;prof.last=l;return true}
+  if(i===1){var u=$("oUser").value.trim().toLowerCase().replace(/^@/,""),e=userOk(u);if(e)return oerr(e);prof.user=u;prof.nick=$("oNick").value.trim().slice(0,24);return true}
   var b=$("oBirth").value;if(!b)return oerr("Wähle dein Geburtsdatum.");var a=age(b);
   if(isNaN(a)||a>110)return oerr("Bitte prüfe dein Geburtsdatum.");if(a<13)return oerr("Du musst mindestens 13 Jahre alt sein.");
   if(!ob.gender)return oerr("Bitte wähle eine Option.");prof.birth=b;prof.gender=ob.gender;return true}
-function nextStep(){if(!valid(step))return;saveProf();if(step<1)showStep(1);else{prof.done=true;saveProf();paintProf();goHome()}}
+function nextStep(){if(!valid(step))return;saveProf();if(step<2)showStep(step+1);else{prof.done=true;saveProf();paintProf();goHome()}}
 $("onext").onclick=nextStep;
 $("oback").onclick=function(){if(step>0)showStep(step-1);else{onb.classList.add("hidden");showAuth(mode)}};
 onb.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT")nextStep()});
@@ -1622,7 +1880,7 @@ var WD={items:[],fit:ls("lg_outfit")||{},looks:ls("lg_looks")||[],av:ls("lg_avat
 function defAv(){var f=prof.gender==="Weiblich";return{sex:f?"f":"m",height:f?168:178,build:.5,shoulders:.5,legs:.5,skin:"#c08a63",eyes:"#5b3a1e",eyeSize:.5,eyeTilt:.5,nose:.5,lips:.5,jaw:.5,brows:.5,hair:f?"long":"short",hairColor:"#2b1d15",beard:"none"}}
 /* Speicher für Fotos: IndexedDB (viel Platz), sonst nur im Speicher */
 var IDB=null;
-function idb(){return new Promise(function(res){if(IDB)return res(IDB);try{var r=indexedDB.open("lookgood",1);r.onupgradeneeded=function(){r.result.createObjectStore("items",{keyPath:"id"})};r.onsuccess=function(){IDB=r.result;res(IDB)};r.onerror=function(){res(null)}}catch(e){res(null)}})}
+function idb(){return new Promise(function(res){if(IDB)return res(IDB);try{var r=indexedDB.open("lookgood",2);r.onupgradeneeded=function(){var d=r.result;if(!d.objectStoreNames.contains("items"))d.createObjectStore("items",{keyPath:"id"});if(!d.objectStoreNames.contains("media"))d.createObjectStore("media",{keyPath:"id"})};r.onsuccess=function(){IDB=r.result;res(IDB)};r.onerror=function(){res(null)}}catch(e){res(null)}})}
 function idbDo(mode,fn){return idb().then(function(db){if(!db)return null;return new Promise(function(res){try{var t=db.transaction("items",mode),st=t.objectStore("items"),q=fn(st);t.oncomplete=function(){res(q&&q.result!==undefined?q.result:true)};t.onerror=function(){res(null)}}catch(e){res(null)}})})}
 function wdLoad(){if(WD.loaded)return Promise.resolve();return idbDo("readonly",function(s){return s.getAll()}).then(function(r){WD.items=(r||[]).sort(function(a,b){return a.at-b.at});WD.loaded=true})}
 function slotOf(it){return it.cat==="acc"?(it.sub==="Caps"||it.sub==="Mützen"?"acc:head":"acc:"+it.sub):it.cat==="jewelry"?"jewelry:"+it.sub:it.cat}
@@ -1758,7 +2016,7 @@ function looksSheet(){panel.textContent="";var h=el("div","wsh-h");h.appendChild
   WD.looks.forEach(function(l){var row=el("div","wlook"),th=el("button","wlth");th.type="button";Object.keys(l.fit).forEach(function(k){var it=byId(l.fit[k]);if(it){var im=document.createElement("img");im.src=it.img;im.alt="";th.appendChild(im)}});
     th.appendChild(el("small","",new Date(l.at).toLocaleDateString(LC[li()],{day:"numeric",month:"short"})));th.onclick=function(){WD.fit=Object.assign({},l.fit);saveFit();closeSheet();say("Look angezogen")};row.appendChild(th);
     var d=el("button","wclose");d.type="button";d.innerHTML=wico("trash");d.setAttribute("aria-label",tr("Löschen"));d.onclick=function(){WD.looks=WD.looks.filter(function(z){return z!==l});ls("lg_looks",WD.looks);looksSheet()};row.appendChild(d);panel.appendChild(row)});wSheet()}
-function wdMore(){menu("Mehr","",[].concat(AV?[{t:"Figur bearbeiten",fn:function(){openEditor()}}]:[{t:"Figur erstellen",fn:function(){openEditor()}}],[{t:tr("Meine Looks")+" ("+WD.looks.length+")",fn:looksSheet},
+function wdMore(){menu("Mehr","",[].concat(AV?[{t:"Figur bearbeiten",fn:function(){openEditor()}}]:[{t:"Figur erstellen",fn:function(){openEditor()}}],[{t:"Outfit an Freunde schicken",fn:function(){soInit().then(function(){shareOutfitTo()})}},{t:tr("Meine Looks")+" ("+WD.looks.length+")",fn:looksSheet},
   {t:prof.wbg==="studio"?"Hintergrund: Straße mit Wetter":"Hintergrund: Studio",fn:function(){prof.wbg=prof.wbg==="studio"?"":"studio";saveProf();wdWeather()}}]))}
 var wed=el("div","wed hidden");wed.id="wEd";wed.setAttribute("role","dialog");$("app").appendChild(wed);
 /* ---- Figur gestalten: Schritt für Schritt (Plan des Inhabers) ---- */
@@ -1849,6 +2107,333 @@ function wdLang(){if(!wv)return;var v=V,cv=v&&v.canvas,inS=cv&&cv.parentNode&&cv
 function wdForAI(){if(!WD.items.length)return"";var its=WD.items.slice(-60).map(function(i){return i.sub+" "+colName(i.color,1)+(i.name?" ('"+i.name+"')":"")}),on=fitItems(),w=Object.keys(on).map(function(k){var i=on[k];return i.sub+" "+colName(i.color,1)});
   return " Their wardrobe in the app: "+its.join("; ")+"."+(w.length?" Currently put together in the app: "+w.join(", ")+".":"")+" When you suggest outfits, prefer pieces from their wardrobe and name them."}
 wdBuild();wdLoad().then(function(){wdOutfit()});
+
+/* ===== Flash & Chat =====
+   Daten-Schicht (SO.*) liegt heute nur auf diesem Gerät, mit Test-Freunden, die automatisch antworten.
+   Später ersetzt ein Server genau diese Funktionen (soSend, soFriends …); die Oberfläche bleibt gleich. */
+var FC={photo:"#E0275F",video:"#7B4DFF",chat:"#1596C8"};
+var DEMO=[
+ {id:"u_lina",user:"lina.style",name:"Lina",av:"🦊",bg:"#ffb38a"},{id:"u_jay",user:"jay.k",name:"Jay",av:"🐼",bg:"#b9c2ff"},
+ {id:"u_sami",user:"sami_",name:"Sami",av:"🐰",bg:"#9fe3cf"},{id:"u_nora",user:"nora.fit",name:"Nora",av:"🦊",bg:"#ffd27a"},
+ {id:"u_elif",user:"elif.daily",name:"Elif",av:"🐼",bg:"#f3b6d2"},{id:"u_ben",user:"ben.outfits",name:"Ben",av:"🐰",bg:"#c6e59b"},
+ {id:"u_maya",user:"maya.looks",name:"Maya",av:"🐰",bg:"#d7c4ff"},{id:"u_tom",user:"tom_street",name:"Tom",av:"🐼",bg:"#a9dcf5"}];
+var REPLIES={u_lina:["Haha 😂","Sieht richtig gut aus!","Die Farbe steht dir","Wo bist du gerade?","Schick mehr davon"],u_jay:["Bro 🔥","Krass, wo hast du das her?","Heute wird’s kalt, nimm ’ne Jacke","Safe, sieht clean aus","Lass später treffen"],
+ u_sami:["Nice!","Passt perfekt zum Wetter","Hab grad dasselbe an 😄","Top","Sieht gemütlich aus"],u_nora:["Sportlich, gefällt mir","Love it 💛","Gehst du heute trainieren?","Mega Look","Ich will das auch"],
+ u_elif:["Hallo!","Süß 😍","Danke!","Wie geht’s dir?"],u_ben:["Yo!","Sauber","Gefällt mir"],u_maya:["Hey :)","Hübsch!","Gute Wahl"],u_tom:["Yo","Stark","Respekt"]};
+var SO=null;
+function soSave(){ls("lg_social",SO)}
+function demoUser(id){return DEMO.filter(function(u){return u.id===id})[0]||null}
+function uinfo(id){if(id==="me")return{id:"me",user:prof.user||"",name:prof.nick||prof.name||tr("Du"),av:null,photo:prof.photo,bg:"#eadff5"};return demoUser(id)||{id:id,user:"",name:"?",av:"🙂",bg:"#ddd"}}
+var SOP=null;
+function soInit(){if(SOP)return SOP;SO=ls("lg_social");if(SO&&SO.v===1){SOP=Promise.resolve();return SOP}
+  SOP=soSeed();return SOP}
+function soSeed(){
+  SO={v:1,friends:["u_lina","u_jay","u_sami","u_nora"],reqIn:["u_elif"],reqOut:[],blocked:[],chats:{},stories:[],seen:{},myViews:{}};var now=Date.now();
+  return Promise.all([demoImg("lina1","#ff7e5f","#feb47b","☕","Montagmorgen"),demoImg("jay1","#3a1c71","#d76d77","🔥","Neue Sneaker"),demoImg("lina2","#43cea2","#185a9d","🌧️","Regenjacke an"),demoImg("sami1","#f7971e","#ffd200","😎","Sonne!")]).then(function(){
+    chat("u_lina").msgs.push({id:mid(),from:"u_lina",at:now-14*6e4,kind:"flash",mtype:"photo",media:"demo_lina1",timer:5,opened:null});
+    chat("u_jay").msgs.push({id:mid(),from:"u_jay",at:now-62*6e4,kind:"text",text:"Bro, was ziehst du heute an?",opened:null});
+    chat("u_sami").msgs.push({id:mid(),from:"me",at:now-26*36e5,kind:"flash",mtype:"photo",media:"demo_sami1",timer:5,opened:now-25*36e5});
+    SO.stories.push({id:mid(),uid:"u_lina",media:"demo_lina2",mtype:"photo",at:now-3*36e5},{id:mid(),uid:"u_jay",media:"demo_jay1",mtype:"photo",at:now-5*36e5});soSave()})}
+function mid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function chat(uid){return SO.chats[uid]||(SO.chats[uid]={msgs:[],clean:"never"})}
+function isFriend(uid){return SO.friends.indexOf(uid)>=0}
+/* Medien (Fotos, Videos, Sprachnachrichten) liegen in IndexedDB, Store "media" */
+function mediaPut(id,data){return idb().then(function(db){if(!db)return false;return new Promise(function(res){try{var t=db.transaction("media","readwrite");t.objectStore("media").put({id:id,data:data});t.oncomplete=function(){res(true)};t.onerror=function(){res(false)}}catch(e){res(false)}})})}
+var MCACHE={};
+function mediaGet(id){if(MCACHE[id])return Promise.resolve(MCACHE[id]);return idb().then(function(db){if(!db)return null;return new Promise(function(res){try{var q=db.transaction("media").objectStore("media").get(id);q.onsuccess=function(){var d=q.result&&q.result.data;if(d){MCACHE[id]=typeof d==="string"?d:URL.createObjectURL(d)}res(MCACHE[id]||null)};q.onerror=function(){res(null)}}catch(e){res(null)}})})}
+function demoImg(key,c1,c2,emo,txt){var c=document.createElement("canvas");c.width=720;c.height=1280;var g=c.getContext("2d"),gr=g.createLinearGradient(0,0,720,1280);gr.addColorStop(0,c1);gr.addColorStop(1,c2);g.fillStyle=gr;g.fillRect(0,0,720,1280);
+  g.globalAlpha=.18;g.fillStyle="#fff";for(var i=0;i<14;i++){g.beginPath();g.arc(Math.random()*720,Math.random()*1280,40+Math.random()*160,0,7);g.fill()}g.globalAlpha=1;
+  g.font="300px system-ui,Apple Color Emoji,Segoe UI Emoji";g.textAlign="center";g.textBaseline="middle";g.fillText(emo,360,560);
+  g.fillStyle="rgba(0,0,0,.45)";g.fillRect(0,880,720,96);g.fillStyle="#fff";g.font="600 48px system-ui";g.fillText(tr(txt),360,930);
+  return mediaPut("demo_"+key,c.toDataURL("image/jpeg",.82))}
+/* ---- Zeit ---- */
+function ago(t){var d=(Date.now()-t)/6e4;if(d<1)return tr("Gerade eben");if(d<60)return tr("vor # Min.").replace("#",Math.floor(d));if(d<24*60)return tr("vor # Std.").replace("#",Math.floor(d/60));
+  var y=new Date();y.setHours(0,0,0,0);if(t>=y-864e5)return tr("Gestern");return new Date(t).toLocaleDateString(LC[li()],{day:"numeric",month:"short"})}
+/* ---- Status einer Chat-Zeile (das Symbol-System) ---- */
+function rowState(uid){var ms=chat(uid).msgs.filter(function(m){return!m.deleted}),last=ms[ms.length-1];
+  var unFl=ms.filter(function(m){return m.from!=="me"&&m.kind==="flash"&&!m.opened}),unTx=ms.filter(function(m){return m.from!=="me"&&m.kind!=="flash"&&!m.opened});
+  if(unFl.length){var v=unFl[unFl.length-1];return{icon:"sq",fill:true,col:v.mtype==="video"?FC.video:FC.photo,txt:"Neuer Flash",at:v.at,unread:true,flashes:unFl}}
+  if(unTx.length){var t=unTx[unTx.length-1];return{icon:"bub",fill:true,col:FC.chat,txt:"Neuer Chat",at:t.at,unread:true}}
+  if(!last)return{icon:"bub",fill:false,col:"var(--muted)",txt:"Tippe, um zu chatten",at:0};
+  var col=last.kind==="flash"?(last.mtype==="video"?FC.video:FC.photo):FC.chat;
+  if(last.from==="me")return{icon:"arrow",fill:!last.opened,col:col,txt:last.opened?(last.kind==="flash"?"Geöffnet":"Gelesen"):"Zugestellt",at:last.at};
+  return{icon:last.kind==="flash"?"sq":"bub",fill:false,col:col,txt:last.kind==="flash"?"Angesehen":"Empfangen",at:last.at}}
+function stIcon(s){var c=s.col,f=s.fill?c:"none";if(s.icon==="sq")return'<svg viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2.5" fill="'+f+'" stroke="'+c+'" stroke-width="2"/></svg>';
+  if(s.icon==="arrow")return'<svg viewBox="0 0 16 16"><path d="M2.5 2.5 14 8 2.5 13.5 5 8z" fill="'+f+'" stroke="'+c+'" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+  return'<svg viewBox="0 0 16 16"><path d="M2 3.5h12v8H7l-3.5 3v-3H2z" fill="'+f+'" stroke="'+c+'" stroke-width="1.8" stroke-linejoin="round"/></svg>'}
+function unreadCount(){return SO?SO.friends.filter(function(u){return rowState(u).unread}).length+SO.reqIn.length:0}
+function badge(){var t=$("t-friends");if(!t)return;var b=t.querySelector(".tbadge");var n=unreadCount();if(!b){b=el("span","tbadge");t.appendChild(b)}b.textContent=n>9?"9+":String(n);b.classList.toggle("hidden",!n)}
+/* ---- Avatare ---- */
+function avEl(id,sz,ring){var u=uinfo(id),d=el("span","sav"+(ring?" ring "+ring:""));d.style.setProperty("--s",(sz||48)+"px");var i=el("span","savi");
+  if(u.photo){i.style.backgroundImage="url("+u.photo+")";i.classList.add("ph")}else if(u.av){i.textContent=u.av;i.style.background=u.bg}else{i.textContent=(u.name||"?").charAt(0).toUpperCase();i.style.background=u.bg}
+  d.appendChild(i);return d}
+/* ---- Benachrichtigung oben (wie eine echte Push-Nachricht) ---- */
+var NBT=null;
+function notify2(uid,text,col,fn){var n=$("nbar");if(!n){n=el("div","nbar");n.id="nbar";document.body.appendChild(n)}n.textContent="";n.appendChild(avEl(uid,34));var t=el("div","nbt");t.appendChild(el("b","",uinfo(uid).name));var p=el("span","",text);p.style.color=col||"";t.appendChild(p);n.appendChild(t);
+  n.onclick=function(){n.classList.remove("show");if(fn)fn()};requestAnimationFrame(function(){n.classList.add("show")});clearTimeout(NBT);NBT=setTimeout(function(){n.classList.remove("show")},4200)}
+/* ---- Test-Freunde reagieren (bis der Server da ist) ---- */
+function bot(uid,what){if(!demoUser(uid)||SO.blocked.indexOf(uid)>=0||!isFriend(uid))return;var c={get msgs(){return chat(uid).msgs}};
+  setTimeout(function(){c.msgs.forEach(function(m){if(m.from==="me"&&!m.opened)m.opened=Date.now()});soSave();refresh()},2500+Math.random()*2500);
+  if(what==="flash"&&Math.random()<.45){setTimeout(function(){var k="r"+mid();demoImg(k,["#ff9a9e","#a18cd1","#84fab0","#f6d365"][Math.floor(Math.random()*4)],["#fad0c4","#fbc2eb","#8fd3f4","#fda085"][Math.floor(Math.random()*4)],["😂","🔥","😎","👀","💯"][Math.floor(Math.random()*5)],"Zurück!").then(function(){
+    c.msgs.push({id:mid(),from:uid,at:Date.now(),kind:"flash",mtype:"photo",media:"demo_"+k,timer:5,opened:null});soSave();incoming(uid,"hat dir einen Flash geschickt",FC.photo)})},7000+Math.random()*4000);return}
+  setTimeout(function(){TYP[uid]=true;refresh()},4500);
+  setTimeout(function(){TYP[uid]=false;var pool=REPLIES[uid]||["👍"],txt=what==="outfit"?["Passt richtig gut!","Nimm lieber die helleren Schuhe","Perfekt für heute"][Math.floor(Math.random()*3)]:pool[Math.floor(Math.random()*pool.length)];
+    c.msgs.push({id:mid(),from:uid,at:Date.now(),kind:"text",text:txt,opened:null});soSave();incoming(uid,"hat dir geschrieben",FC.chat)},7000+Math.random()*3000)}
+var TYP={},OPEN=null;
+function incoming(uid,what,col){if(OPEN===uid){chat(uid).msgs.forEach(function(m){if(m.from!=="me"&&m.kind!=="flash")m.opened=m.opened||Date.now()});soSave();chPaint();return}
+  notify2(uid,tr(what),col,function(){showTab("friends");var s=rowState(uid);if(s.flashes)viewFlashes(uid);else openChat(uid)});refresh()}
+function refresh(){badge();if(cur==="friends")inbox();if(OPEN)chPaint()}
+/* ===== Inbox (Tab "Chat") ===== */
+var SV=$("v-friends");if(!SV){SV=el("section","view hidden");SV.id="v-friends";$("views").appendChild(SV)}SV.classList.add("social");
+function inbox(){if(!SO)return;SV.textContent="";
+  var h=el("div","shead");h.appendChild(el("h2","","Chat"));var bf=el("button","sicon");bf.type="button";bf.innerHTML='<svg viewBox="0 0 24 24"><circle cx="10" cy="8" r="4"/><path d="M3 21c.6-4 3.3-6.5 7-6.5s6.4 2.5 7 6.5M19 8v6M16 11h6"/></svg>';bf.setAttribute("aria-label",tr("Freunde finden"));bf.onclick=friendsScreen;
+  var reqN=SO.reqIn.length;if(reqN){var bd=el("span","dot",String(reqN));bf.appendChild(bd)}h.appendChild(bf);SV.appendChild(h);
+  if(!prof.user){var c=el("div","scard");c.appendChild(el("b","","Wähle deinen Benutzernamen"));c.appendChild(el("p","","Damit dich Freunde finden und dir Flashes schicken können."));var b=el("button","btn primary","Benutzername wählen");b.type="button";b.onclick=userSheet;c.appendChild(b);SV.appendChild(c)}
+  /* Storys */
+  var row=el("div","srow noswipe"),mine=SO.stories.filter(function(s){return s.uid==="me"&&live(s)});
+  var me=el("button","stb");me.type="button";var mav=avEl("me",62,mine.length?"seen":"");if(!mine.length){var pl=el("span","splus","+");mav.appendChild(pl)}me.appendChild(mav);me.appendChild(el("small","","Meine Story"));
+  me.onclick=function(){if(mine.length)viewStories(["me"],0);else openCam(null,true)};row.appendChild(me);
+  storyUsers().forEach(function(uid,ix,arr){var seen=SO.stories.filter(function(s){return s.uid===uid&&live(s)}).every(function(s){return SO.seen[s.id]});var b=el("button","stb");b.type="button";b.appendChild(avEl(uid,62,seen?"seen":"new"));b.appendChild(el("small","",uinfo(uid).name));b.onclick=function(){viewStories(arr,ix)};row.appendChild(b)});
+  SV.appendChild(row);
+  if(reqN){SO.reqIn.forEach(function(uid){var r=el("div","sreq");r.appendChild(avEl(uid,40));var t=el("div","sti");t.appendChild(el("b","",uinfo(uid).name));t.appendChild(el("small","","möchte mit dir befreundet sein"));r.appendChild(t);
+    var a=el("button","sbtn on","Annehmen");a.type="button";a.onclick=function(){acceptReq(uid)};var d=el("button","sbtn","Ablehnen");d.type="button";d.onclick=function(){SO.reqIn=SO.reqIn.filter(function(x){return x!==uid});soSave();refresh()};r.appendChild(a);r.appendChild(d);SV.appendChild(r)})}
+  var list=el("div","slist"),fr=SO.friends.slice().sort(function(a,b){return(rowState(b).at||0)-(rowState(a).at||0)});
+  if(!fr.length){var e=el("div","wnone");e.appendChild(el("b","","Noch keine Freunde"));e.appendChild(el("p","","Suche oben rechts nach Benutzernamen und schick eine Anfrage."));list.appendChild(e)}
+  fr.forEach(function(uid){var s=rowState(uid),r=el("div","srowi"+(s.unread?" un":"")),main=el("button","smain");main.type="button";main.appendChild(avEl(uid,50));var t=el("div","sti");
+    var nm=el("b","",uinfo(uid).name);if(demoUser(uid)){nm.appendChild(el("span","stest","Test"))}t.appendChild(nm);
+    var st=el("small","sstat");var ic=el("span","sic");ic.innerHTML=stIcon(s);st.appendChild(ic);var lb=el("span","",TYP[uid]?"schreibt gerade …":s.txt);lb.style.color=s.unread?s.col:"";if(s.unread)lb.style.fontWeight="800";st.appendChild(lb);
+    if(s.at){st.appendChild(document.createTextNode(" · "+ago(s.at)))}t.appendChild(st);main.appendChild(t);
+    main.onclick=function(){if(s.flashes)viewFlashes(uid);else openChat(uid)};r.appendChild(main);
+    var cb=el("button","sicon sm");cb.type="button";cb.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>';cb.setAttribute("aria-label",tr("Chat öffnen"));cb.onclick=function(){openChat(uid)};r.appendChild(cb);
+    list.appendChild(r)});SV.appendChild(list);
+  var note=el("p","fine snote","Test-Modus: Lina, Jay, Sami und die anderen sind Test-Freunde und antworten automatisch. Echte Freunde kommen, sobald der Server verbunden ist.");SV.appendChild(note);badge()}
+function live(s){return Date.now()-s.at<864e5}
+function storyUsers(){return SO.friends.filter(function(u){return SO.stories.some(function(s){return s.uid===u&&live(s)})}).sort(function(a,b){var sa=SO.stories.filter(function(s){return s.uid===a&&live(s)}).every(function(s){return SO.seen[s.id]}),sb=SO.stories.filter(function(s){return s.uid===b&&live(s)}).every(function(s){return SO.seen[s.id]});return sa-sb})}
+function acceptReq(uid){SO.reqIn=SO.reqIn.filter(function(x){return x!==uid});if(!isFriend(uid))SO.friends.push(uid);soSave();say("Ihr seid jetzt befreundet");refresh()}
+/* ---- Benutzername wählen ---- */
+var TAKEN=DEMO.map(function(u){return u.user});
+function userOk(v){if(!/^[a-z][a-z0-9._]{2,19}$/.test(v))return"3 bis 20 Zeichen: kleine Buchstaben, Zahlen, Punkt oder Unterstrich. Beginnt mit einem Buchstaben.";if(TAKEN.indexOf(v)>=0)return"Dieser Benutzername ist schon vergeben.";return""}
+function userSheet(){form("Benutzername",[{id:"u",label:"Benutzername",val:prof.user,ph:"zum Beispiel mo.style"},{id:"n",label:"Spitzname (freiwillig)",val:prof.nick,ph:"zum Beispiel Momo"}],"Speichern",function(v){var u=v.u.toLowerCase().replace(/^@/,"");var e=userOk(u);if(e)return e;prof.user=u;prof.nick=v.n.slice(0,24);saveProf();paintProf();refresh();say("Gespeichert");return""})}
+/* ===== Freunde finden / verwalten ===== */
+function friendsScreen(){var o=overlay("sfr");o.textContent="";var top=el("div","otop");top.appendChild(backBtn(function(){o.remove()}));top.appendChild(el("b","","Freunde"));o.appendChild(top);
+  var q=el("input","sinput");q.type="search";q.placeholder=tr("Benutzername suchen");q.setAttribute("aria-label",tr("Benutzername suchen"));o.appendChild(q);var res=el("div","slist");o.appendChild(res);
+  function paint(){res.textContent="";var v=q.value.trim().toLowerCase().replace(/^@/,"");
+    if(v){var hits=DEMO.filter(function(u){return SO.blocked.indexOf(u.id)<0&&(u.user.indexOf(v)>=0||u.name.toLowerCase().indexOf(v)>=0)});
+      if(!hits.length)res.appendChild(el("p","fine","Niemand mit diesem Namen gefunden."));hits.forEach(function(u){res.appendChild(personRow(u.id,paint))})}
+    else{if(SO.reqIn.length){res.appendChild(el("small","wlab","Anfragen"));SO.reqIn.forEach(function(id){res.appendChild(personRow(id,paint))})}
+      res.appendChild(el("small","wlab","Meine Freunde"));SO.friends.forEach(function(id){res.appendChild(personRow(id,paint))});
+      var sug=DEMO.filter(function(u){return!isFriend(u.id)&&SO.reqIn.indexOf(u.id)<0&&SO.blocked.indexOf(u.id)<0});if(sug.length){res.appendChild(el("small","wlab","Vorschläge"));sug.forEach(function(u){res.appendChild(personRow(u.id,paint))})}
+      if(SO.blocked.length){res.appendChild(el("small","wlab","Blockiert"));SO.blocked.forEach(function(id){res.appendChild(personRow(id,paint))})}}}
+  q.oninput=paint;paint()}
+function personRow(id,re){var u=uinfo(id),r=el("div","srowi"),t=el("div","sti");r.appendChild(avEl(id,44));var nm=el("b","",u.name);if(demoUser(id))nm.appendChild(el("span","stest","Test"));t.appendChild(nm);t.appendChild(el("small","","@"+u.user));r.appendChild(t);
+  var b;function btn(txt,on,fn){b=el("button","sbtn"+(on?" on":""),txt);b.type="button";b.onclick=fn;r.appendChild(b)}
+  if(SO.blocked.indexOf(id)>=0)btn("Freigeben",false,function(){SO.blocked=SO.blocked.filter(function(x){return x!==id});soSave();re()});
+  else if(isFriend(id)){btn("Befreundet",false,function(){menu(u.name,"",[{t:"Chat öffnen",fn:function(){$("sfr")&&$("sfr").remove();showTab("friends");openChat(id)}},{t:"Freund entfernen",fn:function(){SO.friends=SO.friends.filter(function(x){return x!==id});soSave();re();refresh()}},{t:"Blockieren",fn:function(){SO.friends=SO.friends.filter(function(x){return x!==id});SO.blocked.push(id);soSave();re();refresh()}}])})}
+  else if(SO.reqIn.indexOf(id)>=0)btn("Annehmen",true,function(){acceptReq(id);re()});
+  else if(SO.reqOut.indexOf(id)>=0)btn("Anfrage gesendet",false,function(){});
+  else btn("Hinzufügen",true,function(){SO.reqOut.push(id);soSave();re();setTimeout(function(){SO.reqOut=SO.reqOut.filter(function(x){return x!==id});if(!isFriend(id))SO.friends.push(id);soSave();notify2(id,tr("hat deine Anfrage angenommen"),FC.chat,function(){openChat(id)});refresh();if($("sfr"))re()},4000)});
+  return r}
+function overlay(id){var o=$(id);if(!o){o=el("div","sover");o.id=id;$("app").appendChild(o)}return o}
+function backBtn(fn){var b=el("button","back");b.type="button";b.innerHTML='<svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>';b.setAttribute("aria-label",tr("Zurück"));b.onclick=fn;return b}
+/* ===== 1-zu-1-Chat ===== */
+function openChat(uid){OPEN=uid;var c=chat(uid);c.msgs.forEach(function(m){if(m.from!=="me"&&m.kind!=="flash"&&!m.opened)m.opened=Date.now()});soSave();chPaint(true);badge()}
+function closeChat(){var uid=OPEN;OPEN=null;var o=$("schat");if(o)o.remove();if(uid){var c=chat(uid);if(c.clean==="read"){c.msgs=c.msgs.filter(function(m){return m.saved||!m.opened||m.kind==="flash"&&!m.opened})}soSave()}refresh()}
+function chPaint(first){var uid=OPEN;if(!uid)return;var o=overlay("schat"),c=chat(uid),u=uinfo(uid),keep=$("cmsg")?$("cmsg").value:"",sc=$("clist")?$("clist").scrollTop:0,atEnd=!$("clist")||$("clist").scrollHeight-$("clist").scrollTop-$("clist").clientHeight<60;o.textContent="";
+  var top=el("div","otop");top.appendChild(backBtn(closeChat));top.appendChild(avEl(uid,38));var tt=el("div","sti");var nm=el("b","",u.name);if(demoUser(uid))nm.appendChild(el("span","stest","Test"));tt.appendChild(nm);tt.appendChild(el("small",TYP[uid]?"typing":"",TYP[uid]?"schreibt gerade …":"@"+u.user));top.appendChild(tt);
+  var mb=el("button","sicon");mb.type="button";mb.innerHTML='<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>';mb.setAttribute("aria-label",tr("Mehr"));
+  mb.onclick=function(){menu(u.name,tr(c.clean==="read"?"Nachrichten werden nach dem Lesen gelöscht (außer gespeicherte).":"Nachrichten bleiben im Chat."),[{t:c.clean==="read"?"Nachrichten behalten":"Nach dem Lesen löschen",fn:function(){c.clean=c.clean==="read"?"never":"read";soSave();say(c.clean==="read"?"Nachrichten werden nach dem Lesen gelöscht":"Nachrichten bleiben im Chat")}},{t:"Freund entfernen",fn:function(){SO.friends=SO.friends.filter(function(x){return x!==uid});soSave();closeChat()}}])};top.appendChild(mb);o.appendChild(top);
+  var L=el("div","clist");L.id="clist";var lastDay="";
+  c.msgs.filter(function(m){return!m.deleted}).forEach(function(m){var day=new Date(m.at).toDateString();if(day!==lastDay){lastDay=day;L.appendChild(el("div","cday",dayLabel(m.at)))}L.appendChild(msgEl(uid,m))});
+  if(TYP[uid]){var ty=el("div","cm them typing");ty.innerHTML="<i></i><i></i><i></i>";L.appendChild(ty)}
+  if(!c.msgs.length)L.appendChild(el("p","fine cempty","Sag Hallo oder schick einen Flash!"));o.appendChild(L);
+  var bar=el("div","cbar2"),cam=el("button","cround cam");cam.type="button";cam.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';cam.setAttribute("aria-label",tr("Flash senden"));cam.onclick=function(){openCam(uid)};bar.appendChild(cam);
+  var inp=el("input","cin2");inp.id="cmsg";inp.type="text";inp.placeholder=tr("Nachricht senden");inp.setAttribute("aria-label",tr("Nachricht senden"));inp.value=keep;bar.appendChild(inp);
+  var plus=el("button","cround");plus.type="button";plus.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>';plus.setAttribute("aria-label",tr("Mehr senden"));
+  plus.onclick=function(){menu("Senden","",[{t:"Foto aus der Galerie",fn:function(){pickFile("image/*",function(f){compress(f,1280).then(function(d){var id="m"+mid();mediaPut(id,d).then(function(){sendTo([uid],{kind:"image",media:id})})})})}},{t:"Outfit teilen",fn:function(){shareOutfitTo(uid)}}])};bar.appendChild(plus);
+  var mic=el("button","cround mic");mic.type="button";mic.innerHTML='<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';mic.setAttribute("aria-label",tr("Sprachnachricht: gedrückt halten"));voiceBtn(mic,uid);bar.appendChild(mic);
+  var send=el("button","cround send");send.type="button";send.innerHTML='<svg viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>';send.setAttribute("aria-label",tr("Senden"));
+  function upd(){var has=!!inp.value.trim();send.classList.toggle("hidden",!has);mic.classList.toggle("hidden",has)}upd();inp.oninput=upd;
+  function go(){var t=inp.value.trim();if(!t)return;inp.value="";upd();sendTo([uid],{kind:"text",text:t})}send.onclick=go;inp.onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();go()}};bar.appendChild(send);o.appendChild(bar);
+  L.scrollTop=first||atEnd?L.scrollHeight:sc;if(first)setTimeout(function(){L.scrollTop=L.scrollHeight},40)}
+function dayLabel(t){var d=new Date(t),n=new Date();if(d.toDateString()===n.toDateString())return tr("Heute");n.setDate(n.getDate()-1);if(d.toDateString()===n.toDateString())return tr("Gestern");return d.toLocaleDateString(LC[li()],{weekday:"long",day:"numeric",month:"long"})}
+function msgEl(uid,m){var mine=m.from==="me",w=el("div","cm "+(mine?"me":"them")+(m.saved?" saved":"")),tm=new Date(m.at).toLocaleTimeString(LC[li()],{hour:"2-digit",minute:"2-digit"});
+  if(m.kind==="text")w.appendChild(document.createTextNode(m.text));
+  else if(m.kind==="flash"){w.classList.add("fl");var col=m.mtype==="video"?FC.video:FC.photo,s={icon:mine?"arrow":"sq",fill:!m.opened,col:col},ic=el("span","sic");ic.innerHTML=stIcon(s);w.appendChild(ic);
+    w.appendChild(el("span","",mine?(m.opened?"Flash geöffnet":"Flash zugestellt"):(m.opened?(m.saved?"Gespeicherter Flash · tippen":"Flash angesehen"):"Neuer Flash · zum Ansehen tippen")));w.style.setProperty("--fc",col);
+    if(!mine&&(!m.opened||m.saved))w.onclick=function(){viewFlashes(uid,m.id)}}
+  else if(m.kind==="image"){w.classList.add("img");var im=document.createElement("img");im.alt="";mediaGet(m.media).then(function(u){if(u)im.src=u});w.appendChild(im);im.onclick=function(){viewSingle(m)}}
+  else if(m.kind==="outfit"){w.classList.add("ofit");w.appendChild(el("b","",m.title||"Mein Outfit"));var g=el("div","ofg");(m.items||[]).forEach(function(x){var i=document.createElement("img");i.src=x.img;i.alt="";g.appendChild(i)});w.appendChild(g);if(m.wx)w.appendChild(el("small","",m.wx));w.appendChild(el("p","",m.text||"Passt das?"))}
+  else if(m.kind==="voice"){w.classList.add("voice");var pb=el("button","vplay");pb.type="button";pb.innerHTML='<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>';var bars=el("span","vbars");for(var i=0;i<18;i++){var b=el("i");b.style.height=(30+Math.abs(Math.sin(i*1.7+m.at%7))*70)+"%";bars.appendChild(b)}
+    w.appendChild(pb);w.appendChild(bars);w.appendChild(el("small","",(m.dur||1)+" s"));pb.onclick=function(){mediaGet(m.media).then(function(u){if(u){var a=new Audio(u);a.play()}})}}
+  else if(m.kind==="reply"){w.classList.add("reply");var q=el("div","quote");if(m.thumb){var ti=document.createElement("img");mediaGet(m.thumb).then(function(u){if(u)ti.src=u});q.appendChild(ti)}q.appendChild(el("small","",mine?"Antwort auf eine Story":"Antwort auf deine Story"));w.appendChild(q);w.appendChild(document.createTextNode(m.text))}
+  var meta=el("small","cmeta",tm+(m.saved?" · "+tr("Gespeichert"):"")+(mine&&m.kind!=="flash"?" · "+tr(m.opened?"Gelesen":"Zugestellt"):""));w.appendChild(meta);
+  longPress(w,function(){var it=[{t:m.saved?"Nicht mehr speichern":"Im Chat speichern",fn:function(){m.saved=!m.saved;soSave();chPaint()}}];if(m.kind==="text")it.push({t:"Kopieren",fn:function(){try{navigator.clipboard.writeText(m.text);say("Kopiert")}catch(e){}}});
+    if(mine)it.push({t:"Löschen",fn:function(){m.deleted=true;soSave();chPaint()}});menu("Nachricht","",it)});return w}
+function longPress(elm,fn){var t=null;elm.addEventListener("pointerdown",function(){t=setTimeout(function(){t=null;fn()},520)});["pointerup","pointerleave","pointercancel"].forEach(function(e){elm.addEventListener(e,function(){if(t){clearTimeout(t);t=null}})});elm.addEventListener("contextmenu",function(e){e.preventDefault();fn()})}
+function sendTo(uids,msg){var now=Date.now();uids.forEach(function(uid){var m=Object.assign({id:mid(),from:"me",at:now,opened:null},msg);chat(uid).msgs.push(m);bot(uid,msg.kind)});soSave();refresh()}
+function shareOutfitTo(uid){var its=fitItems(),ks=Object.keys(its);if(!ks.length){say("Zieh dir in der Garderobe zuerst etwas an.");return}
+  var items=ks.map(function(k){return{img:its[k].img,sub:its[k].sub}}),wxs=WX?(WX.city+" · "+WX.temp+"° · "+tr(WX.t)):"";
+  var go=function(us){sendTo(us,{kind:"outfit",title:"Mein Outfit für heute",items:items,wx:wxs,text:"Passt das?"});say("Outfit geschickt")};
+  if(uid)go([uid]);else pickFriends(go)}
+function pickFriends(cb){menu("An wen?","",SO.friends.map(function(id){return{t:uinfo(id).name,fn:function(){cb([id])}}}))}
+/* ---- Sprachnachricht: Mikrofon gedrückt halten ---- */
+function voiceBtn(b,uid){var rec=null,chunks=[],t0=0,stream=null;
+  b.addEventListener("pointerdown",function(e){e.preventDefault();if(!navigator.mediaDevices||!window.MediaRecorder){say("Sprachnachrichten werden hier nicht unterstützt.");return}
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){stream=s;chunks=[];rec=new MediaRecorder(s);rec.ondataavailable=function(ev){if(ev.data.size)chunks.push(ev.data)};
+      rec.onstop=function(){s.getTracks().forEach(function(x){x.stop()});var d=Math.max(1,Math.round((Date.now()-t0)/1000));if(Date.now()-t0<600)return;var bl=new Blob(chunks,{type:rec.mimeType||"audio/webm"}),id="v"+mid();mediaPut(id,bl).then(function(){sendTo([uid],{kind:"voice",media:id,dur:d})})};
+      t0=Date.now();rec.start();b.classList.add("rec")}).catch(function(){say("Kein Zugriff auf das Mikrofon.")})});
+  ["pointerup","pointerleave","pointercancel"].forEach(function(ev){b.addEventListener(ev,function(){b.classList.remove("rec");if(rec&&rec.state==="recording")rec.stop();rec=null})})}
+function pickFile(acc,cb){var i=document.createElement("input");i.type="file";i.accept=acc;i.onchange=function(){if(i.files[0])cb(i.files[0])};i.click()}
+function compress(file,max){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.84))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
+
+/* ---- Verbindung zur App ---- */
+function socTab(k){if(k==="friends")soInit().then(inbox)}
+$("t-flash").onclick=function(){soInit().then(function(){openCam(null)})};
+soInit().then(function(){badge();if(!SO.pinged){SO.pinged=1;soSave();setTimeout(function(){demoImg("nora1","#f7797d","#FBD786","🏋️","Nach dem Training").then(function(){chat("u_nora").msgs.push({id:mid(),from:"u_nora",at:Date.now(),kind:"flash",mtype:"photo",media:"demo_nora1",timer:10,opened:null});soSave();incoming("u_nora","hat dir einen Flash geschickt",FC.photo)})},25000)}});
+setInterval(function(){if(cur==="friends"&&!OPEN&&SO)inbox()},60000);
+
+/* ===== Flash-Kamera ===== */
+var CAM={stream:null,face:"environment",torch:false,to:null,story:false,rec:null};
+function camStop(){if(CAM.stream){CAM.stream.getTracks().forEach(function(t){t.stop()});CAM.stream=null}}
+function openCam(toUid,story){CAM.to=toUid||null;CAM.story=!!story;var o=overlay("fcam");o.className="sover dark";o.textContent="";
+  var v=document.createElement("video");v.id="fvid";v.setAttribute("playsinline","");v.muted=true;v.autoplay=true;o.appendChild(v);
+  var fl=el("div","fflash");fl.id="fflash";o.appendChild(fl);
+  var top=el("div","ctop"),x=el("button","cglass");x.type="button";x.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>';x.setAttribute("aria-label",tr("Schließen"));x.onclick=closeCam;top.appendChild(x);
+  if(toUid){top.appendChild(el("span","cto",tr("An")+" "+uinfo(toUid).name))}else if(story)top.appendChild(el("span","cto","Für deine Story"));
+  var right=el("div","ccol"),flip=el("button","cglass");flip.type="button";flip.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 7h11l-3-3M20 17H9l3 3"/></svg>';flip.setAttribute("aria-label",tr("Kamera wechseln"));flip.onclick=function(){CAM.face=CAM.face==="user"?"environment":"user";camStart()};
+  var torch=el("button","cglass");torch.type="button";torch.id="ftorch";torch.innerHTML='<svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>';torch.setAttribute("aria-label",tr("Blitz"));torch.onclick=function(){CAM.torch=!CAM.torch;torch.classList.toggle("on",CAM.torch);applyTorch()};
+  right.appendChild(flip);right.appendChild(torch);top.appendChild(right);o.appendChild(top);
+  var fb=el("div","cfall hidden");fb.id="cfall";fb.appendChild(el("p","","Die Live-Kamera ist hier nicht verfügbar. Nimm ein Foto oder Video mit der Kamera deines Handys auf."));
+  [["Foto aufnehmen","image/*","environment"],["Video aufnehmen","video/*","environment"]].forEach(function(a){var b=el("button","btn",a[0]);b.type="button";b.onclick=function(){var i=document.createElement("input");i.type="file";i.accept=a[1];i.setAttribute("capture",a[2]);i.onchange=function(){if(i.files[0])fromFile(i.files[0])};i.click()};fb.appendChild(b)});o.appendChild(fb);
+  var bot=el("div","cbot"),gal=el("button","cglass");gal.type="button";gal.innerHTML='<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>';gal.setAttribute("aria-label",tr("Aus Galerie wählen"));
+  gal.onclick=function(){pickFile("image/*,video/*",fromFile)};bot.appendChild(gal);
+  var sh=el("button","shut");sh.type="button";sh.id="fshut";sh.setAttribute("aria-label",tr("Tippen: Foto. Gedrückt halten: Video."));sh.innerHTML='<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" class="sring"/><circle cx="50" cy="50" r="44" class="sprog" id="fprog"/></svg>';bot.appendChild(sh);
+  var hint=el("span","chint","Tippen: Foto · Halten: Video");bot.appendChild(hint);o.appendChild(bot);shutter(sh);camStart()}
+function camStart(){camStop();var v=$("fvid");if(!v)return;
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$("cfall").classList.remove("hidden");return}
+  navigator.mediaDevices.getUserMedia({video:{facingMode:CAM.face,width:{ideal:1280},height:{ideal:1920}},audio:false}).then(function(s){CAM.stream=s;v.srcObject=s;v.classList.toggle("mirror",CAM.face==="user");$("cfall").classList.add("hidden");applyTorch()})
+  .catch(function(){$("cfall").classList.remove("hidden")})}
+function applyTorch(){var t=CAM.stream&&CAM.stream.getVideoTracks()[0];if(!t||CAM.face==="user")return;try{var c=t.getCapabilities&&t.getCapabilities();if(c&&c.torch)t.applyConstraints({advanced:[{torch:CAM.torch}]})}catch(e){}}
+function closeCam(){camStop();var o=$("fcam");if(o)o.remove()}
+function shutter(b){var hold=null,start=0,rec=null,chunks=[],tick=null;
+  b.addEventListener("pointerdown",function(e){e.preventDefault();start=Date.now();hold=setTimeout(function(){hold=null;startVideo()},350)});
+  function end(){if(hold){clearTimeout(hold);hold=null;takePhoto()}else if(rec&&rec.state==="recording")rec.stop()}
+  b.addEventListener("pointerup",end);b.addEventListener("pointercancel",end);
+  function startVideo(){if(!CAM.stream||!window.MediaRecorder){say("Video wird hier nicht unterstützt. Tippe für ein Foto.");return}
+    var go=function(stream){chunks=[];try{rec=new MediaRecorder(stream)}catch(e){say("Video wird hier nicht unterstützt. Tippe für ein Foto.");return}rec.ondataavailable=function(ev){if(ev.data.size)chunks.push(ev.data)};
+      rec.onstop=function(){clearInterval(tick);b.classList.remove("rec");$("fprog").style.strokeDashoffset="";stream.getAudioTracks().forEach(function(t){t.stop()});var bl=new Blob(chunks,{type:rec.mimeType||"video/webm"});rec=null;if(bl.size)openEditor2({type:"video",blob:bl,mirror:CAM.face==="user"})};
+      rec.start();b.classList.add("rec");var t0=Date.now();tick=setInterval(function(){var p=Math.min(1,(Date.now()-t0)/10000);$("fprog").style.strokeDashoffset=String(277*(1-p));if(p>=1&&rec&&rec.state==="recording")rec.stop()},80)};
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(a){var s=new MediaStream(CAM.stream.getVideoTracks().concat(a.getAudioTracks()));go(s)}).catch(function(){go(new MediaStream(CAM.stream.getVideoTracks()))})}}
+function takePhoto(){var v=$("fvid");if(!CAM.stream||!v||!v.videoWidth){return}var fl=$("fflash");
+  var shoot=function(){var c=document.createElement("canvas"),w=v.videoWidth,h=v.videoHeight;c.width=w;c.height=h;var g=c.getContext("2d");if(CAM.face==="user"){g.translate(w,0);g.scale(-1,1)}g.drawImage(v,0,0,w,h);
+    openEditor2({type:"photo",url:c.toDataURL("image/jpeg",.9)})};
+  if(CAM.torch&&CAM.face==="user"){fl.classList.add("on");setTimeout(function(){shoot();fl.classList.remove("on")},180)}else{fl.classList.add("blink");setTimeout(function(){fl.classList.remove("blink")},200);shoot()}}
+function fromFile(f){if(/^video\//.test(f.type))openEditor2({type:"video",blob:f});else compress(f,1440).then(function(d){openEditor2({type:"photo",url:d})})}
+/* ===== Bearbeiten: Text-Balken, Emojis, Zeichnen, Filter, Timer ===== */
+var FILT=[["Normal",""],["Warm","sepia(.25) saturate(1.25) brightness(1.04)"],["Kühl","hue-rotate(-12deg) saturate(.9) brightness(1.05) contrast(1.05)"],["S/W","grayscale(1) contrast(1.1)"],["Vintage","sepia(.45) contrast(.95) brightness(1.05) saturate(.85)"],["Lebendig","saturate(1.6) contrast(1.08)"],["Abend","brightness(.85) contrast(1.15) saturate(1.1) hue-rotate(-8deg)"]];
+var TIMERS=[3,5,10,0];
+var ED=null;
+function openEditor2(src){camStop();var o=overlay("fedit");o.className="sover dark";o.textContent="";ED={src:src,filter:0,timer:5,draw:false,color:"#ffffff",strokes:[],texts:[],stickers:[]};
+  var st=el("div","estage");st.id="estage";o.appendChild(st);var med;
+  if(src.type==="photo"){med=document.createElement("img");med.src=src.url}else{med=document.createElement("video");med.src=URL.createObjectURL(src.blob);med.loop=true;med.autoplay=true;med.setAttribute("playsinline","");med.muted=false;if(src.mirror)med.classList.add("mirror");med.play().catch(function(){med.muted=true;med.play().catch(function(){})})}
+  med.className+=" emed";med.id="emed";st.appendChild(med);
+  var cv=document.createElement("canvas");cv.className="edraw";cv.id="edraw";st.appendChild(cv);var lay=el("div","elay");lay.id="elay";st.appendChild(lay);
+  setTimeout(function(){var r=st.getBoundingClientRect();cv.width=r.width*2;cv.height=r.height*2;redraw()},30);drawing(cv);
+  var top=el("div","ctop"),x=el("button","cglass");x.type="button";x.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>';x.setAttribute("aria-label",tr("Verwerfen"));x.onclick=function(){o.remove();openCam(CAM.to,CAM.story)};top.appendChild(x);
+  var tools=el("div","ccol tools");function tool(svg,lab,fn){var b=el("button","cglass");b.type="button";b.innerHTML=svg;b.setAttribute("aria-label",tr(lab));b.onclick=function(){fn(b)};tools.appendChild(b);return b}
+  tool('<svg viewBox="0 0 24 24"><path d="M5 5h14M12 5v14"/></svg>',"Text",function(){addText()});
+  tool('<svg viewBox="0 0 24 24"><path d="M3 21l3-1 12-12-2-2L4 18zM14 6l2 2"/></svg>',"Zeichnen",function(b){ED.draw=!ED.draw;b.classList.toggle("on",ED.draw);$("epal").classList.toggle("hidden",!ED.draw)});
+  tool('<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14c1 1.5 2.3 2 4 2s3-.5 4-2"/><circle cx="9" cy="10" r=".8"/><circle cx="15" cy="10" r=".8"/></svg>',"Emoji",emojiSheet);
+  var tb=tool('<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>',"Timer",function(b){var i=(TIMERS.indexOf(ED.timer)+1)%TIMERS.length;ED.timer=TIMERS[i];tl.textContent=ED.timer?ED.timer+"s":"∞"});var tl=el("span","tlab","5s");tb.appendChild(tl);
+  tool('<svg viewBox="0 0 24 24"><path d="M9 14l-4 4M15 4l5 5-9 9-5-5z"/></svg>',"Rückgängig",function(){if(ED.strokes.length){ED.strokes.pop();redraw()}});top.appendChild(tools);o.appendChild(top);
+  var pal=el("div","epal hidden");pal.id="epal";["#ffffff","#111111","#E0275F","#7B4DFF","#1596C8","#2ecc71","#f1c40f","#ff7a00"].forEach(function(c){var b=el("button");b.type="button";b.style.background=c;b.setAttribute("aria-label",c);b.onclick=function(){ED.color=c;Array.prototype.forEach.call(pal.children,function(x){x.classList.toggle("on",x===b)})};if(c==="#ffffff")b.classList.add("on");pal.appendChild(b)});o.appendChild(pal);
+  var fr=el("div","efil noswipe");FILT.forEach(function(f,i){var b=el("button","",f[0]);b.type="button";b.setAttribute("aria-pressed",String(i===0));b.onclick=function(){ED.filter=i;med.style.filter=f[1];Array.prototype.forEach.call(fr.children,function(x,j){x.setAttribute("aria-pressed",String(j===i))})};fr.appendChild(b)});o.appendChild(fr);
+  var trash=el("div","etrash hidden");trash.id="etrash";trash.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13"/></svg>';o.appendChild(trash);
+  var bot=el("div","ebot");var sto=el("button","cpill");sto.type="button";sto.appendChild(el("span","","Meine Story"));sto.onclick=function(){edFinish(function(f){postStory(f);edDone()})};
+  var snd=el("button","cpill main");snd.type="button";snd.appendChild(el("span","",CAM.to?tr("An")+" "+uinfo(CAM.to).name:tr("Senden an")));snd.innerHTML+='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  snd.onclick=function(){edFinish(function(f){if(CAM.to){sendFlash([CAM.to],f);edDone()}else sendScreen(f)})};bot.appendChild(sto);bot.appendChild(snd);o.appendChild(bot)}
+function edDone(){["fedit","fsend","fcam"].forEach(function(i){var x=$(i);if(x)x.remove()});camStop();if(OPEN)chPaint();else{showTab("friends")}}
+function drawing(cv){var cur2=null;cv.addEventListener("pointerdown",function(e){if(!ED.draw)return;var r=cv.getBoundingClientRect();cur2={c:ED.color,p:[[(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]]};ED.strokes.push(cur2);try{cv.setPointerCapture(e.pointerId)}catch(_){}});
+  cv.addEventListener("pointermove",function(e){if(!cur2)return;var r=cv.getBoundingClientRect();cur2.p.push([(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]);redraw()});cv.addEventListener("pointerup",function(){cur2=null});cv.style.pointerEvents="auto"}
+function redraw(){var cv=$("edraw");if(!cv)return;var g=cv.getContext("2d");g.clearRect(0,0,cv.width,cv.height);g.lineCap=g.lineJoin="round";g.lineWidth=cv.width*.012;
+  ED.strokes.forEach(function(s){g.strokeStyle=s.c;g.beginPath();s.p.forEach(function(p,i){var x=p[0]*cv.width,y=p[1]*cv.height;if(i)g.lineTo(x,y);else g.moveTo(x,y)});g.stroke()})}
+/* Text-Balken wie bekannt aus Foto-Apps: quer über das Bild, nach oben/unten schiebbar; nochmal tippen wechselt den Stil */
+function addText(){var t={y:.62,style:0,size:1,txt:""};ED.texts.push(t);var b=el("div","etext s0");b.contentEditable="true";b.setAttribute("aria-label",tr("Text"));b.spellcheck=false;$("elay").appendChild(b);t.el=b;b.focus();
+  b.oninput=function(){t.txt=b.innerText};b.onblur=function(){if(!b.innerText.trim()){b.remove();ED.texts=ED.texts.filter(function(x){return x!==t})}};
+  var y0=0,p0=0,moved=false;b.addEventListener("pointerdown",function(e){if(document.activeElement===b)return;y0=e.clientY;p0=t.y;moved=false;try{b.setPointerCapture(e.pointerId)}catch(_){}b.dataset.drag="1";$("etrash").classList.remove("hidden")});
+  b.addEventListener("pointermove",function(e){if(b.dataset.drag!=="1")return;var r=$("estage").getBoundingClientRect(),dy=(e.clientY-y0)/r.height;if(Math.abs(dy)>.01)moved=true;t.y=Math.max(.05,Math.min(.92,p0+dy));b.style.top=t.y*100+"%";$("etrash").classList.toggle("hot",t.y>.86)});
+  b.addEventListener("pointerup",function(){if(b.dataset.drag!=="1")return;b.dataset.drag="";$("etrash").classList.add("hidden");if(t.y>.86){b.remove();ED.texts=ED.texts.filter(function(x){return x!==t});return}if(!moved){t.style=(t.style+1)%3;b.className="etext s"+t.style}});
+  b.style.top=t.y*100+"%"}
+var EMOJIS="😀 😂 😍 🥰 😎 🤩 😜 🤔 😴 😭 😡 🥶 🥵 👀 🔥 ✨ 💯 ❤️ 💜 💙 👍 👏 🙌 🙏 💪 👑 🎉 🌧️ ☀️ ❄️ ⛅ 🌈 👕 👖 👟 🧢 🧥 👗 👜 🕶️ ⌚ 💍".split(" ");
+function emojiSheet(){menuGrid(EMOJIS,function(e){addSticker(e)})}
+function menuGrid(list,cb){panel.className="panel";panel.textContent="";panel.appendChild(el("h3","","Emoji"));var g=el("div","egrid");list.forEach(function(e){var b=el("button");b.type="button";b.textContent=e;b.onclick=function(){closeSheet();cb(e)};g.appendChild(b)});panel.appendChild(g);
+  var c=el("button","link","Schließen");c.type="button";c.onclick=closeSheet;panel.appendChild(c);sheet.classList.remove("hidden")}
+function addSticker(e){var s={x:.5,y:.4,k:1,e:e};ED.stickers.push(s);var d=el("div","estk");d.textContent=e;$("elay").appendChild(d);s.el=d;place();
+  function place(){d.style.left=s.x*100+"%";d.style.top=s.y*100+"%";d.style.transform="translate(-50%,-50%) scale("+s.k+")"}
+  var pts={},start=null;d.addEventListener("pointerdown",function(ev){pts[ev.pointerId]=[ev.clientX,ev.clientY];try{d.setPointerCapture(ev.pointerId)}catch(_){}start={x:s.x,y:s.y,k:s.k,p:JSON.parse(JSON.stringify(pts))};$("etrash").classList.remove("hidden")});
+  d.addEventListener("pointermove",function(ev){if(!pts[ev.pointerId])return;pts[ev.pointerId]=[ev.clientX,ev.clientY];var ids=Object.keys(pts),r=$("estage").getBoundingClientRect();
+    if(ids.length===1&&start.p[ids[0]]){s.x=Math.max(0,Math.min(1,start.x+(pts[ids[0]][0]-start.p[ids[0]][0])/r.width));s.y=Math.max(0,Math.min(1,start.y+(pts[ids[0]][1]-start.p[ids[0]][1])/r.height))}
+    else if(ids.length>=2&&start.p[ids[0]]&&start.p[ids[1]]){var d0=Math.hypot(start.p[ids[0]][0]-start.p[ids[1]][0],start.p[ids[0]][1]-start.p[ids[1]][1]),d1=Math.hypot(pts[ids[0]][0]-pts[ids[1]][0],pts[ids[0]][1]-pts[ids[1]][1]);s.k=Math.max(.4,Math.min(4,start.k*d1/(d0||1)))}
+    $("etrash").classList.toggle("hot",s.y>.86);place()});
+  function up(ev){delete pts[ev.pointerId];start={x:s.x,y:s.y,k:s.k,p:JSON.parse(JSON.stringify(pts))};if(!Object.keys(pts).length){$("etrash").classList.add("hidden");if(s.y>.86){d.remove();ED.stickers=ED.stickers.filter(function(x){return x!==s})}}}
+  d.addEventListener("pointerup",up);d.addEventListener("pointercancel",up);
+  d.addEventListener("wheel",function(ev){ev.preventDefault();s.k=Math.max(.4,Math.min(4,s.k*(ev.deltaY<0?1.1:.9)));place()},{passive:false})}
+/* Alles zu einem Bild zusammensetzen (Foto) bzw. Ebene über dem Video */
+function overlayCanvas(W,H){var c=document.createElement("canvas");c.width=W;c.height=H;var g=c.getContext("2d"),st=$("estage").getBoundingClientRect(),k=W/st.width;
+  var dc=$("edraw");if(dc)g.drawImage(dc,0,0,W,H);
+  ED.stickers.forEach(function(s){g.font=Math.round(56*s.k*k)+"px system-ui,Apple Color Emoji,Segoe UI Emoji";g.textAlign="center";g.textBaseline="middle";g.fillText(s.e,s.x*W,s.y*H)});
+  ED.texts.forEach(function(t){if(!t.txt||!t.txt.trim())return;var y=t.y*H,fs=Math.round((t.style===0?22:34)*k);g.font=(t.style===0?"600 ":"800 ")+fs+"px system-ui";g.textAlign="center";g.textBaseline="middle";
+    var lines=t.txt.trim().split("\n");if(t.style===0){g.fillStyle="rgba(0,0,0,.55)";g.fillRect(0,y-fs*.95,W,fs*(1.2*lines.length+.7))}
+    lines.forEach(function(l,i){var yy=y+i*fs*1.2;if(t.style===2){var w=g.measureText(l).width;g.fillStyle="#E0275F";g.fillRect(W/2-w/2-fs*.4,yy-fs*.7,w+fs*.8,fs*1.4);g.fillStyle="#fff"}else{g.fillStyle="#fff";if(t.style===1){g.lineWidth=fs*.12;g.strokeStyle="rgba(0,0,0,.45)";g.strokeText(l,W/2,yy)}}g.fillText(l,W/2,yy)})});return c}
+function edFinish(cb){var src=ED.src,st=$("estage").getBoundingClientRect(),W=1080,H=Math.round(W*st.height/st.width);
+  if(src.type==="photo"){var im=new Image();im.onload=function(){var c=document.createElement("canvas");c.width=W;c.height=H;var g=c.getContext("2d");g.fillStyle="#000";g.fillRect(0,0,W,H);
+      var s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;g.filter=FILT[ED.filter][1]||"none";g.drawImage(im,(W-w)/2,(H-h)/2,w,h);g.filter="none";g.drawImage(overlayCanvas(W,H),0,0);
+      var url=c.toDataURL("image/jpeg",.84),id="f"+mid();mediaPut(id,url).then(function(){cb({media:id,mtype:"photo",timer:ED.timer})})};im.src=src.url;return}
+  var ov=overlayCanvas(540,Math.round(540*st.height/st.width)).toDataURL("image/png"),id="f"+mid(),oid="o"+mid();
+  Promise.all([mediaPut(id,src.blob),mediaPut(oid,ov)]).then(function(){cb({media:id,mtype:"video",overlay:oid,filter:ED.filter,mirror:!!src.mirror,timer:ED.timer})})}
+function sendFlash(uids,f){sendTo(uids,Object.assign({kind:"flash"},f));say(uids.length>1?tr("An # Freunde gesendet").replace("#",uids.length):tr("Gesendet"))}
+function postStory(f){SO.stories.push(Object.assign({id:mid(),uid:"me",at:Date.now()},f));soSave();say("Zu deiner Story hinzugefügt");
+  SO.friends.filter(demoUser).forEach(function(u,i){setTimeout(function(){var s=SO.stories.filter(function(x){return x.uid==="me"}).pop();if(!s)return;SO.myViews[s.id]=SO.myViews[s.id]||[];if(SO.myViews[s.id].indexOf(u)<0)SO.myViews[s.id].push(u);soSave()},3000+i*2500)})}
+function sendScreen(f){var o=overlay("fsend");o.className="sover";o.textContent="";var sel={},story=false;
+  var top=el("div","otop");top.appendChild(backBtn(function(){o.remove()}));top.appendChild(el("b","","Senden an"));o.appendChild(top);
+  var L=el("div","slist");var srow=el("label","spick");srow.appendChild(avEl("me",44,"seen"));var tt=el("div","sti");tt.appendChild(el("b","","Meine Story"));tt.appendChild(el("small","","24 Stunden für alle deine Freunde"));srow.appendChild(tt);
+  var sc=document.createElement("input");sc.type="checkbox";sc.onchange=function(){story=sc.checked;upd()};srow.appendChild(sc);L.appendChild(srow);L.appendChild(el("small","wlab","Freunde"));
+  SO.friends.forEach(function(id){var r=el("label","spick");r.appendChild(avEl(id,44));var t=el("div","sti");t.appendChild(el("b","",uinfo(id).name));t.appendChild(el("small","","@"+uinfo(id).user));r.appendChild(t);var c=document.createElement("input");c.type="checkbox";c.onchange=function(){if(c.checked)sel[id]=1;else delete sel[id];upd()};r.appendChild(c);L.appendChild(r)});
+  o.appendChild(L);var bar=el("div","sendbar");var lab=el("span","");bar.appendChild(lab);var b=el("button","cpill main");b.type="button";b.innerHTML='<svg viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>';b.disabled=true;
+  b.onclick=function(){var ids=Object.keys(sel);if(ids.length)sendFlash(ids,f);if(story)postStory(f);edDone()};bar.appendChild(b);o.appendChild(bar);
+  function upd(){var n=Object.keys(sel).map(function(i){return uinfo(i).name});if(story)n.unshift(tr("Meine Story"));lab.textContent=n.join(", ");b.disabled=!n.length;bar.classList.toggle("on",!!n.length)}upd()}
+/* ===== Ansehen: Flashes und Storys (Fortschritt oben, tippen = weiter/zurück, halten = Pause) ===== */
+function viewFlashes(uid,onlyId){var ms=chat(uid).msgs.filter(function(m){return m.kind==="flash"&&m.from!=="me"&&(onlyId?m.id===onlyId:!m.opened)});if(!ms.length){openChat(uid);return}
+  player(ms.map(function(m){return{uid:uid,src:m,at:m.at,dur:m.timer}}),function(item){item.src.opened=item.src.opened||Date.now();soSave()},function(){refresh();if(!onlyId)openChat(uid)},uid)}
+function viewStories(uids,start){var items=[];uids.slice(start).forEach(function(u){SO.stories.filter(function(s){return s.uid===u&&live(s)}).sort(function(a,b){return a.at-b.at}).forEach(function(s){items.push({uid:u,src:s,at:s.at,dur:5,story:true})})});
+  player(items,function(it){SO.seen[it.src.id]=1;soSave()},refresh)}
+function viewSingle(m){player([{uid:m.from,src:{media:m.media,mtype:"photo"},at:m.at,dur:0,single:true}],function(){},function(){})}
+function player(items,onSeen,onEnd,replyUid){if(!items.length)return;var o=overlay("fview");o.className="sover dark fview";o.textContent="";var i=0,t0=0,el0=0,paused=false,raf=0,curDur=5;
+  var bars=el("div","vbars2");items.forEach(function(){var b=el("i");b.appendChild(el("b"));bars.appendChild(b)});o.appendChild(bars);
+  var head=el("div","vhead");o.appendChild(head);var stage=el("div","vstage");o.appendChild(stage);
+  var x=el("button","cglass vx");x.type="button";x.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>';x.setAttribute("aria-label",tr("Schließen"));x.onclick=function(e){e.stopPropagation();close()};o.appendChild(x);
+  var foot=el("div","vfoot");o.appendChild(foot);
+  function close(){cancelAnimationFrame(raf);var v=stage.querySelector("video");if(v)v.pause();o.remove();if(onEnd)onEnd()}
+  function show(k){i=k;if(i>=items.length){close();return}if(i<0)i=0;var it=items[i];onSeen(it);stage.textContent="";head.textContent="";foot.textContent="";
+    head.appendChild(avEl(it.uid,34));var hn=el("div","sti");hn.appendChild(el("b","",it.uid==="me"?tr("Meine Story"):uinfo(it.uid).name));hn.appendChild(el("small","",ago(it.at)));head.appendChild(hn);
+    Array.prototype.forEach.call(bars.children,function(b,j){b.firstChild.style.width=j<i?"100%":"0%"});
+    var s=it.src;mediaGet(s.media).then(function(url){if(!url){stage.appendChild(el("p","fine","Nicht mehr verfügbar."));return}
+      if(s.mtype==="video"){var v=document.createElement("video");v.src=url;v.setAttribute("playsinline","");v.autoplay=true;v.style.filter=(FILT[s.filter||0]||FILT[0])[1];if(s.mirror)v.classList.add("mirror");stage.appendChild(v);v.play().catch(function(){v.muted=true;v.play()});
+        if(s.overlay)mediaGet(s.overlay).then(function(ou){if(ou){var im=document.createElement("img");im.src=ou;im.className="vov";stage.appendChild(im)}});
+        v.onloadedmetadata=function(){curDur=it.dur===0?0:(v.duration&&isFinite(v.duration)?v.duration:it.dur||5);t0=performance.now();el0=0};v.loop=it.dur===0}
+      else{var im2=document.createElement("img");im2.src=url;stage.appendChild(im2);curDur=it.dur||0;t0=performance.now();el0=0}});
+    if(it.story&&it.uid!=="me"){var inp=el("input","vreply");inp.placeholder=tr("Antworten …");inp.setAttribute("aria-label",tr("Antworten …"));inp.onfocus=function(){paused=true};inp.onblur=function(){paused=false;t0=performance.now()-el0*1000};
+      inp.onkeydown=function(e){if(e.key==="Enter"&&inp.value.trim()){sendTo([it.uid],{kind:"reply",text:inp.value.trim(),thumb:s.media});inp.value="";say("Antwort gesendet");inp.blur()}};foot.appendChild(inp)}
+    if(it.uid==="me"){var vs=(SO.myViews[s.id]||[]).map(function(u){return uinfo(u).name});foot.appendChild(el("small","vviews",vs.length?tr("Angesehen von")+" "+vs.join(", "):tr("Noch niemand hat sie angesehen")))}
+    if(!it.story&&!it.single&&replyUid){var cbtn=el("button","cpill");cbtn.type="button";cbtn.appendChild(el("span","","Antworten im Chat"));cbtn.onclick=function(e){e.stopPropagation();close()};foot.appendChild(cbtn)}
+    if(it.src&&it.src.from&&!it.story&&!it.single){var sv2=el("button","cpill");sv2.type="button";sv2.appendChild(el("span","",it.src.saved?"Gespeichert":"Im Chat speichern"));sv2.onclick=function(e){e.stopPropagation();it.src.saved=true;soSave();sv2.firstChild.textContent=tr("Gespeichert")};foot.appendChild(sv2)}
+    t0=performance.now();el0=0;curDur=it.dur||0}
+  function loop(now){raf=requestAnimationFrame(loop);if(paused){return}el0=(now-t0)/1000;if(curDur>0){var p=Math.min(1,el0/curDur);var b=bars.children[i];if(b)b.firstChild.style.width=p*100+"%";if(p>=1)show(i+1)}else{var b2=bars.children[i];if(b2)b2.firstChild.style.width="100%"}}
+  var hold=null,downX=0,downY=0,held=false;
+  stage.addEventListener("pointerdown",function(e){downX=e.clientX;downY=e.clientY;held=false;hold=setTimeout(function(){held=true;paused=true;var v=stage.querySelector("video");if(v)v.pause()},260)});
+  stage.addEventListener("pointerup",function(e){clearTimeout(hold);if(held){paused=false;t0=performance.now()-el0*1000;var v=stage.querySelector("video");if(v)v.play();return}
+    if(e.clientY-downY>90){close();return}var w=window.innerWidth;if(e.clientX<w*.3)show(i-1);else show(i+1)});
+  show(0);raf=requestAnimationFrame(loop)}
 
 applyLang();
 })();

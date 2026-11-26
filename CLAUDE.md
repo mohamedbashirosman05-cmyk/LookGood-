@@ -23,9 +23,9 @@ Keep `server/index.html` an exact copy of `LookGood.html` (`cp LookGood.html ser
 ## 3. What is DONE and approved by the owner (do not change unless asked)
 1. **Start animation** and logo (LOOK GOOD wordmark, the two "OO" are pink eyes).
 2. **Welcome screen + sign-in** (reworked Nov 2026): "Create account" / "Log in". Methods: Apple, Google (system-style confirmation sheet), email + password (password rules checklist, email verification code, "forgot password" via code), phone number with country picker + 6-digit SMS code (resend timer, code boxes, wrong-code shake). Prototype: the account lives only on this device (`prof.acc` = {t,id,pw-hash}); codes are shown as an in-app iOS-style notification banner (tap fills the code). Logging in with unknown details shows "No account found → create one". **Stays logged in** (`prof.session`): after the splash the app goes straight to Home; "Log out" clears the session.
-3. **Onboarding** (2 steps): first name, last name, date of birth (age is calculated, minimum 13 years), gender (Male / Female / Other / Prefer not to say), then "Let's go".
+3. **Onboarding** (3 steps): first name, last name → **username** (`prof.user`, unique, 3–20 chars a–z 0–9 . _) + optional **nickname** (`prof.nick`) → date of birth (age is calculated, minimum 13 years), gender (Male / Female / Other / Prefer not to say), then "Let's go".
 4. **City + real weather** on Home: choose a city (online city search, offline fallback list), weather from Open-Meteo (current, next 4 hours, today/tomorrow/day after), a friendly daily message based on the weather (rain, snow, heat, cold, wind, sun, generic compliments), city photo background.
-5. **Bottom tabs**: Home, Wardrobe, Friends, AI.
+5. **Bottom tabs** (since 26 Nov 2026): Home · Garderobe · **Flash** (round camera button in the middle, opens the camera) · **Chat** (inbox, friends, stories; badge with unread count) · AI.
 6. **Profile / settings** (opens from the round avatar top right): profile photo, edit profile (name, username), account (login details, email add/change, change password, forgot-password flow with 6-digit code – all prototype, no server), who sees the profile, notifications, privacy ("AI may use my location"), appearance light/dark, **language**, log out, delete account. Chat history entry (empty list for now).
 7. **8 languages**, whole app translates instantly: Deutsch, English, Français, Español, Português, العربية (right-to-left layout), हिन्दी, 中文. See section 5.
 8. **AI chat page** (tab "AI"): greeting "Hi, ich bin Mo/Sarah. Wie kann ich dir helfen?" (translated), message bubbles, **typing + photo from gallery + take photo (camera) only. No microphone, no voice conversation (removed on purpose by the owner).** The avatar at the top can be tapped to switch the picture (Mo, Sarah, Panda, Fuchs, Hase); the AI's **name is always Mo or Sarah** (`prof.ai`).
@@ -44,8 +44,19 @@ Keep `server/index.html` an exact copy of `LookGood.html` (`cp LookGood.html ser
 - The AI chat gets the wardrobe list and the current outfit in its system prompt (`wdForAI()`), so Mo/Sarah can suggest outfits from the user's own clothes.
 - Source of the wardrobe code lives inside LookGood.html (search "Garderobe: 3D-Figur" and "Garderobe: Bedienung").
 
+## 4c. Flash & Chat (built 26 Nov 2026, owner's spec "Flash-System")
+- **Demo mode until a real server exists.** Everything is stored on the device: `lg_social` (friends, requests, blocked, chats, stories, seen state) and media blobs in IndexedDB `lookgood` v2, store `media`. Eight **test friends** (Lina, Jay, Sami, Nora, Elif, Ben, Maya, Tom; marked "Test") reply automatically (`bot()`), mark your flashes as opened, sometimes send a Flash back, accept requests after 4 s; Nora sends a Flash ~25 s after first start. The data functions (`soInit`, `sendTo`, `chat`, `acceptReq` …) are the seam to replace with a real backend later.
+- **Flash camera** (`openCam`): live camera via getUserMedia (front/back, torch / front screen-flash), tap = photo, hold = video up to 10 s (MediaRecorder, sound if mic allowed), gallery; fallback buttons to the phone camera if live camera is unavailable (e.g. inside some apps).
+- **Editor** (`openEditor2`): text bar (drag up/down, tap to cycle 3 styles, drag to trash), emoji stickers (drag, pinch/scroll to resize), drawing (8 colours, undo), 7 filters, timer 3/5/10 s/∞. Photos are flattened to JPEG; videos keep an overlay PNG + filter.
+- **Send**: to friends and/or "Meine Story" (24 h). **Viewer** (`player`): progress bars, tap right/left = next/previous, hold = pause, swipe down = close, story reply field (reply appears quoted in chat), "Im Chat speichern", my story shows "Angesehen von …".
+- **Inbox**: stories row with gradient ring (unseen) / grey (seen), friend requests (accept/decline), chat rows sorted by activity with status icons: filled square = new Flash (pink photo / violet video), filled bubble = new chat (blue), arrow filled = delivered, arrow outline = opened/read, outline square/bubble = viewed/received; "schreibt gerade …". In-app push banner (`notify2`) for new Flashes/messages.
+- **1-to-1 chat**: bubbles, day separators, Flash chips, gallery photos, **outfit card** (current wardrobe outfit + weather, also from Garderobe → Mehr → "Outfit an Freunde schicken"), voice messages (hold mic), story-reply quotes, long press = save / copy / delete own, per-chat "delete after reading" option.
+- **Friends** screen: search by username/name, add → "Anfrage gesendet" → accepted, accept/decline requests, remove, block/unblock; only friends can send/see Flashes and stories.
+- Colours: photo Flash #E0275F (app pink), video Flash #7B4DFF (violet), chat #1596C8 (blue).
+- Watch out: everything runs inside one IIFE; top-level names must not clash with the app (`finish`, `done`, `sv` and the CSS class `.st` were already taken — use `edFinish`, `edDone`, `SV`, `.sti`).
+
 ## 4b. Still deliberately NOT built
-- **Friends tab**: empty placeholder too.
+- Real server for Flash/Chat (accounts, delivery between phones, real push notifications).
 - Real accounts / database / real login / real email or SMS codes.
 - The "Chat history" list in the profile (empty by design for now).
 
