@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LOOK GOOD Bestandsaufnahme</title>
+<style>
+/* Layout: eine ruhige Lesespalte, Status als farbige Marken. Farben wie in der App. */
+:root{--bg:#F4F1FA;--ink:#241A38;--muted:#6E6585;--card:#fff;--line:#DDD6EC;--accent:#E0275F;--ok:#1E8A55;--warn:#B7791F;--no:#C2364A;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0E0B14;--ink:#F3EEFA;--muted:#A99EC0;--card:#1B1625;--line:#2E2640;--accent:#FF6E96;--ok:#4ACB8A;--warn:#E6B357;--no:#FF7A8C;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:760px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 60px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:22px}
+h1{font-size:2rem;line-height:1.1;margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1 b{color:var(--accent)}
+h2{font-size:1.25rem;margin:0 0 8px;text-wrap:balance}
+p{margin:0}
+.sub{color:var(--muted)}
+section{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px}
+.n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:.85rem;font-weight:800;margin-right:8px;vertical-align:2px}
+ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.t{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 6px;border-top:1px solid var(--line);vertical-align:top}
+th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);border-top:0}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.85em;background:var(--bg);padding:1px 5px;border-radius:6px;overflow-wrap:anywhere}
+.s{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap;border:1.5px solid currentColor}
+.ok{color:var(--ok)}.warn{color:var(--warn)}.no{color:var(--no)}
+.check li{list-style:none;margin-left:-1.2em}
+.note{border-left:4px solid var(--accent);padding:4px 0 4px 12px}
+</style>
+</head>
+<body>
+<main>
+<header style="display:flex;flex-direction:column;gap:8px">
+<p class="sub">Tag 1 · 26. November 2026</p>
+<h1>L<b>oo</b>k G<b>oo</b>d: Bestandsaufnahme</h1>
+<p class="sub">Was es gibt, was funktioniert, was wir behalten und was wir neu bauen.</p>
+</header>
+
+<section>
+<h2><span class="n">1</span>Die Sicherung</h2>
+<ul>
+<li><b>Sicherung 1 (online):</b> Alles liegt auf GitHub im Projekt <code>LookGood-</code>. Jede Änderung wird dort gespeichert. Man kann zu jedem alten Stand zurück.</li>
+<li><b>Sicherung 2 (bei dir):</b> Lade die ZIP herunter (Anleitung unten, Punkt 7) und speichere sie zusätzlich an einem anderen Ort, zum Beispiel in iCloud Drive und auf einem USB-Stick.</li>
+<li>Im Ordner <code>sicherung/2026-11-26_vor-tag1/</code> liegen die Stände von vor heute. Im Ordner <code>archiv/</code> liegen deine ersten Versionen. <b>Nichts wurde gelöscht.</b></li>
+</ul>
+</section>
+
+<section>
+<h2><span class="n">2</span>Alle Dateien und wofür sie sind</h2>
+<div class="t"><table>
+<tr><th>Datei</th><th>Wofür</th><th>Status</th></tr>
+<tr><td><code>LookGood.html</code></td><td><b>Die vollständige App</b> in einer Datei. Diese lädst du herunter und öffnest sie.</td><td><span class="s ok">aktuell</span></td></tr>
+<tr><td><code>server/server.js</code></td><td>Kleiner Server für Render. Er versteckt deinen KI-Schlüssel und leitet den Chat an die KI weiter.</td><td><span class="s ok">aktuell</span></td></tr>
+<tr><td><code>server/index.html</code></td><td>Genaue Kopie von <code>LookGood.html</code>, die der Server ausliefert.</td><td><span class="s ok">aktuell</span></td></tr>
+<tr><td><code>server/package.json</code></td><td>Sagt Render, wie der Server startet.</td><td><span class="s ok">aktuell</span></td></tr>
+<tr><td><code>README.txt</code></td><td>Anleitung: App online stellen (Render).</td><td><span class="s ok">aktuell</span></td></tr>
+<tr><td><code>CLAUDE.md</code></td><td>Projektbeschreibung für Claude, damit jede neue Sitzung weiß, wo wir stehen.</td><td><span class="s ok">aktuell</span></td></tr>
+<tr><td><code>docs/Tag1-Bestandsaufnahme.html</code></td><td>Diese Seite.</td><td><span class="s ok">neu</span></td></tr>
+<tr><td><code>archiv/1-anfang.html</code></td><td>Deine allererste Version.</td><td><span class="s warn">nur Archiv</span></td></tr>
+<tr><td><code>archiv/2-mitte-live_6_2.html</code><br><code>archiv/3-mitte-live_6_3-…</code></td><td>Zwischenstände mit der ersten Garderobe (graue Figur).</td><td><span class="s warn">nur Archiv</span></td></tr>
+<tr><td><code>sicherung/…/look-good-app_mit-alter-figur.html</code></td><td>App-Stand von vorgestern, mit der selbst gebauten Figur, die dir nicht gefallen hat.</td><td><span class="s warn">nur Sicherung</span></td></tr>
+<tr><td><code>sicherung/…/figur-test.html</code></td><td>Test der neuen realistischen Figur, ohne App drumherum.</td><td><span class="s warn">nur Sicherung</span></td></tr>
+</table></div>
+</section>
+
+<section>
+<h2><span class="n">3</span>Was heute funktioniert</h2>
+<p class="sub">Getestet im Browser in Handygröße (auch auf Arabisch). Noch <b>nicht</b> auf einem echten iPhone getestet.</p>
+<div class="t"><table>
+<tr><th>Funktion</th><th>Stand</th></tr>
+<tr><td>Startanimation mit Logo (die „OO“ sind Augen)</td><td><span class="s ok">funktioniert</span></td></tr>
+<tr><td>Konto erstellen / Anmelden: Apple, Google, E-Mail mit Passwort, Telefon mit 6-stelligem Code</td><td><span class="s warn">nur Vorführung</span><br><small class="sub">Konto liegt nur auf dem Gerät, keine echte SMS/E-Mail</small></td></tr>
+<tr><td>Angemeldet bleiben</td><td><span class="s ok">funktioniert</span></td></tr>
+<tr><td>Fragen nach Name, Geburtstag, Geschlecht</td><td><span class="s ok">funktioniert</span></td></tr>
+<tr><td>Home: Stadt suchen, echtes Wetter, Tagesnachricht</td><td><span class="s ok">funktioniert</span><br><small class="sub">braucht Internet</small></td></tr>
+<tr><td>8 Sprachen, Arabisch von rechts nach links</td><td><span class="s ok">funktioniert</span></td></tr>
+<tr><td>Profil, Einstellungen, hell/dunkel, Konto löschen</td><td><span class="s ok">funktioniert</span></td></tr>
+<tr><td>KI-Chat Mo/Sarah: kurze Antworten wie ein Freund, spiegelt die Sprache, kennt Wetter und Kleiderschrank, Foto und Kamera</td><td><span class="s warn">fertig gebaut</span><br><small class="sub">antwortet erst über deinen Render-Link mit KI-Schlüssel</small></td></tr>
+<tr><td>Garderobe: Aufbau wie dein Bild, Kategorien, Kleidung per Foto (Hintergrund wird ausgeschnitten, Farbe erkannt), Outfit, Looks speichern</td><td><span class="s ok">funktioniert</span></td></tr>
+<tr><td>Garderobe: realistische 3D-Figur (Mann/Frau), 360° drehen, Straße mit echtem Wetter</td><td><span class="s ok">funktioniert</span><br><small class="sub">Mann/Frau unter „Mehr“</small></td></tr>
+<tr><td>Garderobe: deine Kleidung <b>an</b> der 3D-Figur</td><td><span class="s no">fehlt noch</span><br><small class="sub">nächster großer Schritt</small></td></tr>
+<tr><td>Figur selbst gestalten (Gesicht, Frisur, Bart, Haarfarbe …)</td><td><span class="s no">fehlt noch</span><br><small class="sub">dein neuer Plan, siehe Punkt 6</small></td></tr>
+<tr><td>Freunde-Tab</td><td><span class="s no">fehlt noch</span></td></tr>
+</table></div>
+</section>
+
+<section>
+<h2><span class="n">4</span>Das behalten wir</h2>
+<ul>
+<li>Aussehen, Farben, Logo und Startanimation</li>
+<li>Alle Texte in 8 Sprachen</li>
+<li>Wetter und Städtesuche</li>
+<li>Chat-Oberfläche und die Persönlichkeit von Mo/Sarah</li>
+<li>Garderobe: Aufbau, Kategorien, Foto hinzufügen, Looks</li>
+<li>Die realistische Figur (MakeHuman, frei nutzbar)</li>
+</ul>
+</section>
+
+<section>
+<h2><span class="n">5</span>Das muss neu gebaut werden, damit es eine echte App wird</h2>
+<p>Du willst eine App wie Snapchat: Du schickst ein Update, und <b>alle behalten ihr Konto, ihre Kleidung, ihre Freunde und ihr Abo</b>. Dafür fehlt heute das Wichtigste:</p>
+<ul>
+<li><b>Heute liegt alles nur auf dem Handy</b> (im Browser-Speicher). Neues Handy, App gelöscht oder Browser-Daten gelöscht: alles weg.</li>
+<li><b>Echte Konten und Datenbank:</b> Konten, Kleidung, Fotos, Looks, Freunde und Abos müssen auf einem Server liegen. Die App zeigt sie nur an. Dann ersetzt ein Update nur den App-Code, und die Daten bleiben.</li>
+<li><b>Echte Anmeldung:</b> echte SMS- und E-Mail-Codes, echtes „Mit Apple / Google anmelden“.</li>
+<li><b>App Store / Play Store:</b> Die HTML wird in eine richtige App verpackt. Updates laufen dann über die Stores.</li>
+<li><b>Ordnung im Code:</b> Statt einer riesigen Datei ein sauberes Projekt mit Versionen. So kann jeder Fehler gezielt repariert werden.</li>
+<li><b>Fehler melden:</b> ein Knopf in der App, mit dem Nutzer Fehler schicken können.</li>
+</ul>
+<p class="note">Wichtig: Die HTML-Datei ist unser <b>Prototyp</b>, also das Modell, an dem wir das Aussehen und die Abläufe festlegen. Die echte App baut später darauf auf.</p>
+</section>
+
+<section>
+<h2><span class="n">6</span>Vorschlag für die nächsten Tage</h2>
+<ul>
+<li><b>Tag 2:</b> Figur gestalten nach deinem Plan: Mann/Frau, 5 Grundgesichter, Frisur, Haarfarbe-Farbfeld, Bart, Augen.</li>
+<li><b>Tag 3:</b> Deine Kleidung an der realistischen Figur.</li>
+<li><b>Tag 4:</b> KI online (Render + Schlüssel) und mit echten Gesprächen testen.</li>
+<li><b>Danach:</b> echte Konten und Datenbank, dann App Store / Play Store.</li>
+</ul>
+</section>
+
+<section>
+<h2><span class="n">7</span>So lädst du die App herunter</h2>
+<ul>
+<li><b>Nur die App:</b> In Safari öffnen:<br><code>github.com/mohamedbashirosman05-cmyk/LookGood-/blob/claude/wardrobe-feature-planning-m0w8o1/LookGood.html</code><br>Dort auf das <b>Download-Symbol</b> (Pfeil nach unten) tippen. Die Datei landet in <b>Dateien → Downloads</b>.</li>
+<li><b>Alles als ZIP (Sicherung 2):</b> In Safari öffnen:<br><code>github.com/mohamedbashirosman05-cmyk/LookGood-/archive/refs/heads/claude/wardrobe-feature-planning-m0w8o1.zip</code><br>„Laden“ tippen, in Dateien auf die ZIP tippen, fertig.</li>
+</ul>
+</section>
+
+<section>
+<h2>Tagesabschluss</h2>
+<ul class="check">
+<li>✅ Alle bisherigen Dateien gesichert</li>
+<li>✅ Sicherung lässt sich öffnen (auf GitHub)</li>
+<li>⬜ Zweite Sicherung an einem anderen Ort: <b>machst du</b> mit der ZIP</li>
+<li>✅ Jede Datei erklärt</li>
+<li>✅ Funktionierende Funktionen aufgeschrieben</li>
+<li>✅ Keine bestehenden Dateien gelöscht</li>
+<li>✅ Übersicht über den bisherigen Projektstand erstellt</li>
+</ul>
+</section>
+</main>
+</body>
+</html>

@@ -10,15 +10,15 @@ Read this file first. It describes what exists, how it is built, what is deliber
 - Never put API keys in the HTML or in git. Keys live in server environment variables.
 
 ## 2. What the app is
-**LOOK GOOD** – a mobile-first personal-stylist app (a "personal stylist, every day"). One self-contained file, `look-good-app.html` (vanilla HTML/CSS/JS, no framework, no build step, about 100 KB). It is a prototype: sign-in and profile are stored only in the browser (`localStorage`), nothing is connected to a user database yet.
+**LOOK GOOD** – a mobile-first personal-stylist app (a "personal stylist, every day"). One self-contained file, `LookGood.html` (vanilla HTML/CSS/JS, no framework, no build step, about 7 MB because two realistic 3D figures are embedded). It is a prototype: sign-in and profile are stored only in the browser (`localStorage`), nothing is connected to a user database yet.
 
 Files in this package:
-- `look-good-app.html` – the app. Opens directly by double-click (AI chat shows "not connected" until a server is set).
+- `LookGood.html` – the app. Opens directly by double-click (AI chat shows "not connected" until a server is set).
 - `server/` – tiny Node server (no dependencies, Node 18+): `server.js`, `package.json`, `index.html` (exact copy of the app). It serves the app and forwards chat requests to the Anthropic API so the key stays secret.
 - `README.txt` – deploy steps for the owner (Render + GitHub).
 - `CLAUDE.md` – this file.
 
-Keep `server/index.html` an exact copy of `look-good-app.html` (`cp look-good-app.html server/index.html`). `AI_URL` is chosen automatically: `/api/chat` when the page is served over http(s), empty when opened as a file.
+Keep `server/index.html` an exact copy of `LookGood.html` (`cp LookGood.html server/index.html`). `AI_URL` is chosen automatically: `/api/chat` when the page is served over http(s), empty when opened as a file.
 
 ## 3. What is DONE and approved by the owner (do not change unless asked)
 1. **Start animation** and logo (LOOK GOOD wordmark, the two "OO" are pink eyes).
@@ -35,12 +35,12 @@ Keep `server/index.html` an exact copy of `look-good-app.html` (`cp look-good-ap
 - Layout like the owner's reference image: 6 category buttons left (Tops, Hosen, Schuhe, Jacken, Accessoires, Socken), 3D stage in the middle (drag to rotate 360°, arrow buttons turn 45°), 6 right (Schmuck, Uhren, Brillen, Taschen, Unterwäsche, Mehr). Below: "Dein Outfit (n)" thumbnails with ×, "Alles löschen", "Look speichern".
 - Category tap opens a bottom sheet: sub-type chips, 3-column grid of the user's items (tap = put on/take off), "Bearbeiten" (delete), "+ hinzufügen". Empty category shows only the add prompt (no fake items).
 - Adding an item: photo (camera or gallery) → background removed by flood-fill from the border (works best on plain light background) → main colour detected → form (type, colour, optional name) → saved and put on. If the server/AI is connected, Claude vision pre-fills type, name and colour.
-- Avatar: intro card "Erstelle deine Figur" → "Mit Selfie" (AI reads skin/hair/eyes/beard/build from the selfie if the server is connected, otherwise local colour sampling; photo is not stored) or "Selbst gestalten". Editor tabs Körper (body shape m/f, height, build, shoulders, legs, skin tone), Gesicht (eye colour/size/shape, nose, lips, face shape, brows), Haare (11 styles, colour, beard).
-- 3D: three.js r149 subset inlined at the end of the HTML (MIT, ~450 KB, works offline). Body and garments are signed-distance fields meshed with surface nets (one smooth surface, no visible joints); garments are offset shells of selected body parts with clip planes (hems, sleeve length). Head/face/hair are parametric meshes. Cloth sways with rotation inertia and with wind.
+- Avatar (since 26 Nov 2026): realistic MakeHuman figure (male or female, chosen from the profile gender or "Mehr → Figur: Mann/Frau zeigen", stored in `prof.fig`). Two pre-generated GLBs (ara3d, men: shorts only; women: shorts + tank top) are embedded as base64 in `window.LG_AVATARS` and loaded with three's GLTFLoader + MeshoptDecoder. Idle animation and blinking. The old procedural editor/selfie flow is no longer reachable (code still present, intro hidden). **The user's clothes are not yet shown on the figure** (next step).
+- 3D: three.js r149 subset + GLTFLoader inlined near the end of the HTML (MIT, works offline).
 - Background: street (procedural buildings, lamps) matched to the Home weather (`WX`: sun/cloud/rain/snow/fog/storm, night with lit windows, snow/rain particles, wet ground) or a dark studio when no city is chosen or the user picks "Hintergrund: Studio" (`prof.wbg`).
 - Storage: items with photos in IndexedDB `lookgood/items`; `lg_avatar`, `lg_outfit`, `lg_looks` in localStorage. "Konto löschen" clears all of it.
 - The AI chat gets the wardrobe list and the current outfit in its system prompt (`wdForAI()`), so Mo/Sarah can suggest outfits from the user's own clothes.
-- Source of the wardrobe code lives inside look-good-app.html (search "Garderobe: 3D-Figur" and "Garderobe: Bedienung").
+- Source of the wardrobe code lives inside LookGood.html (search "Garderobe: 3D-Figur" and "Garderobe: Bedienung").
 
 ## 4b. Still deliberately NOT built
 - **Friends tab**: empty placeholder too.
@@ -48,7 +48,7 @@ Keep `server/index.html` an exact copy of `look-good-app.html` (`cp look-good-ap
 - The "Chat history" list in the profile (empty by design for now).
 
 ## 5. Architecture notes (so you do not break things)
-- Everything is in `look-good-app.html`: CSS in one `<style>`, JS in one `<script>`. Consider splitting into files only if the owner agrees.
+- Everything is in `LookGood.html`: CSS in one `<style>`, JS in one `<script>`. Consider splitting into files only if the owner agrees.
 - **Translations**: German is the source language. All visible texts are German strings; the dictionary `D` maps each German string to an array of 7 translations in the order `en, fr, es, pt, ar, hi, zh`. `tr(s)` returns the translation for the current language (`prof.lang`), falling back to the German string. Helpers `el()`, `say()` (toast), `ts()` and form labels already pass through `tr()`. Static HTML texts are collected once at startup into the list `ST` and re-applied by `applyLang()` (ids listed in `SKIP` and some containers are excluded). **When you add any new visible text: add it to `D` with all 7 translations, and make sure it goes through `tr()`.** Language lists: `LN` (names), `LC` (codes, `ar` switches `dir="rtl"`), `LOC` (speech locales).
 - **RTL**: CSS has `[dir=rtl]` rules; use logical properties where possible. Test Arabic after UI changes.
 - **State**: `prof` (profile object, saved with `saveProf()` under `localStorage` key `lg_prof`), `cities` (key `lg_cities`), helper `ls(key,value)`. `prof.ai` = "Mo" or "Sarah" (voice and persona), `prof.skin` = displayed character (Mo/Sarah/Panda/Fuchs/Hase), `prof.lang`, `prof.theme`, `prof.loc` (AI may use location).
@@ -74,9 +74,12 @@ Keep `server/index.html` an exact copy of `look-good-app.html` (`cp look-good-ap
 archiv/ holds earlier versions the owner shared, for context only:
 - 1-anfang.html – first version.
 - 2-mitte-live_6_2.html, 3-mitte-live_6_3-alte-garderobe.html – middle versions incl. the discarded wardrobe attempt (category buttons Tops/Hosen/Schuhe/Jacken/Kappen/Ketten/Uhren/Brillen/Taschen/Armbänder around a grey mannequin, "Person erstellen", "Dein Outfit", "Anprobieren"). Only use as a reference if the owner asks.
-The current app is look-good-app.html (+ server/index.html).
+The current app is LookGood.html (+ server/index.html).
 
-## 10. New avatar (in progress, Nov 2026)
-- Owner rejected the procedural SDF figure as ugly. New approach approved by owner ("nimm das Risiko"): realistic MakeHuman characters generated with the `ara3d` library (MIT, npm ara3d@0.16.0) and `ara3d-data` (CC0, MakeHuman). Characters are generated in a headless browser, exported as GLB, compressed with gltf-transform (meshopt + webp, 1024 px textures, ~2.3 MB each) and embedded as base64, so the HTML works offline in the owner's code app.
-- `figur-test.html` = standalone test of the figure only (male/female, drag 360°, idle animation, blinking, dark studio). Not yet in the app; wait for the owner's verdict.
-- Owner's plan: new users first see a short intro with a default figure, then either take a selfie (AI picks the ara3d parameters so the figure looks similar) or build it themselves (face, hair, body, skin, height). Default clothes: men shorts only, women shorts + top.
+## 10. Structure and plan (from 26 Nov 2026, owner's "Tag 1")
+- `LookGood.html` = the one complete app file (download this). `server/index.html` must be an exact copy.
+- `docs/Tag1-Bestandsaufnahme.html` = inventory: every file, what works, what we keep, what must be rebuilt for a real store app (server accounts + database so updates never lose user data, real login, App/Play Store packaging, bug reports).
+- `sicherung/2026-11-26_vor-tag1/` = backups (old app with procedural figure, figure test). `archiv/` = owner's first versions. Never delete these.
+- Owner's avatar plan (next): male/female → 5 base faces (dark brown, brown, olive, light, ginger; bald, no beard) → hair type filter 1A–4C → hairstyle → hair colour picker field (live) → beard (male) → eyes/brows. Honest limits told to owner: ara3d offers ~14 hairstyles (not 25+25), 6 beards (not 15), no freckles/hairline/parting; more hairstyles would have to be bought.
+- Downloads: the Claude app cannot save files sent from this cloud session. Give the owner GitHub links: file page `github.com/<repo>/blob/<branch>/LookGood.html` (download icon) and the branch ZIP `github.com/<repo>/archive/refs/heads/<branch>.zip`. Creating GitHub releases is not allowed from this session.
+- Build sources for the 3D parts live outside the repo (scratchpad); if they are lost, regenerate figures with ara3d in a headless browser and compress with gltf-transform (meshopt, webp, 1024 px).

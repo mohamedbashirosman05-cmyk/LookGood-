@@ -2,7 +2,7 @@ LOOK GOOD - Paket für Claude Code
 
 WAS IST DRIN
 - CLAUDE.md          Projektbeschreibung für Claude Code (zuerst lesen lassen)
-- look-good-app.html Die App. Per Doppelklick im Browser öffnen.
+- LookGood.html Die App. Per Doppelklick im Browser öffnen.
 - server/            Kleiner Server für die KI (server.js, package.json, index.html)
 
 SO GEHST DU VOR
@@ -25,5 +25,5 @@ KI ONLINE STELLEN (damit der Chat antwortet)
 
 HINWEIS
 - Garderobe: 3D-Figur, eigene Kleidung per Foto, Wetter-Straße. Fotos bleiben nur auf dem Gerät.
-- Nach jeder Änderung muss server/index.html eine genaue Kopie von look-good-app.html sein.
+- Nach jeder Änderung muss server/index.html eine genaue Kopie von LookGood.html sein.
 - Auf dem kostenlosen Render-Tarif schläft der Server, die erste Nachricht kann ca. 30 Sekunden dauern.
